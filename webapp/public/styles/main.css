@@ -1,0 +1,117 @@
+@import 'https://fonts.googleapis.com/css?family=Merriweather:400,700';
+/* colors */
+/* size */
+.web-font {
+  font-family: 'Merriweather', serif;
+}
+/* html base */
+body {
+  background-color: #fff;
+  font-family: system, -apple-system, 'Helvetica Neue', helvetica, arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3 {
+  font-weight: 700;
+}
+/* layout */
+.container {
+  position: absolute;
+  top: 6px;
+  width: 100%;
+}
+header {
+  text-align: center;
+  width: 100%;
+  font-family: 'Merriweather', serif;
+}
+header .title {
+  font-size: 32pt;
+  font-weight: 700;
+  margin-top: 40px;
+  padding-bottom: 10px;
+}
+header .desc,
+header .source {
+  color: #777777;
+}
+header .desc a,
+header .source a {
+  color: #777777;
+}
+header .source {
+  margin-top: 10px;
+  font-size: 10pt;
+}
+.loading {
+  margin-top: 60px;
+  color: #777777;
+  font-size: 16pt;
+  text-align: center;
+  letter-spacing: 8px;
+}
+.main {
+  width: 960px;
+  margin: 0 auto;
+}
+.main .vis {
+  margin-top: 20px;
+}
+.footer .desc {
+  font-family: 'Merriweather', serif;
+  background-color: #000000;
+  margin-top: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-size: 10pt;
+  text-align: center;
+  color: #FFFFFF;
+}
+.footer .desc a {
+  color: #FFFFFF;
+}
+/* d3 */
+.pos-middle {
+  text-anchor: middle;
+}
+.pos-end {
+  text-anchor: end;
+}
+.v-central {
+  alignment-baseline: central;
+}
+.v-top {
+  alignment-baseline: hanging;
+}
+.size-tiny {
+  font-size: 8pt;
+}
+.size-small {
+  font-size: 10pt;
+}
+.size-normal {
+  font-size: 12pt;
+}
+.size-large {
+  font-size: 16pt;
+}
+.stroke-1 {
+  stroke-wieght: 1 ;
+}
+.stroke-black {
+  stroke: black;
+}
+.stroke-lightGrey {
+  stroke: #D3D3D3;
+}
+.stroke-lightestGrey {
+  stroke: #efefef;
+}
+.fill-grey {
+  fill: #777777;
+}
+.fill-lightGrey {
+  fill: #D3D3D3;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "2016-olympics-team-usa",
+  "description": "data visualization with Rio 2016 Olympic Team USA",
+  "directory" : "public/components",
+  "main": "public/index.html",
+  "authors": [
+    "Tanyoung Kim"
+  ],
+  "license": "ISC",
+  "homepage": "https://tany.kim/team-usa",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "public/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.7",
+    "d3": "^4.2.1",
+    "underscore": "^1.8.3"
+  }
+}

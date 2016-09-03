@@ -5,10 +5,13 @@
 # Generated Datas
 python/R_results/
 
+# Front-end
+webapp/node_modules
+webapp/public/components
+
 # Others
 .DS_Store
 _testing/
 python/_old*/
 python/testing*
-untitled/
 .idea/

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Team USA - Sports and Ages</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/>
+    <!-- injector:css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endinjector -->
+</head>
+<body ng-app="swimmerApp">
+
+<!-- contents come here -->
+<div class="container" ng-controller="MainCtrl">
+
+    <!-- header -->
+    <header>
+        <div class="title"> Swimmers Network </div>
+        <div class="desc">visualizatin of swimmers' network</div>
+        <div class="source"> data from <a href="https://www.swimrankings.net" target="_blacnk">Swim Rankings</a></div>
+    </header>
+
+    <div class="loading" ng-hide="loaded">
+        LOADING
+    </div>
+
+    <!-- main as projects -->
+    <div class="main" ng-show="loaded">
+
+        <!--<div class="options">-->
+            <!--&lt;!&ndash; sort options &ndash;&gt;-->
+            <!--<div class="sort-by">-->
+                <!--<div class="title">Sort by &amp; highlight</div>-->
+                <!--<select name="sort" ng-model="sort" ng-change="sortSport()">-->
+                    <!--<option value="name-asc">Sport name (A to Z)</option>-->
+                    <!--<option value="count-desc">Number of athletes (large to small)</option>-->
+                    <!--<option value="count-asc">Number of athletes (small to large)</option>-->
+                    <!--<option value="median-desc">Median age (old to young)</option>-->
+                    <!--<option value="median-asc">Median age (young to old)</option>-->
+                    <!--<option value="range-desc">Age range (large to small)</option>-->
+                    <!--<option value="range-asc">Age range (small to large)</option>-->
+                <!--</select>-->
+            <!--</div>-->
+
+            <!--&lt;!&ndash; view options &ndash;&gt;-->
+            <!--<div class="show">-->
+                <!--<div class="title">Show atheltes </div>-->
+                <!--<input type="radio" name="highlight" ng-model="highlight" value="all" ng-checked = "true"> All Athletes <span class="count-all"></span><span class="count">{{ count.all }}</span> <br/>-->
+                <!--<input type="radio" name="highlight" ng-model="highlight" value="women"> Women <span class="count-women"></span><span class="count">{{ count.women }}</span> / Men <span class="count-men"></span><span class="count">{{ count.men }}</span> <br/>-->
+                <!--<input type="radio" name="highlight" ng-model="highlight" value="prev"> Returning Olympian <span class="count-prev"></span><span class="count">{{ count.prev }}</span> / Rookies <span class="count-rookies"></span><span class="count">{{ count.rookies }}</span>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!-- vis -->
+        <div id="vis" class="vis"></div>
+    </div>
+
+    <!-- footer -->
+    <div class="footer">
+        <div class="desc">
+            Made by <a href="http://tany.kim" target="_blank"> Tanyoung Kim</a> |
+            View at <a href="https://github.com/tanykim/2016-Olympics-Team-USA" tager="_blank">GitHub </a>
+        </div>
+    </div>
+</div>
+
+    <!-- bower:js -->
+    <script src="components/angular/angular.js"></script>
+    <script src="components/d3/d3.js"></script>
+    <script src="components/underscore/underscore.js"></script>
+    <!-- endbower -->
+
+    <!-- injector:js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/visualizer.js"></script>
+    <!-- endinjector -->
+</body>
+</html>

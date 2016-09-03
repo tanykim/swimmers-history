@@ -50,10 +50,10 @@ This project includes two steps of data generation - 1) scrapping html pages wit
 
 The development environment includes followings.
 
-* Node
-* AngularJS
-* Less
-* Grunt
+* Node v6.3.1
+* Angular v1.5
+* Less 458
+* grunt-cli v1.2.0
 
 To test the webapp, do the following steps. Bower installs necessary Javascript libraries for the client side. This includes Angular, D3 and Underscore. 
 
@@ -61,7 +61,6 @@ To test the webapp, do the following steps. Bower installs necessary Javascript 
 cd webapp
 npm install
 bower install 
-
 ```
 
 Then run ```grunt``` to see on the browser on your browser. The entire folder ```public``` is ready to be served on a server.
