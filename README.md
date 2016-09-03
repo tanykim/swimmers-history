@@ -39,7 +39,7 @@ Also I include only **final races** (mostly top 8 individuals or teams) and avai
 
 ## Dataset Generation
 
-This project includes two steps of data generation - 1) scrapping html pages with **R** then 2) generate datasets with **Python** for the front-end visualization. Some intermediate datasets from R are saved as JSON files and later used in both Python and fron-end coding.
+This project includes two steps of data generation - 1) scrapping html pages with **R** then 2) generate datasets with **Python** for the front-end visualization.
 
 **Environment**
 

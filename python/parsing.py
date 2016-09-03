@@ -24,6 +24,36 @@ genders = {
     '1': {'name': 'men', 'styles': [1, 8, 10]},
     '2': {'name': 'women', 'styles': [1, 6, 10]}
 }
+meets_name = {
+    '1': ['Olympic Games', 'OG'],
+    '2': ['World Championships', 'WC'],
+    '3': ['European Championships', 'EC'],
+    '5': ['Commonwealth Games', 'CG'],
+    '7450054': ['Pan Pacific Championships', 'PPC']
+}
+events_name = {
+    '1': ['50m Freestyle', '50Fr', 'IND'],
+    '2': ['100m Freestyle', '100Fr', 'IND'],
+    '3': ['200m Freestyle', '200Fr', 'IND'],
+    '5': ['400m Freestyle', '400Fr', 'IND'],
+    '6': ['800m Freestyle', '800Fr', 'IND'],
+    '8': ['1500m Freestyle', '1500Fr', 'IND'],
+    '10': ['100m Backstroke', '100Bk', 'IND'],
+    '11': ['200m Backstroke', '200Bk', 'IND'],
+    '13': ['100m Breaststroke', '100Br', 'IND'],
+    '14': ['200m Breaststroke', '200Br', 'IND'],
+    '16': ['100m Butterfly', '100Fly', 'IND'],
+    '17': ['200m Butterfly', '200Fly', 'IND'],
+    '18': ['200m Medley', '100IM', 'IND'],
+    '19': ['400m Medley', '200IM', 'IND'],
+    '27': ['4 X 100m Freestyle', '4X100Fr', 'TEAM'],
+    '29': ['4 X 200m Freestyle', '4X200Fr', 'TEAM'],
+    '40': ['4 X 100m Medley', '4X100M', 'TEAM']
+}
+
+# collect athletes from all html files
+all_athletes = { 'men': {}, 'women': {} }
+node_edges = { 'men': [], 'women': [] }
 
 # add race at each html read
 race = {}
@@ -38,16 +68,16 @@ def existing_node_set_idx(source, target, gender):
             set['target'] == source and set['source'] == target):
             return idx
 
-def update_node_edges(source, target, gender):
+def update_node_edges(source, target, gender, race_id):
     idx = existing_node_set_idx(source, target, gender)
     if (idx == None):
         # add new node
-        node_edges[gender].append({'source': source, 'target': target, 'value': 1})
+        node_edges[gender].append({'source': source, 'target': target, 'value': [race_id]})
     else:
         # update existing node
-        node_edges[gender][idx]['value'] += 1
+        node_edges[gender][idx]['value'].append(race_id)
 
-def create_node_edge_data(ids, gender, is_medley):
+def create_node_edge_data(ids, gender, is_medley, race_id):
 
     #create source, target, value object
     for i, source in enumerate(ids):
@@ -55,11 +85,11 @@ def create_node_edge_data(ids, gender, is_medley):
             # remove duplicated sets e.g, [0, 1] == [1, 0]
             if j > i:
                 if (not is_medley):
-                    update_node_edges(source, target, gender)
+                    update_node_edges(source, target, gender, race_id)
                 else:
                     # medley is always with 4 athletes - remove the teams
                     if ( j >= i + 4 - (i % 4)):
-                        update_node_edges(source, target, gender)
+                        update_node_edges(source, target, gender, race_id)
 
 # update athletes info
 def update_athlete_info(gender, id, pnt, record):
@@ -77,7 +107,7 @@ def add_new_athlete(athlete_name, country, record, pnt, gender, id):
 
 def is_athlete_entered(id, gender):
     return True if (id in all_athletes[gender]) else False
-        
+
 # create or update athlete object
 def get_athletes_by_html (race_id, results, gender):
 
@@ -102,8 +132,8 @@ def get_athletes_by_html (race_id, results, gender):
         # for data set
         names = rank.find_all('td', class_='name')
 
-        # medlies
-        if int(race_id.split('-')[2]) >= 27:
+        # team events
+        if race_id.split('-')[2] == 'TEAM':
             # case of race: get 4 athletes ID in relay
             for a in names[1].find_all('a'):
                 id = re.findall('[0-9]*$', a['href'])[0]
@@ -130,20 +160,26 @@ def get_athletes_by_html (race_id, results, gender):
 
     # create node-edge dataset
     print('atheltes', athlete_ids)
-    if int(race_id.split('-')[2]) >= 27:
-        create_node_edge_data(athlete_ids, gender, True)
+    if race_id.split('-')[2] == 'TEAM':
+        create_node_edge_data(athlete_ids, gender, True, race_id)
     else:
-        create_node_edge_data(athlete_ids, gender, False)
+        create_node_edge_data(athlete_ids, gender, False, race_id)
 
 # get data from html file (parsed from swim result html page)
 for meet in meets:
     for gender in genders:
         for style in genders[gender]['styles']:
 
-            race_id = meet + '-' + gender + '-' + str(style)
+            file_id = meet + '-' + gender + '-' + str(style)
+
+            # set race id with meet and even info
+            race_id = meets_name[meets[meet]['type']][1] + '-' + \
+                       meets[meet]['year'] + '-' + \
+                       events_name[str(style)][2] + '-' + \
+                       events_name[str(style)][1]
 
             # get meet/race info from the scrapped html file - remove \n, then resoup
-            html = BeautifulSoup(open('R_results/html/' + race_id + '.html'), 'lxml')
+            html = BeautifulSoup(open('R_results/html/' + file_id + '.html'), 'lxml')
             result_string = str(html.find('table', {'class', 'meetResult'})).replace('\n', '')
             result_html = BeautifulSoup(result_string, 'lxml')
 
@@ -166,53 +202,39 @@ print(all_athletes)
 # save data files as json
 # data objects
 # graph: { nodes, links }
-# meets_list: { type: { name, code, years: [year, location, meet_id] }
-# events_list: { group: { type: name, code } }
+# meets_list: { new type id: { name, children: [new id aka year, location] }
+# events_list: { new type id: { name, children: [new id aka abbr, full name }
 # athletes_list: { gender: [ { name, country, country_code, birth_date, races: [] }] }
 # race_list: { rage_id: date }
 
 # meets
-for k, v in meets.iteritems(): v['id'] = k
-meets_list = _.groupBy(meets, lambda x, *a: x['type'])
-meets_name = {
-    '1': ['Olympic Games', 'OG'],
-    '2': ['World Championships', 'WC'],
-    '3': ['European Championships', 'EC'],
-    '5': ['Commonwealth Games', 'CG'],
-    '7450054': ['Pan Pacific Championships', 'PPC']
-}
-for k, v in meets_list.iteritems():
-    years = _.map(v, lambda x, *a: [x['year'], x['location'], x['id']])
-    meets_list[k] = {
+meets_list = {}
+# group by meet type (e.g., olympics)
+meets_grouped = _.groupBy(meets, lambda x, *a: x['type'])
+for k, v in meets_grouped.iteritems():
+    # [year, location]
+    # TODO: sort children
+    children = _.map(v, lambda x, *a: [x['year'], x['year'] + ' - ' + x['location']])
+    meets_grouped[k] = {
         'name': meets_name[k][0],
-        'code': meets_name[k][1],
-        'years': years #[year, location]
+        'children': children
     }
+    code = meets_name[k][1]
+    meets_list[code] = meets_grouped[k]
 
 # events
-events_list = {
-    'individual': {
-        '1': {'name': '50m Freestyle', 'code':'50Fr'},
-        '2': {'name': '100m Freestyle', 'code':'100Fr'},
-        '3': {'name': '200m Freestyle', 'code':'200Fr'},
-        '5': {'name': '400m Freestyle', 'code':'400Fr'},
-        '6': {'name': '800m Freestyle', 'code':'800Fr'},
-        '8': {'name': '1500m Freestyle', 'code':'1500Fr'},
-        '10': {'name': '100m Backstroke', 'code':'100Bk'},
-        '11': {'name': '200m Backstroke', 'code':'200Bk'},
-        '13': {'name': '100m Breaststroke', 'code':'100Br'},
-        '14': {'name': '200m Breaststroke', 'code':'200Br'},
-        '16': {'name': '100m Butterfly', 'code':'100Fly'},
-        '17': {'name': '200m Butterfly', 'code':'200Fly'},
-        '18': {'name': '200m Medley', 'code':'100IM'},
-        '19': {'name': '400m Medley', 'code':'200IM'}
-    },
-    'team': {
-        '27': {'name': '4 X 100m Freestyle', 'code':'4X100Fr'},
-        '29': {'name': '4 X 200m Freestyle', 'code':'4X200Fr'},
-        '40': {'name': '4 X 100m Medley', 'code':'4X100M'}
+for k, v in events_name.iteritems(): v.append(k)
+# group by event type (e.g., team or individual)
+events_list = _.groupBy(events_name, lambda x, *a: x[2])
+for k, v in events_list.iteritems():
+    children = _(v).chain().map(lambda x, *a: [x[1], x[0], x[3]])\
+        .sortBy(lambda x, *a: int(x[2]))\
+        .map(lambda x, *a: [x[0], x[1]])\
+        .value()
+    events_list[k] = {
+        'name': 'Individual' if k == 'IND' else 'Team',
+        'children': children
     }
-}
 
 # athletes
 athletes_list = {}

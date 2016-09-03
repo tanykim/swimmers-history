@@ -4,8 +4,10 @@
     <title>Team USA - Sports and Ages</title>
     <meta name="viewport" content="width=device-width">
     <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/>
-    <!-- injector:css -->
+
     <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
+
+    <!-- injector:css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endinjector -->
 </head>
@@ -42,44 +44,45 @@
             </div>
 
             <!-- meets -->
-            <div class="category">
-                <div class="title"> Meets </div>
-                <ul>
-                    <li ng-repeat="(key, val) in meets">
-                        <input type="checkbox" ng-model="sel.meetsParent[key]" ng-change="filter('meets', key)">
-                        {{ val.name }}
-                        <span class="code">{{val.code}}</span>
+            <div ng-repeat="kind in ['meets', 'events']">
+                <div class="title"> {{ kind }} </div>
+                <ul class="select-list">
+                    <li ng-repeat="(key, val) in category[kind]">
+                        <!-- <input type="checkbox" ng-model="selParent[kind][key]" ng-change="filter(kind, key)">
+ -->                    {{ val.name }}
+                        <span ng-show="selParent[kind][key]"><a ng-click="filterParent(kind, key)">hide </a></span>
+                        <span ng-hide="selParent[kind][key]"><a ng-click="filterParent(kind, key)"> show </a></span>
                         <ul>
-                            <li ng-repeat="year in val.years">
-                                <input type="checkbox" ng-model="sel.meets[key][year[2]]" ng-change="filter('meets', key, k)">
-                                {{ year[0] }} - {{ year[1] }}
+                            <li ng-repeat="child in val.children">
+                                <input type="checkbox" ng-model="sel[kind][key][child[0]]" ng-change="updateParentStatus(kind, key, child[0])">
+                                {{ child[1] }}
                             </li>
                         </ul>
                     </li>
                 </ul>
             </div>
-
-            <!-- events -->
-            <div class="category">
-                <div class="title"> Events </div>
-                <ul>
-                    <li ng-repeat="(key, val) in events">
-                        <input type="checkbox" ng-model="sel.eventsParent[key]" ng-change="filter('events', key)">
-                        {{ key }}
-                        <ul>
-                            <li ng-repeat="(k, v) in val">
-                                <input type="checkbox" ng-model="sel.events[key][k]" ng-change="filter('events', key, k)">
-                                {{ v.name }}
-                                <span class="code">{{ v.code }}</code>
-                            </li>
-                        </ul>
-                    </li>
-                <ul>
-            </div>
         </div>
 
-        <!-- vis -->
-        <div id="vis" class="vis col-xs-8"></div>
+        <!-- graph -->
+        <div class="col-xs-8">
+
+            <!-- option summary -->
+            <div class="summary">
+                <span ng-repeat="kind in ['meets', 'events']">
+                    <span ng-repeat="(key, val) in sel[kind]">
+                        <span ng-class="kind" ng-if="selParent[kind][key]">
+                            {{ key }}
+                            <span ng-repeat="(k, v) in val">
+                                <span ng-if="sel[kind][key][k]"> {{ k }} </span>
+                            </span>
+                        </span>
+                    </span>
+                </span>
+            </div>
+
+            <!-- vis -->
+            <div id="vis" class="vis"></div>
+        </div>
     </div>
 
         <!--<div class="options">-->

@@ -5,6 +5,11 @@
 @grey: #777777;
 @lightGrey: #D3D3D3;
 @lightestGrey: #efefef;
+@white: #FFFFFF;
+
+/* content-specific colors */
+@meet: #6994f4;
+@event: #3fc08b;
 
 /* size */
 @huge: 32pt;
@@ -23,16 +28,18 @@ body {
     margin: 0;
     padding: 0;
 }
-h1, h2, h3 {
-    /*font-weight: 700;*/
-}
+/*h1, h2, h3 {
+    font-weight: 700;
+}*/
 
-/* layout */
+/* overall layout */
 .container {
     position: absolute;
     top: 6px;
     width: 100%;
 }
+
+/* inside container */
 header {
     width: 100%;
     .title {
@@ -59,12 +66,48 @@ header {
     background-color: @lightestGrey;
 }
 .options {
+    .search {
+        margin-bottom :20px;
+        padding: 20px 0;
+        border-bottom: 1px solid @grey;
+    }
     .title {
         font-size: @large;
+        text-transform: uppercase;
     }
-    .code {
-        color: @grey;
+    .select-list {
+        a {
+            cursor: pointer;
+        }
+    }
+}
+.summary {
+    /*background-color: @lightestGrey;*/
+    .meets {
+        background-color: @meet;
+        color: @white;
+        margin-right: 6px;
+    }
+    .events {
+        background-color: @event;
+        color: @white;
+        margin-right: 6px;
+    }
+}
+.vis {
+    margin-top: 20px;
+}
+.footer {
+    .desc {
+        background-color: @lightestGrey;
+        margin-top: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
         font-size: @small;
+        /*color: #FFFFFF;
+        a {
+            color: #FFFFFF;
+        }*/
     }
 }
 
@@ -130,26 +173,7 @@ header {
 //        font-size: @small;
 //    }
 //}*/
-.main {
-    width: 960px;
-    margin: 0 auto;
-    .vis {
-        margin-top: 20px;
-    }
-}
-.footer {
-    .desc {
-/*        background-color: @black;
-        margin-top: 20px;
-        padding-top: 20px;
-        padding-bottom: 20px;*/
-        font-size: @small;
-        /*color: #FFFFFF;
-        a {
-            color: #FFFFFF;
-        }*/
-    }
-}
+
 
 /* d3 */
 .pos-middle {

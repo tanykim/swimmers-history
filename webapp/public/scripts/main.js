@@ -16,88 +16,64 @@ angular.module('swimmerApp')
     $scope.selectedGender = 'men';
 
     //option control
-    //TODO: parent - child control
-    // $scope.$watch('sel', function (newVal, oldVal) {
-    //     console.log(newVal, oldVal);
-    // }, true);
-    $scope.filter = function (opt, parent, child) {
-        console.log(opt, parent, child);
+    $scope.filterParent = function (kind, parent) {
+        $scope.selParent[kind][parent] = !$scope.selParent[kind][parent];
+        var childrenKeys = _.keys($scope.sel[kind][parent]);
+        _.each(childrenKeys, function (key) {
+            var update = $scope.selParent[kind][parent] ? true : false;
+            $scope.sel[kind][parent][key] = update;
+        });
     };
+
+    $scope.updateParentStatus = function (kind, parent) {
+        var childrenVals = _.values($scope.sel[kind][parent]);
+        //if none of the children are selected, set the parent false
+        if (childrenVals.indexOf(true) === -1) {
+            $scope.selParent[kind][parent] = false;
+        } else {
+            $scope.selParent[kind][parent] = true;
+        }
+    };
+
+    function getSelSets(obj) {
+        return _.object(_.map(obj, function (val, key) {
+            var vals = _.object(_.map(val, function (d, key) {
+                var children = _.object(_.map(d.children, function (d) {
+                    return [d[0], true];
+                }));
+                return [key, children];
+            }));
+            return [key, vals];
+        }));
+    }
+
+    function getSelParentSets(obj) {
+        return _.object(_.map(obj, function (val, key) {
+            var vals = _.object(_.map(_.keys(val), function (d) {
+                return [d, true];
+            }));
+            return [key, vals];
+        }));
+    }
 
     //get data and draw SVG
     $http.get('data/data.json').then(function (d) {
 
         console.log(d.data);
 
+        //for search
         $scope.athletes = d.data.athletes[$scope.selectedGender];
 
-        $scope.meets = d.data.meets;
-        $scope.events = d.data.events;
-
-        $scope.sel = {
-            meets: _.object(_.map(d.data.meets, function (d, key) {
-                var years = _.object(_.map(angular.copy(d.years), function (d) {
-                    return [d[2], true];
-                }));
-                return [key, years];
-            })),
-            meetsParent: _.object(_.map(_.keys(d.data.meets), function (d) {
-                return [d, true];
-            })),
-            events: _.object(_.map(d.data.events, function (group, key) {
-                var eventsInGroup = _.object(_.map(group, function (event, id) {
-                    return [id, true];
-                }));
-                return [key, eventsInGroup];
-            })),
-            eventsParent: _.object(_.map(_.keys(d.data.events), function (d) {
-                return [d, true];
-            }))
+        //for option
+        $scope.category = {
+            meets: d.data.meets,
+            events: d.data.events
         };
+        $scope.sel = getSelSets(angular.copy($scope.category));
+        $scope.selParent = getSelParentSets(angular.copy($scope.category));
 
         //draw vis
         visualizer.drawVis(d.data.graph[$scope.selectedGender], completeLoading);
-
-
-
-        //
-        // $scope.loaded = true;
-        //
-        // //sorting options
-        // $scope.sort = 'name-asc';
-        // $scope.sortSport = function () {
-        //     visualizer.sortVis(d.data, $scope.sort);
-        // };
-        //
-        // //get count
-        // var allAthletes = _.flatten(_.pluck(d.data, 'athletes'));
-        // var all = _.size(allAthletes);
-        // var women = _.size(_.filter(allAthletes, function (d) {
-        //     return d.gender === 'F';
-        // }));
-        // var rookies = _.size(_.filter(allAthletes, function (d) {
-        //     return d.prev === 'NA';
-        // }));
-        // $scope.count = {
-        //     all: all,
-        //     women: women,
-        //     men: all - women,
-        //     rookies: rookies,
-        //     prev: all - rookies
-        // };
-        //
-        // //when option selected
-        // $scope.$watch('highlight', function (newVal, oldVal) {
-        //
-        //     if (newVal !== oldVal) {
-        //         var ages = null;
-        //         if (newVal !== 'all') {
-        //             ages = getAthleteAges(d.data, newVal);
-        //         }
-        //         visualizer.showHighlights(ages, newVal);
-        //     }
-        // });
-
     });
 
 

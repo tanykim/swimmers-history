@@ -1,5 +1,6 @@
 @import 'https://fonts.googleapis.com/css?family=Merriweather:400,700';
 /* colors */
+/* content-specific colors */
 /* size */
 .web-font {
   font-family: 'Merriweather', serif;
@@ -11,17 +12,16 @@ body {
   margin: 0;
   padding: 0;
 }
-h1,
-h2,
-h3 {
-  /*font-weight: 700;*/
-}
-/* layout */
+/*h1, h2, h3 {
+    font-weight: 700;
+}*/
+/* overall layout */
 .container {
   position: absolute;
   top: 6px;
   width: 100%;
 }
+/* inside container */
 header {
   width: 100%;
 }
@@ -47,12 +47,44 @@ header .source {
 .gender-switch {
   background-color: #efefef;
 }
+.options .search {
+  margin-bottom: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #777777;
+}
 .options .title {
   font-size: 16pt;
+  text-transform: uppercase;
 }
-.options .code {
-  color: #777777;
+.options .select-list a {
+  cursor: pointer;
+}
+.summary {
+  /*background-color: @lightestGrey;*/
+}
+.summary .meets {
+  background-color: #6994f4;
+  color: #FFFFFF;
+  margin-right: 6px;
+}
+.summary .events {
+  background-color: #3fc08b;
+  color: #FFFFFF;
+  margin-right: 6px;
+}
+.vis {
+  margin-top: 20px;
+}
+.footer .desc {
+  background-color: #efefef;
+  margin-top: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   font-size: 10pt;
+  /*color: #FFFFFF;
+        a {
+            color: #FFFFFF;
+        }*/
 }
 /*//.options {
 //    display: flex;
@@ -116,24 +148,6 @@ header .source {
 //        font-size: @small;
 //    }
 //}*/
-.main {
-  width: 960px;
-  margin: 0 auto;
-}
-.main .vis {
-  margin-top: 20px;
-}
-.footer .desc {
-  /*        background-color: @black;
-        margin-top: 20px;
-        padding-top: 20px;
-        padding-bottom: 20px;*/
-  font-size: 10pt;
-  /*color: #FFFFFF;
-        a {
-            color: #FFFFFF;
-        }*/
-}
 /* d3 */
 .pos-middle {
   text-anchor: middle;
