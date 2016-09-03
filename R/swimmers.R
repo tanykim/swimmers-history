@@ -52,6 +52,7 @@ for (mt in meetTypes) {
       # meetList obj
       remains <- unlist(str_split(meet, "50m"))[2]
       location <- str_extract(remains, "^.*\\([A-Z]*\\)")
+      location <- str_replace(location, "\u00a0", " ")
       name <- str_trim(unlist(str_split(remains, "\\)"))[2])
       print(name)
       print(meetIds[i])
@@ -98,4 +99,4 @@ for (meet in meetIdsAll) {
 }
 
 # save as json file
-write(minify(toJSON(meetList)), "../python/R_results/meets.json")  
+write(toJSON(meetList), "../python/R_results/meets2.json")  

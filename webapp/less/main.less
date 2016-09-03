@@ -24,7 +24,7 @@ body {
     padding: 0;
 }
 h1, h2, h3 {
-    font-weight: 700;
+    /*font-weight: 700;*/
 }
 
 /* layout */
@@ -34,14 +34,8 @@ h1, h2, h3 {
     width: 100%;
 }
 header {
-    text-align: center;
     width: 100%;
-    .web-font();
     .title {
-        font-size: @huge;
-        font-weight: 700;
-        margin-top: 40px;
-        padding-bottom: 10px;
     }
     .desc, .source {
         color: @grey;
@@ -61,8 +55,20 @@ header {
     text-align: center;
     letter-spacing: 8px;
 }
+.gender-switch {
+    background-color: @lightestGrey;
+}
+.options {
+    .title {
+        font-size: @large;
+    }
+    .code {
+        color: @grey;
+        font-size: @small;
+    }
+}
 
-//.options {
+/*//.options {
 //    display: flex;
 //    flex-wrap: row wrap;
 //    flex-direction: row;
@@ -123,7 +129,7 @@ header {
 //        color: @grey;
 //        font-size: @small;
 //    }
-//}
+//}*/
 .main {
     width: 960px;
     margin: 0 auto;
@@ -133,17 +139,15 @@ header {
 }
 .footer {
     .desc {
-        .web-font();
-        background-color: @black;
+/*        background-color: @black;
         margin-top: 20px;
         padding-top: 20px;
-        padding-bottom: 20px;
+        padding-bottom: 20px;*/
         font-size: @small;
-        text-align: center;
-        color: #FFFFFF;
+        /*color: #FFFFFF;
         a {
             color: #FFFFFF;
-        }
+        }*/
     }
 }
 

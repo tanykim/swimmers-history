@@ -1,18 +1,65 @@
 'use strict';
 
 angular.module('swimmerApp')
-    .controller('MainCtrl', ['$scope', '$http', 'd3', '_', 'visualizer',
-    function ($scope, $http, d3, _, visualizer) {
+    .controller('MainCtrl', ['$scope', '$http', '_', 'visualizer',
+    function ($scope, $http, _, visualizer) {
 
+    //loading
     $scope.loaded = false;
+    function completeLoading() {
+        $scope.loaded = true;
+        console.log('---loading done');
+    }
+
+    //gender
+    $scope.genderToSwitch = 'women';
+    $scope.selectedGender = 'men';
+
+    //option control
+    //TODO: parent - child control
+    // $scope.$watch('sel', function (newVal, oldVal) {
+    //     console.log(newVal, oldVal);
+    // }, true);
+    $scope.filter = function (opt, parent, child) {
+        console.log(opt, parent, child);
+    };
 
     //get data and draw SVG
-    $http.get('data/Men.json').then(function (d) {
+    $http.get('data/data.json').then(function (d) {
 
-        console.log(d);
-        $scope.loaded = true;
-        // //draw vis first
-        // visualizer.drawVis(d.data);
+        console.log(d.data);
+
+        $scope.athletes = d.data.athletes[$scope.selectedGender];
+
+        $scope.meets = d.data.meets;
+        $scope.events = d.data.events;
+
+        $scope.sel = {
+            meets: _.object(_.map(d.data.meets, function (d, key) {
+                var years = _.object(_.map(angular.copy(d.years), function (d) {
+                    return [d[2], true];
+                }));
+                return [key, years];
+            })),
+            meetsParent: _.object(_.map(_.keys(d.data.meets), function (d) {
+                return [d, true];
+            })),
+            events: _.object(_.map(d.data.events, function (group, key) {
+                var eventsInGroup = _.object(_.map(group, function (event, id) {
+                    return [id, true];
+                }));
+                return [key, eventsInGroup];
+            })),
+            eventsParent: _.object(_.map(_.keys(d.data.events), function (d) {
+                return [d, true];
+            }))
+        };
+
+        //draw vis
+        visualizer.drawVis(d.data.graph[$scope.selectedGender], completeLoading);
+
+
+
         //
         // $scope.loaded = true;
         //

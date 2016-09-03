@@ -15,10 +15,11 @@ module.exports = function (grunt) {
 
     // Define the configuration for all the tasks
     grunt.initConfig({
+        // TODO: Required config property "wiredep.task.src" missing. Use --force to continue.
         wiredep: {
             task: {
                 src: ['public/index.html'],
-                ignorePath: 'public/',
+                ignorePath: 'public/'
             }
         },
         injector: {
