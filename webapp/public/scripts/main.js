@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('swimmerApp')
-    .controller('MainCtrl', ['$scope', '$http', '_', 'visualizer',
-    function ($scope, $http, _, visualizer) {
+    .controller('MainCtrl', ['$scope', '$http', '_', 'visualizer', 'processor',
+    function ($scope, $http, _, visualizer, processor) {
 
     //loading
     $scope.loaded = false;
@@ -153,39 +153,17 @@ angular.module('swimmerApp')
         getFilteredAthletes();
     };
 
-    function getSelSets(obj) {
-        return _.object(_.map(obj, function (val, key) {
-            var vals = _.object(_.map(val, function (d, key) {
-                var children = _.object(_.map(d.children, function (d) {
-                    return [d[0], (_.isUndefined(d[2]) ? true : d[2])];
-                }));
-                return [key, children];
-            }));
-            return [key, vals];
-        }));
-    }
-
-    function getSelParentSets(obj) {
-        return _.object(_.map(obj, function (val, key) {
-            var vals = _.object(_.map(_.keys(val), function (d) {
-                return [d, true];
-            }));
-            return [key, vals];
-        }));
-    }
-
     //get data and draw SVG
     $http.get('data/data.json').then(function (d) {
 
         console.log('data loded---', d.data);
 
-        //for option
         $scope.category = {
             meets: d.data.meets,
             events: d.data.events
         };
-        $scope.sel = getSelSets(angular.copy($scope.category));
-        $scope.selParent = getSelParentSets(angular.copy($scope.category));
+        $scope.sel = processor.getSelSets(angular.copy($scope.category));
+        $scope.selParent = processor.getSelParentSets(angular.copy($scope.category));
 
         //for search
         $scope.allAthletes = d.data.athletes[$scope.selectedGender];
@@ -194,6 +172,8 @@ angular.module('swimmerApp')
         getFilteredAthletes();
 
         //draw vis
-        visualizer.drawVis(d.data.graph[$scope.selectedGender], $scope.maxPoint, completeLoading, showAthlete);
+        var graph = d.data.graph[$scope.selectedGender];
+        visualizer.sendData(graph, completeLoading, showAthlete);
+        visualizer.drawVis(graph, $scope.maxPoint, completeLoading, showAthlete);
     });
 }]);

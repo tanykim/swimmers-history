@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Team USA - Sports and Ages</title>
+    <title>Swimmers Network</title>
     <meta name="viewport" content="width=device-width">
     <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/>
 
@@ -67,7 +67,7 @@
                 <span ng-repeat="kind in ['meets', 'events']">
                     <span ng-repeat="(key, val) in sel[kind]">
                         <span ng-class="kind" ng-if="selParent[kind][key]">
-                            {{ key }}
+                            {{ key.slice(1) }}
                             <span ng-repeat="(k, v) in val">
                                 <span ng-if="sel[kind][key][k]"> {{ k }} </span>
                             </span>
@@ -101,7 +101,7 @@
                     <!-- repeat race -->
                     <tr ng-repeat="r in sharedRaces">
                         <td class="race-name">
-                            {{ r.split('-')[0] }}
+                            {{ r.split('-')[0].slice(1) }}
                             {{ r.split('-')[1] }}
                             {{ r.split('-')[4] }}
                         </td>
@@ -138,18 +138,19 @@
     </div>
 </div>
 
-    <!-- bower:js -->
-    <script src="components/angular/angular.js"></script>
-    <script src="components/d3/d3.js"></script>
-    <script src="components/underscore/underscore.js"></script>
-    <script src="components/jquery/dist/jquery.js"></script>
-    <script src="components/bootstrap/dist/js/bootstrap.js"></script>
-    <!-- endbower -->
+<!-- bower:js -->
+<script src="components/angular/angular.js"></script>
+<script src="components/d3/d3.js"></script>
+<script src="components/underscore/underscore.js"></script>
+<script src="components/jquery/dist/jquery.js"></script>
+<script src="components/bootstrap/dist/js/bootstrap.js"></script>
+<!-- endbower -->
 
-    <!-- injector:js -->
-    <script src="scripts/app.js"></script>
-    <script src="scripts/main.js"></script>
-    <script src="scripts/visualizer.js"></script>
-    <!-- endinjector -->
+<!-- injector:js -->
+<script src="scripts/app.js"></script>
+<script src="scripts/main.js"></script>
+<script src="scripts/processor.js"></script>
+<script src="scripts/visualizer.js"></script>
+<!-- endinjector -->
 </body>
 </html>

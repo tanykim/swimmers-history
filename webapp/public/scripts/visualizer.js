@@ -129,15 +129,21 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         console.log('---vis started');
 
         var width = document.getElementById('vis').clientWidth;
+
         var dim = width * 1;
-        var svg = d3.select('#vis').attr('width', width).attr('height', dim);
+        var svg = d3.select('#vis')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', dim);
 
         simulation = d3.forceSimulation()
             .force('link', d3.forceLink().id(function (d) {
                 return d.id;
-            }).distance(function () {
+            })
+            .distance(function () {
                 return dim / 10;
             }))
+            .velocityDecay(1) //no animation at first
             .force('charge', d3.forceManyBody()
                 .strength( -1 * dim / 10)
                 .distanceMax(dim / 4)
@@ -161,7 +167,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //node as circles
         //set radius size (min: 4), point range min is roughly 700
         var radius = d3.scaleLinear()
-            .range([16, graph.nodes.length * 1.2])
+            .range([9, graph.nodes.length * 1.2])
             .domain([700, maxPoint]);
 
         nodeG = svg.append('g')
@@ -177,7 +183,11 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
                 var total = _.reduce(points, function (memo, num) {
                     return memo + num;
                 }, 0);
-                return Math.sqrt(radius(total));
+                var r = Math.sqrt(radius(total));
+                if (_.isNaN(r)) { //total point is smaller than 700
+                    r = 2;
+                }
+                return r;
             })
             .call(d3.drag()
                 .on('start', dragstarted)
@@ -205,5 +215,8 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         completeLoading();
     };
 
+    this.sendData = function (data) {
+        console.log(data);
+    };
     return this;
 }]);

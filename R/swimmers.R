@@ -45,7 +45,7 @@ for (mt in meetTypes) {
     year <- str_extract(meet, "(1|2)[0-9]{3}")
     print (as.integer(year))
     
-    if ((as.integer(year) >= 2000) == TRUE) {
+    if ((as.integer(year) >= 2007) == TRUE) {
       # Append meet id to all meet ids
       meetIdsAll <- c(meetIdsAll, meetIds[i])
       
@@ -56,7 +56,7 @@ for (mt in meetTypes) {
       name <- str_trim(unlist(str_split(remains, "\\)"))[2])
       print(name)
       print(meetIds[i])
-      meetList[meetIds[i]] <- list(list(type = as.character(mt), year = year, location = location, name = name))   
+      meetList[meetIds[i]] <- list(list(type = as.character(mt), year = year, location = location, name = name, id = meetIds[i]))   
     }
   }  
 }
@@ -72,6 +72,7 @@ for (meet in meetIdsAll) {
       
       #do only valid meet id
       if (!is.null(meetList[[meet]])) {
+        print(meet)
         url <- paste("https://www.swimrankings.net/index.php?page=meetDetail&meetId=",
                      meet, 
                      "&gender=",
@@ -87,16 +88,25 @@ for (meet in meetIdsAll) {
           meetList[meet] = NULL
           print(c('not accessible', meet))
         } else {
-          fileName <- paste("../python/R_results/", meet, "-", gender, "-", style, ".html", sep="")
+          fileName <- paste("../python/R_results/html/", meet, "-", gender, "-", style, ".html", sep="")
           sink(fileName)
           print(doc, type='html')
           sink()
-          print(fileName)        
+          print(fileName)    
         }
       }
     }
   }
 }
 
+# change list to ordered array
+meetListArray = list()
+i = 1
+for (meet in meetList) {
+  meet
+  meetListArray[i] = list(meet)
+  i = i + 1
+}
 # save as json file
-write(toJSON(meetList), "../python/R_results/meets2.json")  
+write(toJSON(meetListArray), "../python/R_results/json/meets.json")  
+

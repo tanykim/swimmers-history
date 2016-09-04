@@ -12,6 +12,8 @@ webapp/public/components
 # Others
 .DS_Store
 _testing/
-python/_old*/
+_old*/
 python/testing*
 .idea/
+_old*
+data.json
