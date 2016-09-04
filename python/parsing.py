@@ -143,8 +143,10 @@ def get_athletes_by_html (race_id, results, gender):
                     nbsp_removed = a.string.strip().encode('ascii','replace')
                     athlete_name = nbsp_removed.replace('?', ' ')
                     first_name = re.findall('[A-Z]*.$', athlete_name)[0]
-                    last_name = athlete_name.replace(first_name, '')
-                    full_name = first_name + ' ' + last_name.capitalize()
+                    last_name_array = athlete_name.replace(first_name, '').split(' ')
+                    last_names = map(lambda x: x.strip().capitalize(), last_name_array)
+                    last_name = ' '.join(last_names)
+                    full_name = first_name + ' ' + last_name
                     add_new_athlete(full_name, names[0].string, record, gender, id)
                 athlete_ids.append(id)
 
@@ -157,8 +159,13 @@ def get_athletes_by_html (race_id, results, gender):
                 update_athlete_info(gender, id, record)
             else:
                 athlete_name = names[0].string.split(', ')
-                full_name = athlete_name[1].strip().capitalize() + ' ' + athlete_name[0].strip().capitalize()
-                add_new_athlete(full_name, names[1].string, record, gender, id)
+                ans = []
+                for an in athlete_name:
+                    n_array = an.strip().split(' ')
+                    ns = map(lambda x: x.strip().capitalize(), n_array)
+                    n = ' '.join(ns)
+                    ans.append(n)
+                add_new_athlete((ans[1] + ' ' + ans[0]), names[1].string, record, gender, id)
             athlete_ids.append(id)
 
     # create node-edge dataset
