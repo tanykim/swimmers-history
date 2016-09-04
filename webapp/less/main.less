@@ -8,8 +8,13 @@
 @white: #FFFFFF;
 
 /* content-specific colors */
-@meet: #6994f4;
+@meet: #f5625a;
 @event: #3fc08b;
+@node: #000000;
+@over: #0d83c6;
+@clicked: red;
+@linked: #00BDE9;
+
 
 /* size */
 @huge: 32pt;
@@ -71,13 +76,35 @@ header {
         padding: 20px 0;
         border-bottom: 1px solid @grey;
     }
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
     .title {
-        font-size: @large;
+        font-weight: bold;
         text-transform: uppercase;
+        margin-bottom: 10px;
+        margin-top: 20px;
+    }
+    .meets {
+        background-color: @meet;
+    }
+    .events {
+        background-color: @event;
     }
     .select-list {
         a {
             cursor: pointer;
+        }
+        .list-title {
+            margin-top: 10px;
+        }
+        .list-title-text {
+            font-weight: bold;
+        }
+        .list-item {
+            margin-left: 10px;
         }
     }
 }
@@ -95,7 +122,20 @@ header {
     }
 }
 .vis {
+    width: 100%;
     margin-top: 20px;
+    border: 1px solid @lightestGrey;
+}
+.user-info {
+    .athlete-name, .race-name {
+        min-width: 120px;
+    }
+    .winner {
+        background-color: @over;
+    }
+    .regular {
+        background-color: @white;
+    }
 }
 .footer {
     .desc {
@@ -200,9 +240,8 @@ header {
 .size-large {
     font-size: @large;
 }
-
-.stroke-1 {
-    stroke-wieght: 1 ;
+.unselectable {
+    pointer-events: none;
 }
 .stroke-black {
     stroke: black;
@@ -213,10 +252,41 @@ header {
 .stroke-lightestGrey {
     stroke: @lightestGrey;
 }
-
 .fill-grey {
     fill: @grey;
 }
 .fill-lightGrey {
     fill: @lightGrey;
+}
+
+/* d3 project specific */
+.link-normal {
+    stroke: @black;
+    stroke-opacity: 0.15;
+}
+.link-over {
+    stroke: @over;
+}
+
+.node-common {
+    stroke-width: 1;
+    stroke: @white;
+    stroke-opacity: 0.5;
+}
+.node-normal {
+    .node-common();
+    fill: @node;
+}
+.node-over {
+    .node-common();
+    fill: @over;
+    cursor: pointer;
+}
+.node-clicked {
+    .node-common();
+    fill: @clicked;
+}
+.node-linked {
+    .node-common();
+    fill: @linked;
 }

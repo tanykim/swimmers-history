@@ -21,8 +21,8 @@ meets = {
     "589276": {"type":"2","year":"2015","location":"Kazan (RUS)","name":"FINA: 16th World Championships"}
 }
 genders = {
-    '1': {'name': 'men', 'styles': [1, 8, 10]},
-    '2': {'name': 'women', 'styles': [1, 6, 10]}
+    '1': {'name': 'men', 'styles': [1, 16, 17, 18, 19]},
+    '2': {'name': 'women', 'styles': [1, 16, 17, 18, 19]}
 }
 meets_name = {
     '1': ['Olympic Games', 'OG'],
@@ -92,16 +92,14 @@ def create_node_edge_data(ids, gender, is_medley, race_id):
                         update_node_edges(source, target, gender, race_id)
 
 # update athletes info
-def update_athlete_info(gender, id, pnt, record):
+def update_athlete_info(gender, id, record):
     all_athletes[gender][id]['records'].append(record)
-    all_athletes[gender][id]['point'] += pnt
 
-def add_new_athlete(athlete_name, country, record, pnt, gender, id):
+def add_new_athlete(athlete_name, country, record, gender, id):
     athlete = {
         'name': athlete_name,
         'country': country,
-        'records': [record],
-        'point': pnt
+        'records': [record]
     }
     all_athletes[gender][id] = athlete
 
@@ -125,26 +123,29 @@ def get_athletes_by_html (race_id, results, gender):
         record = {
             'race_id': race_id,
             'swimtime': rank.find('td', class_='swimtime').string,
-            'place': place
+            'place': place,
+            'point': int(places[1].string) if places[1].string <> '-' else 0  # case of DSQ
         }
-        pnt = int(places[1].string) if places[1].string <> '-' else 0 #case of DSQ
 
         # for data set
         names = rank.find_all('td', class_='name')
 
         # team events
-        if race_id.split('-')[2] == 'TEAM':
+        if race_id.split('-')[3] == 'TEAM':
             # case of race: get 4 athletes ID in relay
             for a in names[1].find_all('a'):
                 id = re.findall('[0-9]*$', a['href'])[0]
                 is_already_entered = is_athlete_entered(id, gender)
                 if is_already_entered:
-                    update_athlete_info(gender, id, pnt, record)
+                    update_athlete_info(gender, id, record)
                 else:
                     # remove &nbsp in the name
                     nbsp_removed = a.string.strip().encode('ascii','replace')
                     athlete_name = nbsp_removed.replace('?', ' ')
-                    add_new_athlete(athlete_name, names[0].string, record, pnt, gender, id)
+                    first_name = re.findall('[A-Z]*.$', athlete_name)[0]
+                    last_name = athlete_name.replace(first_name, '')
+                    full_name = first_name + ' ' + last_name.capitalize()
+                    add_new_athlete(full_name, names[0].string, record, gender, id)
                 athlete_ids.append(id)
 
         # individual events
@@ -153,14 +154,16 @@ def get_athletes_by_html (race_id, results, gender):
             id = re.findall('[0-9]*$', names[0].a['href'])[0]
             is_already_entered = is_athlete_entered(id, gender)
             if is_already_entered:
-                update_athlete_info(gender, id, pnt, record)
+                update_athlete_info(gender, id, record)
             else:
-                add_new_athlete(names[0].string.strip(), names[1].string, record, pnt, gender, id)
+                athlete_name = names[0].string.split(', ')
+                full_name = athlete_name[1].strip().capitalize() + ' ' + athlete_name[0].strip().capitalize()
+                add_new_athlete(full_name, names[1].string, record, gender, id)
             athlete_ids.append(id)
 
     # create node-edge dataset
     print('atheltes', athlete_ids)
-    if race_id.split('-')[2] == 'TEAM':
+    if race_id.split('-')[3] == 'TEAM':
         create_node_edge_data(athlete_ids, gender, True, race_id)
     else:
         create_node_edge_data(athlete_ids, gender, False, race_id)
@@ -174,7 +177,7 @@ for meet in meets:
 
             # set race id with meet and even info
             race_id = meets_name[meets[meet]['type']][1] + '-' + \
-                       meets[meet]['year'] + '-' + \
+                       meets[meet]['year'] + '--' + \
                        events_name[str(style)][2] + '-' + \
                        events_name[str(style)][1]
 
@@ -227,9 +230,10 @@ for k, v in events_name.iteritems(): v.append(k)
 # group by event type (e.g., team or individual)
 events_list = _.groupBy(events_name, lambda x, *a: x[2])
 for k, v in events_list.iteritems():
+    # check if the event type is selected
     children = _(v).chain().map(lambda x, *a: [x[1], x[0], x[3]])\
         .sortBy(lambda x, *a: int(x[2]))\
-        .map(lambda x, *a: [x[0], x[1]])\
+        .map(lambda x, *a: [x[0], x[1], _.contains(genders['1']['styles'], int(x[2]))])\
         .value()
     events_list[k] = {
         'name': 'Individual' if k == 'IND' else 'Team',
@@ -251,7 +255,7 @@ for gender in genders:
     nodes_list = [];
     g = genders[gender]['name']
     for k, v in all_athletes[g].iteritems():
-        nodes = {'id': k, 'value': v['point'], 'name': v['name']}
+        nodes = {'id': k, 'records': v['records'], 'name': v['name'], 'country': v['country']}
         nodes_list.append(nodes)
         graph_data[g] = {
             'nodes': nodes_list,

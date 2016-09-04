@@ -17,25 +17,20 @@
 <div class="container" ng-controller="MainCtrl">
 
     <!-- header -->
-    <header>
+<!--     <header>
         <div class="title"> Swimmers Network </div>
         <div class="desc"> Who competes against who at races of major meets </div>
         <div class="source"> data from <a href="https://www.swimrankings.net" target="_blacnk">Swim Rankings</a></div>
-    </header>
+    </header> -->
 
-    <!-- loading -->
-    <div class="row" ng-hide="loaded">
-        <div class="col-xs-12">Loading</div>
-    </div>
-
-    <!-- main as projects -->
-    <div class="row" ng-show="loaded">
+    <!-- main contents -->
+    <div class="row">
 
         <!-- gender change -->
-        <div class="col-xs-12 gender-switch">Switch to {{ genderToSwitch }}</div>
+        <!-- <div class="col-xs-12 gender-switch">Switch to {{ genderToSwitch }}</div> -->
 
         <!-- options -->
-        <div class="col-xs-4 options">
+        <div class="col-xs-2 options">
 
             <!-- search -->
             <div class="search">
@@ -45,15 +40,16 @@
 
             <!-- meets -->
             <div ng-repeat="kind in ['meets', 'events']">
-                <div class="title"> {{ kind }} </div>
+                <div class="title" ng-class="kind"> {{ kind }} </div>
                 <ul class="select-list">
                     <li ng-repeat="(key, val) in category[kind]">
-                        <!-- <input type="checkbox" ng-model="selParent[kind][key]" ng-change="filter(kind, key)">
- -->                    {{ val.name }}
-                        <span ng-show="selParent[kind][key]"><a ng-click="filterParent(kind, key)">hide </a></span>
-                        <span ng-hide="selParent[kind][key]"><a ng-click="filterParent(kind, key)"> show </a></span>
+                        <div class="list-title">
+                            <span class="list-title-text">{{ val.name }}</span>
+                            <span ng-show="selParent[kind][key]"><a ng-click="filterParent(kind, key)">hide </a></span>
+                            <span ng-hide="selParent[kind][key]"><a ng-click="filterParent(kind, key)"> show </a></span>
+                        </div>
                         <ul>
-                            <li ng-repeat="child in val.children">
+                            <li ng-repeat="child in val.children" class="list-item">
                                 <input type="checkbox" ng-model="sel[kind][key][child[0]]" ng-change="updateParentStatus(kind, key, child[0])">
                                 {{ child[1] }}
                             </li>
@@ -64,7 +60,7 @@
         </div>
 
         <!-- graph -->
-        <div class="col-xs-8">
+        <div class="col-xs-6">
 
             <!-- option summary -->
             <div class="summary">
@@ -78,37 +74,58 @@
                         </span>
                     </span>
                 </span>
+                total {{ selectedAthletes.length }} swimmers
             </div>
 
             <!-- vis -->
-            <div id="vis" class="vis"></div>
+            <div class="vis">
+                <svg id="vis" width="100%"></svg>
+            </div>
         </div>
+
+        <!-- user detail table -->
+        <div class="col-xs-4 user-info">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th></th>
+                         <!-- repeat athlete's name -->
+                        <th ng-repeat="a in athletesOnFocus" class="athlete-name">
+                            {{ a.name }} <br/>
+                            {{ a.country }} <br/>
+                            {{ a.count }} races
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- repeat race -->
+                    <tr ng-repeat="r in sharedRaces">
+                        <td class="race-name">
+                            {{ r.split('-')[0] }}
+                            {{ r.split('-')[1] }}
+                            {{ r.split('-')[4] }}
+                        </td>
+                        <!-- repeat athlete's recore -->
+                        <td ng-repeat="a in athletesOnFocus" ng-class="sharedRacesWinner[$parent.$index].indexOf($index) > -1 ? 'winner' : 'regular'">
+                            <!--TODO: add medal icon -->
+                            {{ a.records[r].place }}. {{ a.records[r].swimtime }}
+                        </td>
+                    </tr>
+                    <tr ng-if="sharedRaces.length == 0 && athletesOnFocus.length > 0">
+                        <td colspan="{{ athletesOnFocus.length + 1 }}">
+                            These swimmers did not competed against each other.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
-        <!--<div class="options">-->
-            <!--&lt;!&ndash; sort options &ndash;&gt;-->
-            <!--<div class="sort-by">-->
-                <!--<div class="title">Sort by &amp; highlight</div>-->
-                <!--<select name="sort" ng-model="sort" ng-change="sortSport()">-->
-                    <!--<option value="name-asc">Sport name (A to Z)</option>-->
-                    <!--<option value="count-desc">Number of athletes (large to small)</option>-->
-                    <!--<option value="count-asc">Number of athletes (small to large)</option>-->
-                    <!--<option value="median-desc">Median age (old to young)</option>-->
-                    <!--<option value="median-asc">Median age (young to old)</option>-->
-                    <!--<option value="range-desc">Age range (large to small)</option>-->
-                    <!--<option value="range-asc">Age range (small to large)</option>-->
-                <!--</select>-->
-            <!--</div>-->
-
-            <!--&lt;!&ndash; view options &ndash;&gt;-->
-            <!--<div class="show">-->
-                <!--<div class="title">Show atheltes </div>-->
-                <!--<input type="radio" name="highlight" ng-model="highlight" value="all" ng-checked = "true"> All Athletes <span class="count-all"></span><span class="count">{{ count.all }}</span> <br/>-->
-                <!--<input type="radio" name="highlight" ng-model="highlight" value="women"> Women <span class="count-women"></span><span class="count">{{ count.women }}</span> / Men <span class="count-men"></span><span class="count">{{ count.men }}</span> <br/>-->
-                <!--<input type="radio" name="highlight" ng-model="highlight" value="prev"> Returning Olympian <span class="count-prev"></span><span class="count">{{ count.prev }}</span> / Rookies <span class="count-rookies"></span><span class="count">{{ count.rookies }}</span>-->
-            <!--</div>-->
-        <!--</div>-->
-
+    <!-- loading -->
+    <div class="row" ng-hide="loaded">
+        <div class="col-xs-12">Loading</div>
+    </div>
 
     <!-- footer -->
     <div class="row footer">
@@ -125,7 +142,7 @@
     <script src="components/angular/angular.js"></script>
     <script src="components/d3/d3.js"></script>
     <script src="components/underscore/underscore.js"></script>
-    <script src="components/jquery/dist/jquery.min.js"></script>
+    <script src="components/jquery/dist/jquery.js"></script>
     <script src="components/bootstrap/dist/js/bootstrap.js"></script>
     <!-- endbower -->
 
