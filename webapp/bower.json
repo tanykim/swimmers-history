@@ -1,13 +1,13 @@
 {
-  "name": "2016-olympics-team-usa",
-  "description": "data visualization with Rio 2016 Olympic Team USA",
+  "name": "swimmers-network",
+  "description": "swimmers network graph visualiation",
   "directory": "public/components",
   "main": "public/index.html",
   "authors": [
     "Tanyoung Kim"
   ],
   "license": "ISC",
-  "homepage": "https://tany.kim/team-usa",
+  "homepage": "https://tany.kim/swimmers-network",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -19,6 +19,7 @@
     "angular": "^1.5.7",
     "d3": "^4.2.1",
     "underscore": "^1.8.3",
-    "bootstrap": "^3.3.7"
+    "angular-animate": "^1.5.8",
+    "typicons.font": "typicons#^2.0.8"
   }
 }

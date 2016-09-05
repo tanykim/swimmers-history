@@ -176,8 +176,9 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //TODO: zoom in /pan
         console.log('5.vis, vis started');
 
-        var width = document.getElementById('vis').clientWidth;
-
+        //TODO: set the width based on the vis div
+        // var width = document.getElementById('vis-width').clientWidth * 0.6;
+        var width = 500;
         var dim = width * 1;
         var svg = d3.select('#vis').attr('height', dim);
 

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width">
     <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/>
 
-    <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="components/typicons.font/src/font/typicons.min.css"/>
 
     <!-- injector:css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -16,148 +16,44 @@
 <!-- contents come here -->
 <div class="container" ng-controller="MainCtrl">
 
-    <!-- loading -->
-    <div class="row" ng-hide="loaded">
-        <div class="col-xs-12">Loading</div>
-    </div>
-
-
-    <!-- header -->
-<!--     <header>
-        <div class="title"> Swimmers Network </div>
-        <div class="desc"> Who competes against who at races of major meets </div>
-        <div class="source"> data from <a href="https://www.swimrankings.net" target="_blacnk">Swim Rankings</a></div>
-    </header> -->
-
-    <!-- main contents -->
-    <!--TODO make this contents hidden while loading -->
-    <div class="row">
-
-        <!-- gender change -->
-        <div class="col-xs-12 gender-switch">
-            <h4 ng-click="switchGender()" class="link">Switch to {{ genders[selectedGenderId * -1 + 1] }}</h4>
-        </div>
-
-        <!-- options -->
-        <div class="col-xs-2 options">
-
-            <!-- search -->
-            <div class="search">
-                Search:
-                <input type="text">
-            </div>
-
-            <!-- meets -->
-            <div>
-                <h3 ng-click="reselectAthletes()" ng-class="optionChanged ? 'link-enabled' : 'link-disabled'">Update</h3>
-            </div>
-            <div ng-repeat="kind in ['meets', 'events']">
-                <div class="title" ng-class="kind"> {{ kind }} </div>
-                <ul class="select-list">
-                    <li ng-repeat="(key, val) in category[kind]">
-                        <div class="list-title">
-                            <span class="list-title-text">{{ val.name }}</span>
-                            <span ng-show="selParent[kind][key]"><a ng-click="filterParent(kind, key)"> hide </a></span>
-                            <span ng-hide="selParent[kind][key]"><a ng-click="filterParent(kind, key)"> show </a></span>
-                        </div>
-                        <ul>
-                            <li ng-repeat="child in val.children" ng-class="child[0]=='800Fr' && genders[selectedGenderId]=='men' || child[0]=='1500Fr' && genders[selectedGenderId]=='women' ? 'list-item-disabled': 'list-item'">
-                                <input type="checkbox" ng-model="sel[kind][key][child[0]]" ng-change="updateParentStatus(kind, key, child[0])" ng-hide="child[0]=='800Fr' && genders[selectedGenderId]=='men' || child[0]=='1500Fr' && genders[selectedGenderId]=='women'">
-                                {{ child[1] }}
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- graph -->
-        <div class="col-xs-6">
-
-            <!-- option summary -->
-            <div class="summary">
-                <span class="gender"> {{ genders[selectedGenderId] }} </span>
-                <span ng-repeat="kind in ['meets', 'events']">
-                    <span ng-repeat="(key, val) in sel[kind]">
-                        <span ng-class="kind" ng-if="selParent[kind][key]">
-                            {{ key.slice(1) }}
-                            <span ng-repeat="(k, v) in val">
-                                <span ng-if="sel[kind][key][k]"> {{ k }} </span>
-                            </span>
-                        </span>
-                    </span>
-                </span>
-                total {{ selectedAthletes.length }} swimmers
-            </div>
-
-            <!-- vis -->
-            <div class="vis">
-                <svg id="vis" width="100%" ng-hide="visUpdating"></svg>
-                <div ng-show="visUpdating">Updating vis now</div>
-            </div>
-        </div>
-
-        <!-- user detail table -->
-        <div class="col-xs-4 user-info">
-            <table class="table table-condensed" ng-if="athletesOnFocus.length > 0">
-                <thead>
-                    <tr>
-                        <th></th>
-                         <!-- repeat athlete's name -->
-                        <th ng-repeat="a in athletesOnFocus track by $index" class="athlete-name">
-                            {{ a.name }} <br/>
-                            {{ a.country }} <br/>
-                            {{ a.count }} races <br/>
-                            <a ng-click="hideAthlete($index, a.id)">Remove</a>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- repeat race -->
-                    <tr ng-repeat="r in sharedRaces">
-                        <td class="race-name">
-                            {{ r.split('-')[0].slice(1) }}
-                            {{ r.split('-')[1] }}
-                            {{ r.split('-')[4] }} <br/>
-                            {{ allRaces[r] }}
-                        </td>
-                        <!-- repeat athlete's recore -->
-                        <td ng-repeat="a in athletesOnFocus track by $index" ng-class="sharedRacesWinner[$parent.$index].indexOf($index) > -1 ? 'winner' : 'regular'">
-                            <!--TODO: add medal icon -->
-                            {{ a.records[r].place }}. {{ a.records[r].swimtime }}
-                        </td>
-                    </tr>
-                    <tr ng-if="sharedRaces.length == 0">
-                        <td colspan="{{ athletesOnFocus.length + 1 }}">
-                            These swimmers did not competed against each other.
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div ng-if="athletesOnFocus.length == 0">
-                Click circles in the graph to compare athletes with one another.
-            </div>
-        </div>
-
-    </div>
-
-    <!-- footer -->
-    <div class="row footer">
-        <div class="col-xs-12">
-            <div class="desc">
-                Made by <a href="http://tany.kim" target="_blank"> Tanyoung Kim</a> |
-                View at <a href="https://github.com/tanykim/2016-Olympics-Team-USA" tager="_blank">GitHub </a>
-            </div>
+    <!-- intro -->
+    <div class="intro animate-hide" ng-hide="introPassed">
+        <div class="wrapper">
+            <div class="title"> Swimmer's Network </div>
+            <div class="desc"> who competes against whom at the major meets</div>
+            <div class="loading" ng-show="!loaded"> Loading Swimmer Data... </div>
         </div>
     </div>
+
+    <!-- options, vis, tables -->
+    <div class="main" ng-show="introPassed" ng-include="'main.html'">
+    </div>
+
+    <!-- right wing  -->
+    <div class="right-wing">
+        <div class="top">
+            <ul class="menus">
+                <li><a href="#"> About Data </a></li>
+                <li><a href="#"> Use Cases </a></li>
+                <li> Share <a href="#"><span class="typcn typcn-social-twitter-circular"></span></a><a href="#"><span class="typcn typcn-social-facebook-circular"></span></a></li>
+            </ul>
+        </div>
+        <div class="bottom">
+            <ul class="menus">
+                <li> data from <a href="https://www.swimrankings.net" target="_blank"> Swim Rankings</a></li>
+                <li> made by <a href="http://tany.kim" target="_blank"> Tanyoung Kim</a> </li>
+                <li> code at <a href="https://github.com/tanykim/swimmers-network" tager="_blank">GitHub </li>
+            </ul>
+        </div>
+    </div>
+
 </div>
 
 <!-- bower:js -->
 <script src="components/angular/angular.js"></script>
 <script src="components/d3/d3.js"></script>
 <script src="components/underscore/underscore.js"></script>
-<script src="components/jquery/dist/jquery.js"></script>
-<script src="components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="components/angular-animate/angular-animate.js"></script>
 <!-- endbower -->
 
 <!-- injector:js -->

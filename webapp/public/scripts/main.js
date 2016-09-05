@@ -5,6 +5,13 @@ angular.module('swimmerApp')
     function ($scope, $http, _, visualizer, processor) {
 
     /* initial setting */
+    $scope.openTab = '';
+    $scope.selectedTab = 'event';
+    $scope.updateTab = function (v) {
+        $scope.selectedTab = v;
+        $scope.openTab = $scope.openTab === v ? '' : v;
+    };
+
     $scope.category = {};
     $scope.allRaces = null;
     //pre-selected meets and events
@@ -21,12 +28,16 @@ angular.module('swimmerApp')
 
     /* loading and updating */
     //loading
+    //TODO: intro passed by user selection
+    $scope.introPassed = false;
     $scope.loaded = false;
     function completeLoading() {
+        var showStart;
         console.log('7.main, loading done');
         $scope.athletesOnFocus = [];
         $scope.$apply(function () {
             $scope.loaded = true;
+            $scope.introPassed = true;
         });
     }
     //vis update by user
@@ -35,6 +46,7 @@ angular.module('swimmerApp')
         console.log('---user update.main, ---vis update done');
         $scope.$apply(function () {
             $scope.visUpdating = false;
+            $scope.openTab = '';
         });
     }
 
@@ -117,6 +129,9 @@ angular.module('swimmerApp')
         console.log('------------- switch gender to ' + $scope.genders[$scope.selectedGenderId]);
         processor.switchGender($scope.genders[$scope.selectedGenderId]);
         processor.resetSelection(updateFocusedAthletes);
+        //reset selections
+        $scope.openTab = '';
+        $scope.selectedTab = 'event';
         initMVC();
     };
 

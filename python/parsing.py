@@ -47,8 +47,8 @@ events_name = {
     '14': ['200m Breaststroke', '200Br', '0IND'],
     '16': ['100m Butterfly', '100Fly', '0IND'],
     '17': ['200m Butterfly', '200Fly', '0IND'],
-    '18': ['200m Medley', '100IM', '0IND'],
-    '19': ['400m Medley', '200IM', '0IND'],
+    '18': ['200m Medley', '200IM', '0IND'],
+    '19': ['400m Medley', '400IM', '0IND'],
     '27': ['4 X 100m Freestyle', '4X100Fr', '1TEAM'],
     '29': ['4 X 200m Freestyle', '4X200Fr', '1TEAM'],
     '40': ['4 X 100m Medley', '4X100M', '1TEAM']
