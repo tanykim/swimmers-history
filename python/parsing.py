@@ -284,20 +284,7 @@ for gender, athletes_by_id in all_athletes.iteritems():
         info.append(val)
     athletes_list[gender] = info
 
-# node-edge graph data
-graph_data = {}
-for gender in genders:
-    nodes_list = [];
-    g = genders[gender]['name']
-    for k, v in all_athletes[g].iteritems():
-        nodes = {'id': k, 'records': v['records'], 'name': v['name'], 'country': v['country']}
-        nodes_list.append(nodes)
-        graph_data[g] = {
-            'nodes': nodes_list,
-            'links': node_edges[g]
-        }
-
-print('graph', graph_data)
+print('graph', node_edges)
 print('meets', meets_list)
 print('events', events_list)
 print('athletes', athletes_list)
@@ -306,7 +293,7 @@ print('race', race)
 # save files
 simplejson = json
 jsondata = simplejson.dumps({
-        'graph': graph_data,
+        'graph': node_edges,
         'meets': meets_list,
         'events': events_list,
         'athletes': athletes_list,

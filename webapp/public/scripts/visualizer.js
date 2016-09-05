@@ -8,6 +8,11 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
     var linkG, nodeG;
     var link, node;
 
+    var self = this;
+
+    //used for add/remove - communicate with main.js
+    var clickedIds = [];
+
     /* interactoin when a node is dragged */
     function moveAthleteName(id) {
         var draggedNode = nodeG.select('circle[id=\'' + id + '\']');
@@ -57,10 +62,32 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         }
     }
 
-    /* interaction when node is hovered */
+    /* interaction when vis is initiated */
+    function ticked() {
+        link.attr('x1', function(d) { return d.source.x; })
+            .attr('y1', function(d) { return d.source.y; })
+            .attr('x2', function(d) { return d.target.x; })
+            .attr('y2', function(d) { return d.target.y; });
+        node.attr('cx', function(d) { return d.x; })
+            .attr('cy', function(d) { return d.y; });
+    }
+
+    function checkInitDone(completeLoading) {
+        //check if simulation stopped every 0.2 second
+        function isAlmostDone() {
+            if (simulation.alpha() < 0.2) {
+                completeLoading();
+            } else {
+                setTimeout(isAlmostDone, 200);
+            }
+        }
+        isAlmostDone();
+    }
+
+    /* interaction when node is hovered, out, and clicked */
     function showMouseover(obj, d) {
 
-        if (!d.clicked) {
+        if (obj.attr('clicked') === 'false') {
             //change the node color
             obj.attr('class', 'node-over');
             //add athlete's name
@@ -76,11 +103,12 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //highlight connected link
         var connected = _.chain(linksData)
             .filter(function (l) {
-                return l.source === d.id || d.target === d.id;
+                return l.source === d.id || l.target === d.id;
             })
             .map(function (l) {
                 return d.id === l.source ? l.target : l.source;
             })
+            .unique()
             .value();
 
         //highlight links and linked nodes
@@ -94,47 +122,66 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         });
     }
 
-    /* interaction when mouse is out of node */
     function showMouseout(obj, d) {
         //return only if it's not unclicked
-        if (!d.clicked) {
+        if (obj.attr('clicked') === 'false') {
             obj.attr('class', 'node-normal');
             nodeG.select('#vis-athlete-name-' + d.id).remove();
         }
         //revert all highlighted (linked) links and nodes
         linkG.selectAll('.vis-link-over').attr('class', 'link-normal');
         nodeG.selectAll('.node-linked').attr('class', function (d) {
-            return d.clicked ? 'node-clicked' : 'node-normal';
+            return d3.select(this).attr('clicked') === 'true' ?
+                'node-clicked' : //if previously clicked
+                'node-normal';
         });
     }
 
-    /* interaction when vis is initiated */
-    function ticked() {
-        link.attr('x1', function(d) { return d.source.x; })
-            .attr('y1', function(d) { return d.source.y; })
-            .attr('x2', function(d) { return d.target.x; })
-            .attr('y2', function(d) { return d.target.y; });
+    this.revertFocusedAthlete = function (clickedIndex, aId, obj) {
+        if (_.isUndefined(obj)) {
+            obj = nodeG.select('circle[id=\'' + aId + '\']');
+        }
+        clickedIds.splice(clickedIndex, 1);
+        //vis revert to normal
+        obj.attr('clicked', 'false').attr('class', 'node-normal');
+        nodeG.select('#vis-athlete-name-' + aId).remove();
+    };
 
-        node.attr('cx', function(d) { return d.x; })
-            .attr('cy', function(d) { return d.y; });
+    function showClick(obj, d, showAthleteCb, hideAthleteCb) {
+        if (obj.attr('clicked') === 'false') { //show
+            clickedIds.push(d.id);
+            obj.attr('clicked', 'true').attr('class', 'node-clicked');
+            showAthleteCb(d); //call back to main.js
+        } else { //hide
+            var clickedIndex = clickedIds.indexOf(d.id);
+            self.revertFocusedAthlete(clickedIndex, d.id, obj);
+            hideAthleteCb(clickedIndex); //call back to main.js
+        }
     }
 
     //TODO: sometimes the vis is frozen at the beginning
-    this.drawVis = function (graph, maxPoint, completeLoading, sendAthleteInfo) {
+    this.drawVis = function (graph, pointRange, completeLoadingCb, showAthleteCb, hideAthleteCb) {
 
+        //reset vis
         linksData = angular.copy(graph.links);
+        if (linkG) {
+            linkG.remove();
+        }
+        if (nodeG) {
+            nodeG.remove();
+        }
 
         //TODO: meticulous distance depending on the node length
         //TODO: zoom in /pan
-        console.log('---vis started');
+        console.log('5.vis, ---vis started');
 
         var width = document.getElementById('vis').clientWidth;
 
         var dim = width * 1;
-        var svg = d3.select('#vis')
-            .append('svg')
-            .attr('width', width)
-            .attr('height', dim);
+        var svg = d3.select('#vis').attr('height', dim);
+
+        //1: no animation at first, 0: move more, dispersed
+        var decayRange = d3.scaleLinear().range([0.5, 1]).domain([1, 800]);
 
         simulation = d3.forceSimulation()
             .force('link', d3.forceLink().id(function (d) {
@@ -143,7 +190,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             .distance(function () {
                 return dim / 10;
             }))
-            .velocityDecay(1) //no animation at first
+            .velocityDecay(Math.max(Math.min(decayRange(graph.nodes.length), 1), 0.2))
             .force('charge', d3.forceManyBody()
                 .strength( -1 * dim / 10)
                 .distanceMax(dim / 4)
@@ -157,7 +204,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             .data(graph.links)
             .enter().append('line')
             .attr('stroke-width', function (d) {
-                return d.value.length * 0.5;
+                return d.value * 0.5;
             })
             .attr('class', 'link-normal')
             .attr('id', function (d) {
@@ -167,8 +214,8 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //node as circles
         //set radius size (min: 4), point range min is roughly 700
         var radius = d3.scaleLinear()
-            .range([9, graph.nodes.length * 1.2])
-            .domain([700, maxPoint]);
+            .range([4, graph.nodes.length * 1.6])
+            .domain(pointRange);
 
         nodeG = svg.append('g')
             .attr('class', 'nodes');
@@ -183,12 +230,9 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
                 var total = _.reduce(points, function (memo, num) {
                     return memo + num;
                 }, 0);
-                var r = Math.sqrt(radius(total));
-                if (_.isNaN(r)) { //total point is smaller than 700
-                    r = 2;
-                }
-                return r;
+                return Math.sqrt(radius(total));
             })
+            .attr('clicked', 'false')
             .call(d3.drag()
                 .on('start', dragstarted)
                 .on('drag', dragged)
@@ -202,17 +246,15 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
                 showMouseout(d3.select(this), d);
             })
             .on('click', function (d) {
-                d.clicked = true;
-                d3.select(this).attr('class', 'node-clicked');
-
-                //callback to main.js
-                sendAthleteInfo(d);
+                //TODO: set click toggle - remove
+                showClick(d3.select(this), d, showAthleteCb, hideAthleteCb);
             });
 
         simulation.nodes(graph.nodes).on('tick', ticked);
         simulation.force('link').links(graph.links);
 
-        completeLoading();
+        //check the simulation status-->then set loading done
+        checkInitDone(completeLoadingCb);
     };
 
     this.sendData = function (data) {

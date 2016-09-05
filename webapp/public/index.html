@@ -16,6 +16,12 @@
 <!-- contents come here -->
 <div class="container" ng-controller="MainCtrl">
 
+    <!-- loading -->
+    <div class="row" ng-hide="loaded">
+        <div class="col-xs-12">Loading</div>
+    </div>
+
+
     <!-- header -->
 <!--     <header>
         <div class="title"> Swimmers Network </div>
@@ -39,6 +45,9 @@
             </div>
 
             <!-- meets -->
+            <div>
+                <h3 ng-click="reselectAthletes()" class="link">Update</h3>
+            </div>
             <div ng-repeat="kind in ['meets', 'events']">
                 <div class="title" ng-class="kind"> {{ kind }} </div>
                 <ul class="select-list">
@@ -79,21 +88,23 @@
 
             <!-- vis -->
             <div class="vis">
-                <svg id="vis" width="100%"></svg>
+                <svg id="vis" width="100%" ng-hide="visUpdating"></svg>
+                <div ng-show="visUpdating">Updating vis now</div>
             </div>
         </div>
 
         <!-- user detail table -->
         <div class="col-xs-4 user-info">
-            <table class="table table-condensed">
+            <table class="table table-condensed" ng-if="athletesOnFocus.length > 0">
                 <thead>
                     <tr>
                         <th></th>
                          <!-- repeat athlete's name -->
-                        <th ng-repeat="a in athletesOnFocus" class="athlete-name">
+                        <th ng-repeat="a in athletesOnFocus track by $index" class="athlete-name">
                             {{ a.name }} <br/>
                             {{ a.country }} <br/>
-                            {{ a.count }} races
+                            {{ a.count }} races <br/>
+                            <a ng-click="hideAthlete($index, a.id)">Remove</a>
                         </th>
                     </tr>
                 </thead>
@@ -103,28 +114,27 @@
                         <td class="race-name">
                             {{ r.split('-')[0].slice(1) }}
                             {{ r.split('-')[1] }}
-                            {{ r.split('-')[4] }}
+                            {{ r.split('-')[4] }} <br/>
+                            {{ allRaces[r] }}
                         </td>
                         <!-- repeat athlete's recore -->
-                        <td ng-repeat="a in athletesOnFocus" ng-class="sharedRacesWinner[$parent.$index].indexOf($index) > -1 ? 'winner' : 'regular'">
+                        <td ng-repeat="a in athletesOnFocus track by $index" ng-class="sharedRacesWinner[$parent.$index].indexOf($index) > -1 ? 'winner' : 'regular'">
                             <!--TODO: add medal icon -->
                             {{ a.records[r].place }}. {{ a.records[r].swimtime }}
                         </td>
                     </tr>
-                    <tr ng-if="sharedRaces.length == 0 && athletesOnFocus.length > 0">
+                    <tr ng-if="sharedRaces.length == 0">
                         <td colspan="{{ athletesOnFocus.length + 1 }}">
                             These swimmers did not competed against each other.
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <div ng-if="athletesOnFocus.length == 0">
+                Click circles in the graph to compare athletes with one another.
+            </div>
         </div>
 
-    </div>
-
-    <!-- loading -->
-    <div class="row" ng-hide="loaded">
-        <div class="col-xs-12">Loading</div>
     </div>
 
     <!-- footer -->

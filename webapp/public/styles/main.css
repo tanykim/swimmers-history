@@ -12,6 +12,9 @@ body {
   margin: 0;
   padding: 0;
 }
+.link {
+  cursor: pointer;
+}
 /*h1, h2, h3 {
     font-weight: 700;
 }*/
@@ -120,68 +123,6 @@ header .source {
             color: #FFFFFF;
         }*/
 }
-/*//.options {
-//    display: flex;
-//    flex-wrap: row wrap;
-//    flex-direction: row;
-//    justify-content: center;
-//    margin-top: 40px;
-//    padding-top: 20px;
-//    padding-bottom: 20px;
-//    border-top: 1px solid @lightGrey;
-//    border-bottom: 1px solid @lightGrey;
-//    .sort-by, .show {
-//        display: inline-block;
-//        font-size: @small;
-//        .title {
-//            .web-font();
-//            font-size: @normal;
-//            margin-bottom: 10px;
-//        }
-//    }
-//    .sort-by {
-//        padding-right: 30px;
-//    }
-//    .show {
-//        padding-left: 30px;
-//        border-left: 1px solid @lightGrey;
-//    }
-//    .sort-by select {
-//       border: 1px solid @black;
-//       font-size: @small;
-//       font-family: inherit;
-//    }
-//    .count-block {
-//        display: inline-block;
-//        width: 20px;
-//        height: 16px;
-//        margin: 2px 4px -3px 2px;
-//    }
-//    .count-all {
-//        background-color: @all;
-//        .count-block();
-//    }
-//    .count-women {
-//        background-color: @women;
-//        .count-block();
-//    }
-//    .count-men {
-//        background-color: @men;
-//        .count-block();
-//    }
-//    .count-rookies {
-//        background-color: @rookies;
-//        .count-block();
-//    }
-//    .count-prev {
-//        background-color: @prev;
-//        .count-block();
-//    }
-//    .count {
-//        color: @grey;
-//        font-size: @small;
-//    }
-//}*/
 /* d3 */
 .pos-middle {
   text-anchor: middle;
@@ -228,7 +169,7 @@ header .source {
 /* d3 project specific */
 .link-normal {
   stroke: #000000;
-  stroke-opacity: 0.15;
+  stroke-opacity: 0.2;
 }
 .link-over {
   stroke: #0d83c6;
