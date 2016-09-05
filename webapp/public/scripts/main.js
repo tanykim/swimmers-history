@@ -4,41 +4,49 @@ angular.module('swimmerApp')
     .controller('MainCtrl', ['$scope', '$http', '_', 'visualizer', 'processor',
     function ($scope, $http, _, visualizer, processor) {
 
+    /* initial setting */
+    $scope.category = {};
+    $scope.allRaces = null;
+    //pre-selected meets and events
+    var selected = {
+        'men': {
+            meets: ['0OG-2016', '0OG-2012', '1WC-2015', '1WC-2013', '1WC-2011'],
+            events: ['0IND-200Fr', '0IND-100Fly', '0IND-200Fly', '0IND-200IM']
+        },
+        'women': {
+            meets: ['0OG-2016', '0OG-2012'],
+            events: ['0IND-200Fr', '0IND-400Fr', '0IND-800Fr', '1TEAM-1X100Fr']
+        }
+    };
+
+    /* loading and updating */
     //loading
     $scope.loaded = false;
     function completeLoading() {
-        console.log('5.main ---loading done');
+        console.log('7.main, loading done');
         $scope.athletesOnFocus = [];
         $scope.$apply(function () {
             $scope.loaded = true;
         });
     }
-
     //vis update by user
     $scope.visUpdating = false;
     function completeUpdating() {
-        console.log('5.main ---vis update done');
+        console.log('---user update.main, ---vis update done');
         $scope.$apply(function () {
             $scope.visUpdating = false;
         });
     }
 
-    //gender
-    $scope.genderToSwitch = 'women';
-    $scope.selectedGender = 'men';
-
-    //race info
-    $scope.allRaces = null;
-
+    /* option-vis-table control */
+    /** TODO: figure out when to use $apply or not **/
+    //callbacks sent to processor and vis
     function updateFocusedAthletes() {
         $scope.athletesOnFocus = processor.athletesOnFocus;
         $scope.sharedRaces = processor.sharedRaces;
         $scope.sharedRacesWinner = processor.sharedRacesWinner;
     }
-
-    /** TODO: figure out when to use $apply or not **/
     function showAthlete(athlete) {
-        //TODO: highlight medals and highest place
         processor.addFocusedAthlete(athlete);
         $scope.$apply(function () {
             updateFocusedAthletes();
@@ -51,12 +59,12 @@ angular.module('swimmerApp')
             updateFocusedAthletes();
         });
     }
+    //from html table
     $scope.hideAthlete = function (index, id) {
         visualizer.revertFocusedAthlete(index, id);
         processor.removeFocusedAthlete(index);
         updateFocusedAthletes();
     };
-
     //option control
     $scope.filterParent = function (kind, parent) {
         processor.filterParent(kind, parent);
@@ -67,39 +75,31 @@ angular.module('swimmerApp')
         $scope.selectedAthletes = processor.selectedAthletes;
     };
 
-    //reselect options
+    //reselect options from html
+    $scope.optionChanged = false;
     $scope.reselectAthletes = function () {
-        $scope.visUpdating = true;
-        processor.resetSelection(updateFocusedAthletes);
-        processor.getGraphData(visualizer.drawVis, completeUpdating, showAthlete, hideAthlete);
+        if ($scope.optionChanged) {
+            console.log('---main, start updating meet/events');
+            $scope.visUpdating = true;
+            processor.resetSelection(updateFocusedAthletes);
+            processor.getGraphData(visualizer.drawVis, completeUpdating, showAthlete, hideAthlete);
+            $scope.optionChanged = false;
+        }
     };
+    $scope.$watch('sel', function (newVal, oldVal) {
+        if (!_.isUndefined(oldVal) && newVal !== oldVal) {
+            $scope.optionChanged = true;
+        }
+    }, true);
 
-    //get data and draw SVG
-    $http.get('data/data.json').then(function (d) {
+    /* swtich view by gender */
+    $scope.genders = ['men', 'women'];
+    $scope.selectedGenderId = 0;
 
-        console.log('1.main data receiverd---', d.data);
-
-        //for search
-        processor.setAllAthletes(
-            d.data.athletes[$scope.selectedGender],
-            d.data.graph[$scope.selectedGender]
-        );
-
-        //race info
-        $scope.allRaces = d.data.race[$scope.selectedGender];
-
-        /* selection menu */
-        $scope.category = {
-            meets: d.data.meets,
-            events: d.data.events
-        };
-        //pre-selected meets and events
-        var selected = {
-            meets: ['0OG-2016', '0OG-2012', '1WC-2015', '1WC-2013', '1WC-2011'],
-            events: ['0IND-200Fr', '0IND-100Fly', '0IND-200Fly', '0IND-200IM']
-        };
-        processor.getSelSets(angular.copy($scope.category), selected);
-        processor.getSelParentSets(angular.copy($scope.category), selected);
+    function initMVC() {
+        var g = $scope.genders[$scope.selectedGenderId];
+        processor.getSelSets(angular.copy($scope.category), selected[g]);
+        processor.getSelParentSets(angular.copy($scope.category), selected[g]);
         $scope.sel = processor.sel;
         $scope.selParent = processor.selParent;
 
@@ -109,5 +109,38 @@ angular.module('swimmerApp')
 
         //get graph data of the selected athletes
         processor.getGraphData(visualizer.drawVis, completeLoading, showAthlete, hideAthlete);
+    }
+
+    $scope.switchGender = function () {
+        //switch between 0 and 1
+        $scope.selectedGenderId = $scope.selectedGenderId * -1 + 1;
+        console.log('------------- switch gender to ' + $scope.genders[$scope.selectedGenderId]);
+        processor.switchGender($scope.genders[$scope.selectedGenderId]);
+        processor.resetSelection(updateFocusedAthletes);
+        initMVC();
+    };
+
+    //get data and draw SVG
+    $http.get('data/data.json').then(function (d) {
+
+        console.log('1.main, data receiverd', d.data);
+
+        //selection menu - applies to both genders
+        $scope.category = {
+            meets: d.data.meets,
+            events: d.data.events
+        };
+
+        //selected gender
+        var g = $scope.genders[$scope.selectedGenderId];
+
+        //pass all data
+        processor.setAllAthletes(d.data.athletes, d.data.graph, g);
+
+        //race info
+        $scope.allRaces = d.data.race[g];
+
+        //init data process and visualization
+        initMVC();
     });
 }]);

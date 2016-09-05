@@ -76,6 +76,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //check if simulation stopped every 0.2 second
         function isAlmostDone() {
             if (simulation.alpha() < 0.2) {
+                console.log('6.vis, initiation done');
                 completeLoading();
             } else {
                 setTimeout(isAlmostDone, 200);
@@ -173,7 +174,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
 
         //TODO: meticulous distance depending on the node length
         //TODO: zoom in /pan
-        console.log('5.vis, ---vis started');
+        console.log('5.vis, vis started');
 
         var width = document.getElementById('vis').clientWidth;
 
@@ -257,8 +258,5 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         checkInitDone(completeLoadingCb);
     };
 
-    this.sendData = function (data) {
-        console.log(data);
-    };
     return this;
 }]);

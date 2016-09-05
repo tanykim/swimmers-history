@@ -79,6 +79,13 @@ header {
         padding: 20px 0;
         border-bottom: 1px solid @grey;
     }
+    .link-enabled {
+        .link();
+    }
+    .link-disabled {
+        color: @grey;
+    }
+
     ul {
         margin: 0;
         padding: 0;
@@ -113,6 +120,9 @@ header {
 }
 .summary {
     /*background-color: @lightestGrey;*/
+    .gender {
+        text-transform: uppercase;
+    }
     .meets {
         background-color: @meet;
         color: @white;

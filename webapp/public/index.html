@@ -30,10 +30,13 @@
     </header> -->
 
     <!-- main contents -->
+    <!--TODO make this contents hidden while loading -->
     <div class="row">
 
         <!-- gender change -->
-        <!-- <div class="col-xs-12 gender-switch">Switch to {{ genderToSwitch }}</div> -->
+        <div class="col-xs-12 gender-switch">
+            <h4 ng-click="switchGender()" class="link">Switch to {{ genders[selectedGenderId * -1 + 1] }}</h4>
+        </div>
 
         <!-- options -->
         <div class="col-xs-2 options">
@@ -46,7 +49,7 @@
 
             <!-- meets -->
             <div>
-                <h3 ng-click="reselectAthletes()" class="link">Update</h3>
+                <h3 ng-click="reselectAthletes()" ng-class="optionChanged ? 'link-enabled' : 'link-disabled'">Update</h3>
             </div>
             <div ng-repeat="kind in ['meets', 'events']">
                 <div class="title" ng-class="kind"> {{ kind }} </div>
@@ -73,6 +76,7 @@
 
             <!-- option summary -->
             <div class="summary">
+                <span class="gender"> {{ genders[selectedGenderId] }} </span>
                 <span ng-repeat="kind in ['meets', 'events']">
                     <span ng-repeat="(key, val) in sel[kind]">
                         <span ng-class="kind" ng-if="selParent[kind][key]">

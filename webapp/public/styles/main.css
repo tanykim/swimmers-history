@@ -55,6 +55,12 @@ header .source {
   padding: 20px 0;
   border-bottom: 1px solid #777777;
 }
+.options .link-enabled {
+  cursor: pointer;
+}
+.options .link-disabled {
+  color: #777777;
+}
 .options ul {
   margin: 0;
   padding: 0;
@@ -86,6 +92,9 @@ header .source {
 }
 .summary {
   /*background-color: @lightestGrey;*/
+}
+.summary .gender {
+  text-transform: uppercase;
 }
 .summary .meets {
   background-color: #f5625a;
