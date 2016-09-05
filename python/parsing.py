@@ -264,11 +264,10 @@ for k, v in events_name.iteritems(): v.append(k)
 # group by event type (e.g., team or individual)
 events_list = _.groupBy(events_name, lambda x, *a: x[2])
 for k, v in events_list.iteritems():
-    # check if the event type is selected
     # x[3] is the style_id
     children = _(v).chain().map(lambda x, *a: [x[1], x[0], x[3]])\
         .sortBy(lambda x, *a: int(x[2]))\
-        .map(lambda x, *a: [x[0], x[1], _.contains(genders['1']['styles'], int(x[2]))])\
+        .map(lambda x, *a: [x[0], x[1]])\
         .value()
     events_list[k] = {
         'name': 'Individual' if k == '0IND' else 'Team',

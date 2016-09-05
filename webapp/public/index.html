@@ -57,12 +57,12 @@
                     <li ng-repeat="(key, val) in category[kind]">
                         <div class="list-title">
                             <span class="list-title-text">{{ val.name }}</span>
-                            <span ng-show="selParent[kind][key]"><a ng-click="filterParent(kind, key)">hide </a></span>
+                            <span ng-show="selParent[kind][key]"><a ng-click="filterParent(kind, key)"> hide </a></span>
                             <span ng-hide="selParent[kind][key]"><a ng-click="filterParent(kind, key)"> show </a></span>
                         </div>
                         <ul>
-                            <li ng-repeat="child in val.children" class="list-item">
-                                <input type="checkbox" ng-model="sel[kind][key][child[0]]" ng-change="updateParentStatus(kind, key, child[0])">
+                            <li ng-repeat="child in val.children" ng-class="child[0]=='800Fr' && genders[selectedGenderId]=='men' || child[0]=='1500Fr' && genders[selectedGenderId]=='women' ? 'list-item-disabled': 'list-item'">
+                                <input type="checkbox" ng-model="sel[kind][key][child[0]]" ng-change="updateParentStatus(kind, key, child[0])" ng-hide="child[0]=='800Fr' && genders[selectedGenderId]=='men' || child[0]=='1500Fr' && genders[selectedGenderId]=='women'">
                                 {{ child[1] }}
                             </li>
                         </ul>

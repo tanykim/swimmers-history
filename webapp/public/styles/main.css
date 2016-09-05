@@ -90,6 +90,10 @@ header .source {
 .options .select-list .list-item {
   margin-left: 10px;
 }
+.options .select-list .list-item-disabled {
+  margin-left: 10px;
+  text-decoration: line-through;
+}
 .summary {
   /*background-color: @lightestGrey;*/
 }
