@@ -20,6 +20,9 @@
     "d3": "^4.2.1",
     "underscore": "^1.8.3",
     "angular-animate": "^1.5.8",
-    "typicons.font": "typicons#^2.0.8"
+    "typicons.font": "typicons#^2.0.8",
+    "angular-velocity": "^0.3.2",
+    "velocity": "^1.2.3",
+    "velocity-ui-angular": "^0.4.1"
   }
 }

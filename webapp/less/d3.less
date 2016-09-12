@@ -1,0 +1,76 @@
+
+/* d3 */
+.pos-middle {
+    text-anchor: middle;
+}
+.pos-end {
+    text-anchor: end;
+}
+.v-central {
+    alignment-baseline: central;
+}
+.v-top {
+    alignment-baseline: hanging;
+}
+.size-tiny {
+    font-size: @tiny;
+}
+.size-small {
+    font-size: @small;
+}
+.size-normal {
+    font-size: @normal;
+}
+.size-large {
+    font-size: @large;
+}
+.unselectable {
+    pointer-events: none;
+}
+.stroke-black {
+    stroke: black;
+}
+.stroke-lightGrey {
+    stroke: @lightGrey;
+}
+.stroke-lightestGrey {
+    stroke: @lightestGrey;
+}
+.fill-grey {
+    fill: @grey;
+}
+.fill-lightGrey {
+    fill: @lightGrey;
+}
+
+/* d3 project specific */
+.link-normal {
+    stroke: @black;
+    stroke-opacity: 0.2;
+}
+.link-over {
+    stroke: @over;
+}
+
+.node-common {
+    stroke-width: 1;
+    stroke: @white;
+    stroke-opacity: 0.5;
+}
+.node-normal {
+    .node-common();
+    fill: @node;
+}
+.node-over {
+    .node-common();
+    fill: @over;
+    cursor: pointer;
+}
+.node-clicked {
+    .node-common();
+    fill: @clicked;
+}
+.node-linked {
+    .node-common();
+    fill: @linked;
+}

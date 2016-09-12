@@ -13,7 +13,7 @@ angular.module('swimmerApp')
     };
 
     $scope.category = {};
-    $scope.allRaces = null;
+    //$scope.allRaces = null;
     //pre-selected meets and events
     var selected = {
         'men': {
@@ -28,15 +28,12 @@ angular.module('swimmerApp')
 
     /* loading and updating */
     //loading
-    //TODO: intro passed by user selection
-    $scope.introPassed = false;
     $scope.loaded = false;
+    $scope.introPassed = false;
     function completeLoading() {
-        var showStart;
         console.log('7.main, loading done');
         $scope.athletesOnFocus = [];
         $scope.$apply(function () {
-            $scope.loaded = true;
             $scope.introPassed = true;
         });
     }
@@ -50,9 +47,51 @@ angular.module('swimmerApp')
         });
     }
 
-    /* option-vis-table control */
-    /** TODO: figure out when to use $apply or not **/
+    /* vis-table control */
+
+    var mainWidth; //vis and table width
+    $scope.hiddenAthSId = 0; //hidden athletes index in the focused athletes array
+    $scope.isRightOn = false; //right arrow button
+
+    //check the table fits in the layout width
+    function checkIsFit() {
+        var tR = document.getElementById('table-races');
+        var tA = document.getElementById('table-athletes');
+        var tableWidth = tR.clientWidth + tA.clientWidth;
+        //console.log(tableWidth, mainWidth - 20 - tableWidth);
+        return tableWidth <= mainWidth - 20;
+    }
+
+    function updateTable() {
+        if (checkIsFit()) {
+            $scope.$apply(function () {
+                $scope.hiddenAthSId = 0;
+                $scope.isRightOn = false;
+            });
+        } else {
+            $scope.$apply(function () {
+                $scope.hiddenAthSId++;
+            });
+        }
+    }
+
+    //when left and right button clicked
+    $scope.updateTable = function (dir) {
+        $scope.hiddenAthSId = $scope.hiddenAthSId + dir;
+        _.defer(function () {
+            if (checkIsFit()) {
+                //console.log('----after button click, it is fit');
+                $scope.isRightOn = false;
+            } else {
+                //console.log('----after button click, it is NOT fit');
+                $scope.isRightOn = true;
+            }
+        });
+    };
+
     //callbacks sent to processor and vis
+    //update focused athletes after selected on the network vis
+    //use scope.$apply for callbacked functions
     function updateFocusedAthletes() {
         $scope.athletesOnFocus = processor.athletesOnFocus;
         $scope.sharedRaces = processor.sharedRaces;
@@ -62,13 +101,15 @@ angular.module('swimmerApp')
         processor.addFocusedAthlete(athlete);
         $scope.$apply(function () {
             updateFocusedAthletes();
+            _.defer(updateTable);
         });
+
     }
     function hideAthlete(index) {
-        console.log(index);
         processor.removeFocusedAthlete(index);
         $scope.$apply(function () {
             updateFocusedAthletes();
+            _.defer(updateTable);
         });
     }
     //from html table
@@ -76,7 +117,11 @@ angular.module('swimmerApp')
         visualizer.revertFocusedAthlete(index, id);
         processor.removeFocusedAthlete(index);
         updateFocusedAthletes();
+        _.defer(updateTable);
     };
+
+    /* option-vis control */
+
     //option control
     $scope.filterParent = function (kind, parent) {
         processor.filterParent(kind, parent);
@@ -94,7 +139,7 @@ angular.module('swimmerApp')
             console.log('---main, start updating meet/events');
             $scope.visUpdating = true;
             processor.resetSelection(updateFocusedAthletes);
-            processor.getGraphData(visualizer.drawVis, completeUpdating, showAthlete, hideAthlete);
+            processor.getGraphData(visualizer.drawVis, null, completeUpdating, showAthlete, hideAthlete);
             $scope.optionChanged = false;
         }
     };
@@ -104,12 +149,12 @@ angular.module('swimmerApp')
         }
     }, true);
 
-    /* swtich view by gender */
-    $scope.genders = ['men', 'women'];
-    $scope.selectedGenderId = 0;
+    function initVis() {
 
-    function initMVC() {
+        //pass all data
         var g = $scope.genders[$scope.selectedGenderId];
+        processor.setAthletes(g);
+
         processor.getSelSets(angular.copy($scope.category), selected[g]);
         processor.getSelParentSets(angular.copy($scope.category), selected[g]);
         $scope.sel = processor.sel;
@@ -120,9 +165,22 @@ angular.module('swimmerApp')
         $scope.selectedAthletes = processor.selectedAthletes;
 
         //get graph data of the selected athletes
-        processor.getGraphData(visualizer.drawVis, completeLoading, showAthlete, hideAthlete);
+        processor.getGraphData(visualizer.drawVis, mainWidth, completeLoading, showAthlete, hideAthlete);
     }
 
+    //update button when clicked;
+    var bElm = document.getElementById('init-button');
+    bElm.addEventListener('click', function () {
+        bElm.innerHTML='Generating Visualization...';
+        bElm.className = 'animate-flicker';
+        setTimeout(function () {
+            initVis();
+        }, 100);
+    });
+
+    /* swtich view by gender */
+    $scope.genders = ['men', 'women'];
+    $scope.selectedGenderId = 0;
     $scope.switchGender = function () {
         //switch between 0 and 1
         $scope.selectedGenderId = $scope.selectedGenderId * -1 + 1;
@@ -132,7 +190,7 @@ angular.module('swimmerApp')
         //reset selections
         $scope.openTab = '';
         $scope.selectedTab = 'event';
-        initMVC();
+        initVis();
     };
 
     //get data and draw SVG
@@ -146,16 +204,27 @@ angular.module('swimmerApp')
             events: d.data.events
         };
 
-        //selected gender
-        var g = $scope.genders[$scope.selectedGenderId];
-
         //pass all data
-        processor.setAllAthletes(d.data.athletes, d.data.graph, g);
+        processor.setAllAthletes(d.data.athletes, d.data.graph);
 
-        //race info
-        $scope.allRaces = d.data.race[g];
+        //set vis area size; 90 is left tab area, 200 is right menu
+        var calMainWidth = document.documentElement.clientWidth - 90 - 200;
+        var maxMainWidth = 860;
+        mainWidth = Math.min(calMainWidth, maxMainWidth);
+        var mainDom = document.getElementById('main');
+        mainDom.style.width = mainWidth + 'px';
+        mainDom.style.height = document.documentElement.clientHeight + 'px';
+        mainDom.style['margin-left'] = Math.max((calMainWidth - 30 - maxMainWidth) / 2, 0) + 'px';
+        document.getElementById('top').style.left = mainWidth + 'px';
 
-        //init data process and visualization
-        initMVC();
+        //loading done after 1 second
+        setTimeout(function () {
+            $scope.$apply(function () {
+                $scope.loaded = true;
+            });
+        }, 1000);
+        // $scope.loaded = true;
+        // $scope.introPassed = true;
+        // initVis();
     });
 }]);

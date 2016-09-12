@@ -1,0 +1,160 @@
+<!-- gender-switch, top 100% width -->
+<div class="gender">
+    <div class="selected"><span class="number">{{ selectedAthletes.length }} {{ genders[selectedGenderId] }}</span> Swimmers</div>
+    <div class="gender-switch">
+        <a ng-click="switchGender()" class="link"><span class="typcn typcn-eye"></span> switch to {{ genders[selectedGenderId * -1 + 1] }}</a>
+    </div>
+</div>
+
+<!-- tabs on the left top -->
+<div class="tabs">
+    <div ng-class="openTab == 'event' ? 'open' : (selectedTab == 'event' ? 'selected': 'normal')"><a ng-click="updateTab('event')"><span class="typcn typcn-clipboard"></span></a></div>
+    <div ng-class="openTab == 'name' ? 'open' : (selectedTab == 'name' ? 'selected': 'normal' )"><a ng-click="updateTab('name')"><span class="typcn typcn-zoom"></span></a></div>
+</div>
+
+<div class="top" id="top">
+    <ul class="menus">
+        <li><a href="#"> Data </a></li>
+        <li><a href="#"> Insights </a></li>
+        <li> Share <a href="#"><span class="typcn typcn-social-twitter-circular"></span></a><a href="#"><span class="typcn typcn-social-facebook-circular"></span></a></li>
+    </ul>
+    <ul class="copyright" ng-include="'copyright.html'"></ul>
+</div>
+
+<!-- content main -->
+<div class="content" id="content">
+
+    <!-- option summary -->
+    <div class="summary">
+        <span class="wrapper" ng-repeat="kind in ['meets', 'events']">
+            <span ng-repeat="(key, val) in sel[kind]">
+                <span ng-class="kind" ng-if="selParent[kind][key]">
+                    <span class="meets-title" ng-if="kind == 'meets'">{{ key.slice(1) }}</span>
+                    <span ng-repeat="(k, v) in val" ng-class="sel[kind][key][k] ? 'valid' : 'none'" >
+                        <span ng-if="sel[kind][key][k]" > {{ k }} </span>
+                    </span>
+                </span>
+            </span>
+        </span>
+    </div>
+
+    <!-- table -->
+    <div class="table">
+
+        <div class="no-result" ng-show="athletesOnFocus.length == 0">
+            Click circles in the graph to compare athletes with one another
+        </div>
+
+        <!-- left/right button -->
+        <div class="show-left" ng-if="hiddenAthSId > 0" ng-click="updateTable(-1)"><span class="typcn typcn-arrow-left"></span></div>
+        <div class="show-right" ng-if="isRightOn" ng-click="updateTable(1)"><span class="typcn typcn-arrow-right"></span></div>
+
+        <div class="list-wrapper">
+            <!-- race list -->
+            <table ng-show="athletesOnFocus.length > 0 && sharedRaces.length > 0" id="table-races">
+                <thead>
+                    <tr>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="r in sharedRaces">
+                        <td class="race-name">
+                            <div>
+                                <span class="race-meet">{{ r.split('-')[0].slice(1) }}</span>
+                                {{ r.split('-')[1] }}
+                                <span class="dash">-</span>
+                                {{ r.split('-')[4] }}
+                            </div>
+                            <div class="date">
+                                {{ allRaces[r].split(' ')[0] }} {{ allRaces[r].split(' ')[1] }}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- athlete list -->
+            <table ng-show="athletesOnFocus.length > 0" class="table-athletes" id="table-athletes">
+                <thead>
+                    <tr>
+                        <th ng-repeat="a in athletesOnFocus" ng-show="$index >= hiddenAthSId" class="athlete-name">
+                            <div><a ng-click="hideAthlete($index, a.id)"><span class="typcn typcn-delete"></span></a></div>
+                            <div class="name">{{ a.name }}</div>
+                            <div class="country">{{ a.country }}</div>
+                            <div class="races">{{ a.count }} races</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="r in sharedRaces">
+                        <td class="record" ng-repeat="a in athletesOnFocus" ng-show="$index >= hiddenAthSId" ng-class="sharedRacesWinner[$parent.$index].indexOf($index) > -1 ? 'winner' : 'regular'">
+                            <div class="place-wrapper"><span ng-class="'place place' + a.records[r].place">{{ a.records[r].place }}</span></div>
+                            <div class="swimtime">{{ a.records[r].swimtime }}</div>
+                        </td>
+                    </tr>
+                    <tr ng-if="sharedRaces.length == 0">
+                        <td colspan="{{ athletesOnFocus.length + 1 }}" class="no-result">
+                            These swimmers did not competed against each other
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<!--     <div ng-repeat="a in athletesOnFocus">
+       {{ a.name }}
+    </div> -->
+    <!-- vis -->
+    <div class="vis">
+        <svg id="vis" width="100%" ng-hide="visUpdating"></svg>
+        <div ng-show="visUpdating">Updating vis now</div>
+    </div>
+</div>
+
+<!-- options -->
+<div class="options" ng-show="openTab == 'event'">
+
+    <!-- update button -->
+    <div class="total">
+        <span class="number">{{ selectedAthletes.length }}</span> swimmers found
+        <div class="lable" ng-class="optionChanged ? 'link-enabled' : 'link-disabled'">
+            <span ng-click="reselectAthletes()"><span class="typcn typcn-refresh"></span> Update</span>
+        </div>
+    </div>
+
+    <!-- meets & events -->
+    <div class="wrapper">
+        <div ng-repeat="kind in ['meets', 'events']" class="kind">
+            <div class="title" ng-class="kind"> {{ kind }} </div>
+            <ul class="select-list">
+                <li ng-repeat="(key, val) in category[kind]">
+                    <div class="list-title">
+                        <span class="list-title-text">{{ val.name }}</span>
+                        <span ng-show="selParent[kind][key]"><a ng-click="filterParent(kind, key)"><span class="typcn typcn-minus-outline"></span></a></span>
+                        <span ng-hide="selParent[kind][key]"><a ng-click="filterParent(kind, key)"><span class="typcn typcn-plus-outline"></span></a></span>
+                    </div>
+                    <ul>
+                        <li ng-repeat="child in val.children" ng-class="child[0]=='800Fr' && genders[selectedGenderId]=='men' || child[0]=='1500Fr' && genders[selectedGenderId]=='women' ? 'list-item-disabled': 'list-item'">
+                            <input type="checkbox" ng-model="sel[kind][key][child[0]]" ng-change="updateParentStatus(kind, key, child[0])" ng-hide="child[0]=='800Fr' && genders[selectedGenderId]=='men' || child[0]=='1500Fr' && genders[selectedGenderId]=='women'">
+                            {{ child[1] }}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- search -->
+<div class="search" ng-show="openTab == 'name'">
+    <div class="total">
+        <span class="number">{{ selectedAthletes.length }}</span> swimmers found
+    </div>
+    <div class="wrapper">
+        COMING SOON
+        Search: <br/>
+        <input type="text">
+    </div>
+</div>

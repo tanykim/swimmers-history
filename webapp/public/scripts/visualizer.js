@@ -5,6 +5,10 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
     var linksData;
     var simulation;
 
+    var dim;
+    var svg;
+    var w;
+
     var linkG, nodeG;
     var link, node;
 
@@ -161,7 +165,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
     }
 
     //TODO: sometimes the vis is frozen at the beginning
-    this.drawVis = function (graph, pointRange, completeLoadingCb, showAthleteCb, hideAthleteCb) {
+    this.drawVis = function (graph, pointRange, width, completeLoadingCb, showAthleteCb, hideAthleteCb) {
 
         //reset vis
         linksData = angular.copy(graph.links);
@@ -176,11 +180,13 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //TODO: zoom in /pan
         console.log('5.vis, vis started');
 
-        //TODO: set the width based on the vis div
-        // var width = document.getElementById('vis-width').clientWidth * 0.6;
-        var width = 500;
-        var dim = width * 1;
-        var svg = d3.select('#vis').attr('height', dim);
+        if (width) {
+            w = width;
+            dim = width * 0.6;
+            svg = d3.select('#vis').attr('height', dim);
+        } else {
+            width = dim / 0.6;
+        }
 
         //1: no animation at first, 0: move more, dispersed
         var decayRange = d3.scaleLinear().range([0.5, 1]).domain([1, 800]);
@@ -190,12 +196,12 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
                 return d.id;
             })
             .distance(function () {
-                return dim / 10;
+                return dim / 5;
             }))
             .velocityDecay(Math.max(Math.min(decayRange(graph.nodes.length), 1), 0.2))
             .force('charge', d3.forceManyBody()
-                .strength( -1 * dim / 10)
-                .distanceMax(dim / 4)
+                .strength( -1 * dim / 5)
+                .distanceMax(dim / 2)
             )
             .force('center', d3.forceCenter(width / 2, dim / 2));
 
