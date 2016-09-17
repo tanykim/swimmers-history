@@ -8,4 +8,4 @@ angular.module('d3', []).factory('d3', ['$window', function($window) {
     return $window.d3;
 }]);
 
-angular.module('swimmerApp', ['velocity.ui', 'ngAnimate', 'underscore', 'd3']);
+angular.module('swimmerApp', ['underscore', 'd3']);

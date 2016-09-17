@@ -89,6 +89,16 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         isAlmostDone();
     }
 
+    function showAthleteName(obj, d) {
+        nodeG.append('text')
+            .text(d.name)
+            .attr('x', d.x)
+            .attr('y', d.y)
+            .attr('dy', -1 * parseInt(obj.attr('r')) - 6)
+            .attr('class', 'size-tiny unselectable pos-middle vis-athlete-name')
+            .attr('id', 'vis-athlete-name-' + d.id);
+    }
+
     /* interaction when node is hovered, out, and clicked */
     function showMouseover(obj, d) {
 
@@ -96,13 +106,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             //change the node color
             obj.attr('class', 'node-over');
             //add athlete's name
-            nodeG.append('text')
-                .text(d.name)
-                .attr('x', d.x)
-                .attr('y', d.y)
-                .attr('dy', -1 * parseInt(obj.attr('r')) - 6)
-                .attr('class', 'size-tiny unselectable pos-middle vis-athlete-name')
-                .attr('id', 'vis-athlete-name-' + d.id);
+            showAthleteName(obj, d);
         }
 
         //highlight connected link
@@ -119,12 +123,19 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //highlight links and linked nodes
         _.each(connected, function (c) {
             linkG.select('line[id=\'' + c + '-' + d.id + '\']')
-                .attr('class', 'link-over vis-link-over');
+                .attr('class', 'link-over');
             linkG.select('line[id=\'' + d.id + '-' + c + '\']')
-                .attr('class', 'link-over vis-link-over');
+                .attr('class', 'link-over');
             nodeG.select('circle[id=\'' + c + '\']')
                 .attr('class', 'node-linked');
         });
+
+        //add html
+        document.getElementById('swimmer').innerHTML =
+            '<i>' + d.name +
+            '</i> competed against <i>' + connected.length + '</i> swimmer' +
+            (connected.length > 1 ? 's' : '') +
+            ' at <i>' +  d.records.length + '</i> races';
     }
 
     function showMouseout(obj, d) {
@@ -133,13 +144,19 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             obj.attr('class', 'node-normal');
             nodeG.select('#vis-athlete-name-' + d.id).remove();
         }
+        if (obj.attr('linked') === 'true') {
+            obj.attr('class', 'node-mutual-linked');
+        }
         //revert all highlighted (linked) links and nodes
-        linkG.selectAll('.vis-link-over').attr('class', 'link-normal');
-        nodeG.selectAll('.node-linked').attr('class', function (d) {
+        linkG.selectAll('.link-over').attr('class', function () {
+            return d3.select(this).attr('linked') === 'true' ? 'link-mutual-linked' : 'link-normal';
+        });
+        nodeG.selectAll('.node-linked').attr('class', function () {
             return d3.select(this).attr('clicked') === 'true' ?
                 'node-clicked' : //if previously clicked
-                'node-normal';
+                (d3.select(this).attr('linked') === 'true' ? 'node-mutual-linked' : 'node-normal');
         });
+        document.getElementById('swimmer').innerHTML = '';
     }
 
     this.revertFocusedAthlete = function (clickedIndex, aId, obj) {
@@ -263,6 +280,58 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
 
         //check the simulation status-->then set loading done
         checkInitDone(completeLoadingCb);
+    };
+
+    /* updated from the race selection at HTML */
+    this.updateFocusedAthletes = function (athletes) {
+
+        //make the node clicked status
+        nodeG.selectAll('circle')
+            .filter(function (d) {
+                var isSelected = _.contains(_.pluck(athletes, 'id'), d.id);
+                //show clicked athletes name above the node
+                if (isSelected) {
+                    showAthleteName(d3.select(this), d);
+                }
+                return isSelected;
+            })
+            .attr('clicked', 'true')
+            .attr('class', 'node-clicked');
+
+        //set clicked ids
+        clickedIds = _.pluck(athletes, 'id');
+    };
+    this.resetClickedAthletes = function () {
+        nodeG.selectAll('circle')
+            .attr('clicked', 'false')
+            .attr('class', 'node-normal');
+        nodeG.selectAll('.vis-athlete-name').remove();
+        clickedIds = [];
+    };
+
+    /* toggle linked nodes/edges with all focused athletes */
+    this.highlightLinkeNodes = function (ids) {
+        nodeG.selectAll('circle')
+            .filter(function (d) {
+                return _.contains(ids, d.id);
+            })
+            .attr('linked', 'true')
+            .attr('class', 'node-mutual-linked');
+        //highlight links
+        _.each(clickedIds, function (c, i) {
+            _.each(ids.concat(_.clone(clickedIds).splice(i)), function (id) {
+                linkG.select('line[id=\'' + c + '-' + id + '\']')
+                    .attr('linked', 'true')
+                    .attr('class', 'link-mutual-linked');
+                linkG.select('line[id=\'' + id + '-' + c + '\']')
+                    .attr('linked', 'true')
+                    .attr('class', 'link-mutual-linked');
+            });
+        });
+    };
+    this.hideLinkeNodes = function () {
+        nodeG.selectAll('.node-mutual-linked').attr('linked', 'false').attr('class', 'node-normal');
+        linkG.selectAll('.link-mutual-linked').attr('linked', 'false').attr('class', 'link-normal');
     };
 
     return this;

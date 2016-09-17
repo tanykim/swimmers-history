@@ -26,76 +26,66 @@
 
     <!-- option summary -->
     <div class="summary">
-        <span class="wrapper" ng-repeat="kind in ['meets', 'events']">
+        Competed at <span class="wrapper" ng-repeat="kind in ['meets', 'events']">
             <span ng-repeat="(key, val) in sel[kind]">
-                <span ng-class="kind" ng-if="selParent[kind][key]">
+                <span class="kind" ng-if="selParent[kind][key]">
                     <span class="meets-title" ng-if="kind == 'meets'">{{ key.slice(1) }}</span>
                     <span ng-repeat="(k, v) in val" ng-class="sel[kind][key][k] ? 'valid' : 'none'" >
                         <span ng-if="sel[kind][key][k]" > {{ k }} </span>
                     </span>
                 </span>
             </span>
+            <span ng-if="kind == 'meets'" class="typcn typcn-times"></span>
         </span>
     </div>
 
     <!-- table -->
-    <div class="table">
-
-        <div class="no-result" ng-show="athletesOnFocus.length == 0">
-            Click circles in the graph to compare athletes with one another
+    <div class="results">
+        <div class="selected-lists">
+            Highlight all swimmer competed at
+            <select ng-model="selectedRace" ng-change="showAthletesByRace(selectedRace)">
+                <option value="" selected>Select a race</option>
+                <option ng-repeat="r in selectedRaces track by $index" value="{{r}}">{{ r.split('-')[0].slice(1) }} {{ r.split('-')[1] }} - {{ r.split('-')[4] }}</option>
+            </select>
         </div>
 
-        <!-- left/right button -->
-        <div class="show-left" ng-if="hiddenAthSId > 0" ng-click="updateTable(-1)"><span class="typcn typcn-arrow-left"></span></div>
-        <div class="show-right" ng-if="isRightOn" ng-click="updateTable(1)"><span class="typcn typcn-arrow-right"></span></div>
+        <!-- no athletes are selected -->
+        <div class="no-athletes" ng-show="athletesOnFocus.length == 0">
+            OR click circles in the graph to compare athletes with one another
+        </div>
 
-        <div class="list-wrapper">
-            <!-- race list -->
-            <table ng-show="athletesOnFocus.length > 0 && sharedRaces.length > 0" id="table-races">
-                <thead>
-                    <tr>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="r in sharedRaces">
-                        <td class="race-name">
-                            <div>
-                                <span class="race-meet">{{ r.split('-')[0].slice(1) }}</span>
-                                {{ r.split('-')[1] }}
-                                <span class="dash">-</span>
-                                {{ r.split('-')[4] }}
-                            </div>
-                            <div class="date">
-                                {{ allRaces[r].split(' ')[0] }} {{ allRaces[r].split(' ')[1] }}
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- no shared races -->
+        <div class="no-races" ng-show="athletesOnFocus.length > 0 && sharedRaces.length == 0 ">
+            These {{ athletesOnFocus.length }} swimmers did not competed against each other
+        </div>
 
-            <!-- athlete list -->
-            <table ng-show="athletesOnFocus.length > 0" class="table-athletes" id="table-athletes">
+        <div class="table-wrapper">
+            <table class="race-athlete-table">
+                <!-- race list -->
                 <thead>
-                    <tr>
-                        <th ng-repeat="a in athletesOnFocus" ng-show="$index >= hiddenAthSId" class="athlete-name">
-                            <div><a ng-click="hideAthlete($index, a.id)"><span class="typcn typcn-delete"></span></a></div>
-                            <div class="name">{{ a.name }}</div>
-                            <div class="country">{{ a.country }}</div>
-                            <div class="races">{{ a.count }} races</div>
+                    <tr ng-if="sharedRaces.length > 0" class="thead">
+                        <th colspan="2" class="athlete">{{ athletesOnFocus.length }} selected</th>
+                        <th ng-repeat="r in sharedRaces" class="record">
+                            <span class="race-meet">{{ r.split('-')[0].slice(1) }}</span>
+                            {{ r.split('-')[1] }}
+                            <span class="dash">-</span>
+                            {{ r.split('-')[4] }}
                         </th>
                     </tr>
                 </thead>
+                <!-- athlete list -->
                 <tbody>
-                    <tr ng-repeat="r in sharedRaces">
-                        <td class="record" ng-repeat="a in athletesOnFocus" ng-show="$index >= hiddenAthSId" ng-class="sharedRacesWinner[$parent.$index].indexOf($index) > -1 ? 'winner' : 'regular'">
+                    <tr ng-repeat="a in athletesOnFocus" ng-show="athletesOnFocus.length > 0">
+                        <td class="close">
+                            <a ng-click="hideAthlete($index, a.id)"><span class="typcn typcn-delete"></span></a>
+                        </td>
+                        <td class="athlete">
+                            <div class="name">{{ a.name }}</div>
+                            <div class="country">{{ a.country }}</div>
+                        </td>
+                        <td ng-repeat="r in sharedRaces" class="record" ng-class="{ winner: sharedRacesWinner[$index].indexOf($parent.$index) > -1 }">
                             <div class="place-wrapper"><span ng-class="'place place' + a.records[r].place">{{ a.records[r].place }}</span></div>
                             <div class="swimtime">{{ a.records[r].swimtime }}</div>
-                        </td>
-                    </tr>
-                    <tr ng-if="sharedRaces.length == 0">
-                        <td colspan="{{ athletesOnFocus.length + 1 }}" class="no-result">
-                            These swimmers did not competed against each other
                         </td>
                     </tr>
                 </tbody>
@@ -103,13 +93,12 @@
         </div>
     </div>
 
-<!--     <div ng-repeat="a in athletesOnFocus">
-       {{ a.name }}
-    </div> -->
     <!-- vis -->
     <div class="vis">
         <svg id="vis" width="100%" ng-hide="visUpdating"></svg>
         <div ng-show="visUpdating">Updating vis now</div>
+        <div class="hovered-swimmer" id="swimmer"></div>
+        <div class="show-links" ng-show="athletesOnFocus.length > 0"><input type="checkbox" ng-model="isLinkedVisible" ng-click="toggleLinkedNodes()"> Show focused swimmers' network</div>
     </div>
 </div>
 
@@ -119,21 +108,23 @@
     <!-- update button -->
     <div class="total">
         <span class="number">{{ selectedAthletes.length }}</span> swimmers found
-        <div class="lable" ng-class="optionChanged ? 'link-enabled' : 'link-disabled'">
-            <span ng-click="reselectAthletes()"><span class="typcn typcn-refresh"></span> Update</span>
+        <div class="lable" ng-class="optionChanged && selectedAthletes.length > 0 ? 'link-enabled' : 'link-disabled'" ng-click="reselectAthletes()">
+            <span class="typcn typcn-refresh"></span>
+            <span ng-hide="visUpdating">Update</span>
+            <span ng-show="visUpdating" class="animate-flicker">Updating Now...</span>
         </div>
     </div>
 
     <!-- meets & events -->
     <div class="wrapper">
         <div ng-repeat="kind in ['meets', 'events']" class="kind">
-            <div class="title" ng-class="kind"> {{ kind }} </div>
+            <div class="title"> {{ kind }} </div>
             <ul class="select-list">
                 <li ng-repeat="(key, val) in category[kind]">
                     <div class="list-title">
                         <span class="list-title-text">{{ val.name }}</span>
-                        <span ng-show="selParent[kind][key]"><a ng-click="filterParent(kind, key)"><span class="typcn typcn-minus-outline"></span></a></span>
-                        <span ng-hide="selParent[kind][key]"><a ng-click="filterParent(kind, key)"><span class="typcn typcn-plus-outline"></span></a></span>
+                        <span ng-show="selParent[kind][key]"><a ng-click="filterParent(kind, key)"><span class="typcn typcn-minus"></span></a></span>
+                        <span ng-hide="selParent[kind][key]"><a ng-click="filterParent(kind, key)"><span class="typcn typcn-plus"></span></a></span>
                     </div>
                     <ul>
                         <li ng-repeat="child in val.children" ng-class="child[0]=='800Fr' && genders[selectedGenderId]=='men' || child[0]=='1500Fr' && genders[selectedGenderId]=='women' ? 'list-item-disabled': 'list-item'">

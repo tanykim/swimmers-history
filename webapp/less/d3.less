@@ -51,7 +51,9 @@
 .link-over {
     stroke: @over;
 }
-
+.link-mutual-linked {
+    stroke: @highlight;
+}
 .node-common {
     stroke-width: 1;
     stroke: @white;
@@ -64,13 +66,20 @@
 .node-over {
     .node-common();
     fill: @over;
+    stroke: @over;
     cursor: pointer;
 }
 .node-clicked {
     .node-common();
     fill: @clicked;
+    cursor: pointer;
 }
 .node-linked {
     .node-common();
     fill: @linked;
+    stroke: @over;
+}
+.node-mutual-linked {
+    stroke: @highlight;
+    fill: @white;
 }

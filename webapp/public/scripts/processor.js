@@ -5,16 +5,16 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
     var allGenderAthletes;
     var allGenderLinks;
 
-    this.sel = {};
+    this.sel = {}; //for options
     this.selParent = {};
-    this.selected = {};
 
-    this.allAthletes = [];
-    this.selectedAthletes = [];
-    this.allLinks = [];
-    this.selectedLinks = [];
-    this.pointRange = [];
-    this.graph = {};
+    this.allAthletes = []; //entire athletes of the selected gender
+    this.selectedAthletes = []; //athletes filtered by meet/event or name search
+    this.selectedRaces = []; //races filtered by meets/event
+    this.allLinks = []; //entire athletes links
+    this.selectedLinks = []; //filtered by selected athletes
+    this.pointRange = []; //for vis node size
+    this.graph = {}; //node and edge data structure for vis
 
     this.athletesOnFocus = [];
     this.sharedRaces = [];
@@ -72,20 +72,21 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         //all athletes info must kept original for repeated links calculation
         var all = angular.copy(self.allAthletes);
         var sel = self.sel;
-        // var selParent = self.selParent;
 
-        //get currently selected meets and events
-        for (var kind in sel) {
-            self.selected[kind] = [];
-            for (var parent in sel[kind]) {
-                for (var child in sel[kind][parent]) {
-                    if (sel[kind][parent][child]) {
-                        self.selected[kind].push(parent + '-' + child);
+        //filter races by selection and get 1-level list
+        for (var meet in sel.meets) {
+            for (var year in sel.meets[meet]) {
+                if (sel.meets[meet][year]) {
+                    for (var type in sel.events) {
+                        for (var race in sel.events[type]) {
+                            if (sel.events[type][race]) {
+                                self.selectedRaces.push(meet + '-' + year + '--' + type + '-' + race);
+                            }
+                        }
                     }
                 }
             }
         }
-
         var athletes = [];
         var allTotalPoints = [];
 
@@ -94,8 +95,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
             var totalPoint = 0;
             var validRecords = [];
             _.each(athlete.records, function (r) {
-                if (_.contains(self.selected.meets, r.race_id.split('--')[0]) &&
-                    _.contains(self.selected.events, r.race_id.split('--')[1])) {
+                if (_.contains(self.selectedRaces, r.race_id)) {
                     totalPoint = totalPoint + r.point;
                     validRecords.push(r);
                 }
@@ -121,8 +121,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
             if (aIds.indexOf(d.source) > -1 && aIds.indexOf(d.target) > -1) {
                 var validRecords = [];
                 _.each(d.value, function (r) {
-                    if (_.contains(self.selected.meets, r.split('--')[0]) &&
-                        _.contains(self.selected.events, r.split('--')[1])) {
+                    if (_.contains(self.selectedRaces, r)) {
                         validRecords.push(r);
                     }
                 });
@@ -195,6 +194,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         });
     }
 
+    /* add and remove athletes */
     this.addFocusedAthlete = function (athlete) {
 
         var raceIds = _.pluck(athlete.records, 'race_id');
@@ -241,6 +241,43 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
             self.sharedRaces = [];
             self.sharedRacesWinner = [];
         }
+    };
+
+    this.addAthletesByRace = function (race) {
+        self.athletesOnFocus = _.sortBy(_.map(_.filter(self.selectedAthletes, function (a) {
+            return _.contains(_.pluck(a.records, 'race_id'), race);
+        }), function (athlete) {
+            return {
+                id: athlete.id,
+                name: athlete.name,
+                country: athlete.country,
+                count: athlete.records.length,
+                records: _.object(_.map(athlete.records, function (d) {
+                    return [ d.race_id, { place: +d.place, swimtime: d.swimtime }];
+                }))
+            };
+        }), function (a) { //sort by place
+            return a.records[race].place;
+        });
+        self.sharedRaces = [race];
+        self.sharedRacesWinner = getWinnersIndex();
+    };
+
+    this.getMutualLinkedNodes = function () {
+
+        //athletes who competed with ALL of the focused athletes
+        //equals to athletes who have at least 1 race in the shared race
+        return _.map(_.filter(self.selectedAthletes, function (a) {
+            for (var r in a.records) {
+                if (self.sharedRaces.indexOf(a.records[r].race_id) > -1 &&
+                    //filter already focused athletes
+                    _.pluck(self.athletesOnFocus, 'id').indexOf(a.id) === -1) {
+                    return true;
+                }
+            }
+        }), function (a) {
+            return a.id;
+        });
     };
 
     /* reset selection */

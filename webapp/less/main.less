@@ -1,5 +1,3 @@
-@import 'https://fonts.googleapis.com/css?family=Montserrat:400,700';
-
 /* colors */
 @black: #000000;
 @darkGrey: #444444;
@@ -9,17 +7,22 @@
 @white: #FFFFFF;
 
 /* content-specific colors */
-@meet: #f5625a;
-@event: #3fc08b;
+@meet: @darkGrey;
+@event: @lightestGrey;
+
+@gs: #2BC0E4; /* background gradation blue */
+@ge: #EAECC6; /* background gradation yellow */
+@highlight: #f5625a;
+
 @node: #000000;
-@over: #0d83c6;
-@clicked: red;
-@linked: #00BDE9;
-@gs: #2BC0E4;
-@ge: #EAECC6;
+@over: @gs;
+@clicked: @highlight;
+@linked: @ge;
+
 @gold: #fbcd15;
 @silver: #dadada;
 @bronze: #d88133;
+
 @black-trans-dark: rgba(0, 0, 0, 0.4);
 @black-trans-light: rgba(0, 0, 0, 0.2);
 @white-trans: rgba(255, 255, 255, 0.4);
@@ -79,21 +82,24 @@ a {
     position: absolute;
     width: 100%;
     height: 100%;
-    overflow: scroll;
+    overflow: auto;
 }
 
 /* intro layout */
 .intro {
     position: absolute;
-    left: 50%;
-    margin-left: -25%;
-    z-index: 1000;
+    right: 50%;
     background-color: @white;
+    margin-right: -25%;
+    z-index: 1000;
     padding: 16px;
     border-bottom-right-radius: 12px;
     border-bottom-left-radius: 12px;
     text-align: center;
     line-height: 140%;
+    .title {
+        width: 560px;
+    }
     .desc {
         letter-spacing: 1.8px;
         margin-top: 24px;
@@ -115,7 +121,7 @@ a {
     }
     .loading-text {
         .animate-flicker();
-        color: @gs;
+        color: @highlight;
         .web-font();
         letter-spacing: 2.4px;
         text-align: center;
@@ -142,7 +148,7 @@ a {
             box-sizing: border-box;
             .link();
             .visualize {
-                background-color: @gs;
+                background-color: @highlight;
                 padding: 12px 20px;
                 border-radius: 24px;
                 display: inline-block;
@@ -287,10 +293,14 @@ a {
     position: absolute;
     background: @white;
     top: 0;
-    padding: 24px 6px 0 6px;
-    min-height: 100%;
+    padding: 24px 6px 24px 6px;
+    -webkit-box-shadow: 4px 4px 6px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: 4px 4px 6px 0px rgba(0,0,0,0.2);
+    box-shadow: 4px 4px 6px 0px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    margin-top: 8px;
     .web-font();
-    width: 85%;
     .total {
         text-align: right;
         color: @grey;
@@ -301,7 +311,7 @@ a {
         margin-left: 14px;
         margin-bottom: 24px;
         .lable {
-            background-color: @gs;
+            background-color: @highlight;
             display: inline-block;
             padding: 2px 12px 4px 4px;
             border-radius: 4px;
@@ -342,23 +352,24 @@ a {
         font-weight: bold;
         text-transform: uppercase;
         padding: 2px 14px;
+        background-color: @darkGrey;
         color: @white;
     }
-    .meets {
-        background-color: @meet;
-    }
-    .events {
-        background-color: @event;
-    }
     .select-list {
-        a {
-            cursor: pointer;
-            color: @grey;
-            font-size: @small;
-        }
         .list-title {
             margin-top: 16px;
             margin-bottom: 10px;
+            a {
+                .link();
+                background-color: @black;
+                color: @white;
+                font-size: 12px !important;
+                width: 18px;
+                height: 18px;
+                border-radius: 9px;
+                display: inline-block;
+                text-align: center;
+            }
         }
         .list-title-text {
             font-weight: bold;
@@ -390,142 +401,117 @@ a {
     .wrapper {
         display: inline-block;
         margin-bottom: 6px;
+        margin-left: 4px;
     }
-    .meets, .events {
-        padding: 2px 8px 2px 8px;
+    .kind {
+        padding: 2px 4px 2px 8px;
         border-radius: 4px;
         margin-right: 4px;
         margin-bottom: 6px;
         .valid {
             margin-right: 4px;
         }
-    }
-    .meets {
         .serif();
-        background-color: @meet;
+        background-color: @darkGrey;
         color: @white;
         .meets-title {
             .web-font();
             margin-right: 4px;
         }
-
-    }
-    .events {
-        .serif();
-        background-color: @event;
-        color: @white;
     }
 }
 .vis {
-    background: @white-trans;
+    background-color: @white-trans;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 16px;
+    position: relative;
+    svg {
+        background-color: @white;
+        border-radius: 4px;
+    }
+    .hovered-swimmer, .show-links {
+        position: absolute;
+        left: 0%;
+        right: 100%;
+        width: 100%;
+        color: @grey;
+        text-align: center;
+        font-size: @small;
+    }
+    .hovered-swimmer {
+        top: 20px;
+        i {
+            font-style: normal;
+            color: @highlight;
+        }
+    }
+    .show-links {
+        margin-top: 12px;
+        bottom: 36px;
+    }
 }
-.table {
+.results {
     .serif();
     font-size: @small;
     padding: 20px;
     background-color: @white-trans;
-
-    .show-left, .show-right {
-        position: absolute;
-        padding: 6px;
-        background-color: @black-trans-light;
-        border-radius: 16px;
-        width: 20px;
-        height: 20px;
-        .link();
-        z-index: 1000;
+    .selected-lists {
+        padding-bottom: 10px;
+        select {
+            font-size: @normal;
+        }
     }
-    .show-left:hover, .show-right:hover {
-        background-color: @gs;
+    .no-races {
+        padding-bottom: 20px;
     }
-    .show-left {
-        left: 10px;
+    .table-wrapper {
+        overflow: auto;
+        max-height: 200px;
     }
-    .show-right {
-        right: 10px;
-    }
-    .list-wrapper {
-        overflow: hidden;
-        display: flex;
-        align-items: flex-end;
-    }
-
-    table {
+    .race-athlete-table {
         border-spacing: 0;
         border-collapse: separate;
         position: relative;
     }
-    .table-races {
-        z-index: 900;
-    }
-    .table-athletes {
-        position: relative;
-        overflow-x: scroll;
-    }
-    .no-result {
-        padding-top: 20px;
-        padding-bottom: 20px;
-        font-size: @small;
-    }
     thead {
-        th {
-            border-bottom: 2px solid @black-trans-dark;
+        .athlete, .record {
+            border-bottom: 1px solid @black-trans-light;
+            font-weight: normal;
         }
     }
     tbody {
-        tr {
-            padding: 0;
-        }
-        td {
-            border-bottom: 1px solid @black-trans-light;
-            padding: 0px;
+        .close, .athlete, .record {
+            border-top: 1px solid @black-trans-light;
             text-align: center;
         }
     }
-    .athlete-name {
-        border-right: 1px solid @black-trans-light;
-        min-width: 126px;
-        box-sizing: border-box;
-        padding-right: 9px;
-        padding-left: 9px;
+    .close {
         a {
             .link();
         }
     }
-    .athlete-name:nth-of-type(1) {
-        border-left: 1px solid @black-trans-light;
-    }
-    .race-name {
-        text-align: right;
-        padding-right: 9px;
-        min-width: 100px;
-        height: 32px;
-    }
-    .athlete-name, .race-name {
+    .athlete, .record {
+        padding: 9px;
         .name, .race-meet {
             .web-font();
             color: @black;
         }
-        .country, .races {
+        .country {
             color: @grey;
             font-weight: normal;
         }
-        .races {
-            margin-top: 4px;
-            margin-bottom: 4px;
-        }
-        .dash {
-            color: @grey;
-        }
+    }
+    .athlete {
+        min-width: 140px;
+        box-sizing: border-box;
     }
     .winner {
         background-color: @gs;
-        border-right: 1px solid @black-trans-light;
-    }
-    .regular {
-        border-right: 1px solid @black-trans-light;
     }
     .record {
+        min-width: 120px;
+        border-left: 1px solid @black-trans-light;
         padding-top: 4px;
         padding-bottom: 4px;
         .place-wrapper, .swimtime {

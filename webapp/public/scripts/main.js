@@ -37,58 +37,18 @@ angular.module('swimmerApp')
             $scope.introPassed = true;
         });
     }
-    //vis update by user
+    //vis update by user through tab menu
     $scope.visUpdating = false;
     function completeUpdating() {
         console.log('---user update.main, ---vis update done');
         $scope.$apply(function () {
+            $scope.optionChanged = false;
             $scope.visUpdating = false;
             $scope.openTab = '';
         });
     }
 
     /* vis-table control */
-
-    var mainWidth; //vis and table width
-    $scope.hiddenAthSId = 0; //hidden athletes index in the focused athletes array
-    $scope.isRightOn = false; //right arrow button
-
-    //check the table fits in the layout width
-    function checkIsFit() {
-        var tR = document.getElementById('table-races');
-        var tA = document.getElementById('table-athletes');
-        var tableWidth = tR.clientWidth + tA.clientWidth;
-        //console.log(tableWidth, mainWidth - 20 - tableWidth);
-        return tableWidth <= mainWidth - 20;
-    }
-
-    function updateTable() {
-        if (checkIsFit()) {
-            $scope.$apply(function () {
-                $scope.hiddenAthSId = 0;
-                $scope.isRightOn = false;
-            });
-        } else {
-            $scope.$apply(function () {
-                $scope.hiddenAthSId++;
-            });
-        }
-    }
-
-    //when left and right button clicked
-    $scope.updateTable = function (dir) {
-        $scope.hiddenAthSId = $scope.hiddenAthSId + dir;
-        _.defer(function () {
-            if (checkIsFit()) {
-                //console.log('----after button click, it is fit');
-                $scope.isRightOn = false;
-            } else {
-                //console.log('----after button click, it is NOT fit');
-                $scope.isRightOn = true;
-            }
-        });
-    };
-
     //callbacks sent to processor and vis
     //update focused athletes after selected on the network vis
     //use scope.$apply for callbacked functions
@@ -101,15 +61,12 @@ angular.module('swimmerApp')
         processor.addFocusedAthlete(athlete);
         $scope.$apply(function () {
             updateFocusedAthletes();
-            _.defer(updateTable);
         });
-
     }
     function hideAthlete(index) {
         processor.removeFocusedAthlete(index);
         $scope.$apply(function () {
             updateFocusedAthletes();
-            _.defer(updateTable);
         });
     }
     //from html table
@@ -117,11 +74,15 @@ angular.module('swimmerApp')
         visualizer.revertFocusedAthlete(index, id);
         processor.removeFocusedAthlete(index);
         updateFocusedAthletes();
-        _.defer(updateTable);
+    };
+    $scope.showAthletesByRace = function (race) {
+        visualizer.resetClickedAthletes();
+        processor.addAthletesByRace(race);
+        updateFocusedAthletes();
+        visualizer.updateFocusedAthletes($scope.athletesOnFocus);
     };
 
     /* option-vis control */
-
     //option control
     $scope.filterParent = function (kind, parent) {
         processor.filterParent(kind, parent);
@@ -136,11 +97,11 @@ angular.module('swimmerApp')
     $scope.optionChanged = false;
     $scope.reselectAthletes = function () {
         if ($scope.optionChanged) {
-            console.log('---main, start updating meet/events');
             $scope.visUpdating = true;
-            processor.resetSelection(updateFocusedAthletes);
-            processor.getGraphData(visualizer.drawVis, null, completeUpdating, showAthlete, hideAthlete);
-            $scope.optionChanged = false;
+            setTimeout(function () {
+                processor.resetSelection(updateFocusedAthletes);
+                processor.getGraphData(visualizer.drawVis, null, completeUpdating, showAthlete, hideAthlete);
+            }, 100);
         }
     };
     $scope.$watch('sel', function (newVal, oldVal) {
@@ -149,6 +110,8 @@ angular.module('swimmerApp')
         }
     }, true);
 
+    /* init vis after all data loading */
+    var mainWidth; //vis width
     function initVis() {
 
         //pass all data
@@ -163,10 +126,22 @@ angular.module('swimmerApp')
         //get filtered athlete data for vis
         processor.getFilteredAthletes();
         $scope.selectedAthletes = processor.selectedAthletes;
+        $scope.selectedRaces = processor.selectedRaces;
 
         //get graph data of the selected athletes
         processor.getGraphData(visualizer.drawVis, mainWidth, completeLoading, showAthlete, hideAthlete);
+
+        $scope.isLinkedVisible = false;
     }
+    $scope.toggleLinkedNodes = function () {
+        $scope.isLinkedVisible = !$scope.isLinkedVisible;
+        if ($scope.isLinkedVisible) {
+            var mutualIds = processor.getMutualLinkedNodes();
+            visualizer.highlightLinkeNodes(mutualIds);
+        } else {
+            visualizer.hideLinkeNodes();
+        }
+    };
 
     //update button when clicked;
     var bElm = document.getElementById('init-button');
