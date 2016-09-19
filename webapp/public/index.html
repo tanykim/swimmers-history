@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
     <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/>
     <link rel="stylesheet" href="components/typicons.font/src/font/typicons.min.css"/>
-
+    <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
     <!-- injector:css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endinjector -->
@@ -24,20 +24,21 @@
             of <span class="no">869</span> men and <span class="no">779</span> women swimmers<br/>
             who competed at <span class="no">544</span> final events <br/>
             held at total <span class="no">17</span> international competitions of <span class="no">5</span> kinds<br/>
-            from <span class="no">2008</span> to <span class="no">2016</span>
+            from <span class="no">2007</span> to <span class="no">2016</span>
         </div>
         <div ng-class="{expand: loaded}">
             <div ng-class="loaded ? 'hide' : 'loading-text'"> Loading Swimmer Data... </div>
             <div class="start-options" ng-show="loaded">
                 <div class="with"> Start with an Example</div>
                 <div class="option-text">
-                    <input type="radio" ng-model="selectedGenderId" ng-value="0"> Men's Fly and Medley events in the last 3 Olympic Games <br/>
-                    <input type="radio" ng-model="selectedGenderId" ng-value="1"> Women's mid and long distance Free style events from 2012 to 2016 <br/>
+                    <input type="radio" ng-model="selectedGenderId" ng-value="0"> &nbsp; Men's Fly and Medley events in the last 3 Olympic Games <br/>
+                    <input type="radio" ng-model="selectedGenderId" ng-value="1"> &nbsp; Women's mid and long distance Free style events from 2012 to 2016 <br/>
                 </div>
                 <div class="button-wrapper">
-                    <div class="visualize">
+                    <div class="visualize" ng-click="startMainLoading()">
                         <span class="typcn typcn-link"></span>
-                        <span id="init-button">Explore the Network</span>
+                        <span ng-hide="mainLoading">Explore the Network</span>
+                        <span ng-show="mainLoading" class="animate-flicker">Generating Visualization...</span>
                     </div>
                 </div>
             </div>
@@ -56,6 +57,10 @@
 <script src="components/angular/angular.js"></script>
 <script src="components/d3/d3.js"></script>
 <script src="components/underscore/underscore.js"></script>
+<script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="components/jquery/dist/jquery.js"></script>
+<script src="components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="components/angular-sanitize/angular-sanitize.js"></script>
 <!-- endbower -->
 
 <!-- injector:js -->

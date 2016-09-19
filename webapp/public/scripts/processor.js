@@ -22,6 +22,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
 
     var self = this;
 
+    /* init */
     this.setAllAthletes = function (athletes, links) {
         allGenderAthletes = athletes;
         allGenderLinks = links;
@@ -39,7 +40,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         console.log('processor, gender switched');
     };
 
-    /* for options */
+    /* options - meet & events */
     this.getSelSets = function (obj, selected) {
         self.sel = _.object(_.map(obj, function (val, kind) {
             var preset = selected[kind];
@@ -67,25 +68,38 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
     };
 
     /* filter athletes */
-    this.getFilteredAthletes = function () {
 
-        //all athletes info must kept original for repeated links calculation
-        var all = angular.copy(self.allAthletes);
-        var sel = self.sel;
-
-        //filter races by selection and get 1-level list
+    function getSelectedRaces(sel) {
+        var races = [];
         for (var meet in sel.meets) {
             for (var year in sel.meets[meet]) {
                 if (sel.meets[meet][year]) {
                     for (var type in sel.events) {
                         for (var race in sel.events[type]) {
                             if (sel.events[type][race]) {
-                                self.selectedRaces.push(meet + '-' + year + '--' + type + '-' + race);
+                                races.push(meet + '-' + year + '--' + type + '-' + race);
                             }
                         }
                     }
                 }
             }
+        }
+        return races;
+    }
+
+    this.getSelectedAthletes = function (searchedAthletes) {
+
+        //all athletes info must kept original for repeated links calculation
+        var all = angular.copy(self.allAthletes);
+        var sel = self.sel;
+
+        if (searchedAthletes) {
+            self.selectedRaces = _.unique(_.flatten(_.map(angular.copy(searchedAthletes), function (a) {
+                return _.pluck(a.records, 'race_id');
+            })));
+        } else {
+            //filter races by selection and get 1-level list
+            self.selectedRaces = getSelectedRaces(self.sel);
         }
         var athletes = [];
         var allTotalPoints = [];
@@ -112,6 +126,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
     };
 
     /* get graph data */
+
     this.getGraphData = function (drawVis, width, completeLoadingCb, showAthleteCb, hideAthleteCb) {
         //selected athletes' id
         var aIds = _.pluck(self.selectedAthletes, 'id');
@@ -144,7 +159,8 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         drawVis(self.graph, self.pointRange, width, completeLoadingCb, showAthleteCb, hideAthleteCb);
     };
 
-    /* update */
+    /* update - meet & events change */
+
     this.updateParentStatus = function (kind, parent) {
         var childrenVals = _.values(self.sel[kind][parent]);
         //if none of the children are selected, set the parent false
@@ -153,7 +169,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         } else {
             self.selParent[kind][parent] = true;
         }
-        self.getFilteredAthletes();
+        self.getSelectedAthletes();
     };
     this.filterParent = function (kind, parent) {
         self.selParent[kind][parent] = !self.selParent[kind][parent];
@@ -162,8 +178,10 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
             var update = self.selParent[kind][parent] ? true : false;
             self.sel[kind][parent][key] = update;
         });
-        self.getFilteredAthletes();
+        self.getSelectedAthletes();
     };
+
+    /* add and remove athletes */
 
     function getWinnersIndex() {
 
@@ -194,7 +212,18 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         });
     }
 
-    /* add and remove athletes */
+    function getAthleteObj(athlete) {
+        return {
+            id: athlete.id,
+            name: athlete.name,
+            country: athlete.country,
+            count: athlete.records.length,
+            records: _.object(_.map(athlete.records, function (d) {
+                return [ d.race_id, { place: d.place, swimtime: d.swimtime }];
+            }))
+        };
+    }
+
     this.addFocusedAthlete = function (athlete) {
 
         var raceIds = _.pluck(athlete.records, 'race_id');
@@ -207,16 +236,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
             self.sharedRaces = _.intersection(self.sharedRaces, raceIds);
         }
 
-        self.athletesOnFocus.push({
-            id: athlete.id,
-            name: athlete.name,
-            country: athlete.country,
-            count: athlete.records.length,
-            //made records as object to show the result below
-            records: _.object(_.map(athlete.records, function (d) {
-                return [ d.race_id, { place: +d.place, swimtime: d.swimtime }];
-            }))
-        });
+        self.athletesOnFocus.push(getAthleteObj(athlete));
 
         //get shared races winner index after adding all athletes
         self.sharedRacesWinner = getWinnersIndex();
@@ -247,19 +267,17 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         self.athletesOnFocus = _.sortBy(_.map(_.filter(self.selectedAthletes, function (a) {
             return _.contains(_.pluck(a.records, 'race_id'), race);
         }), function (athlete) {
-            return {
-                id: athlete.id,
-                name: athlete.name,
-                country: athlete.country,
-                count: athlete.records.length,
-                records: _.object(_.map(athlete.records, function (d) {
-                    return [ d.race_id, { place: +d.place, swimtime: d.swimtime }];
-                }))
-            };
+            return getAthleteObj(athlete);
         }), function (a) { //sort by place
             return a.records[race].place;
         });
         self.sharedRaces = [race];
+        self.sharedRacesWinner = getWinnersIndex();
+    };
+
+    this.addAthletesByAthlete = function (athlete) {
+        self.athletesOnFocus = [getAthleteObj(athlete)];
+        self.sharedRaces = _.pluck(athlete.records, 'race_id');
         self.sharedRacesWinner = getWinnersIndex();
     };
 
@@ -281,11 +299,12 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
     };
 
     /* reset selection */
-    this.resetSelection = function(updateFocusedAthletes) {
+    this.resetSelection = function(updateToDefaultView) {
         self.athletesOnFocus = [];
         self.sharedRaces = [];
         self.sharedRacesWinner = [];
-        updateFocusedAthletes();
+        self.selectedRaces = self.selectedRaces;
+        updateToDefaultView();
     };
 
 }]);

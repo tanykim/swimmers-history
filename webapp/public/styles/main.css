@@ -8,9 +8,10 @@ body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
   padding: 0;
+  font-size: 16px;
 }
 a {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 /* common */
 .web-font {
@@ -100,6 +101,7 @@ a {
   font-family: 'Montserrat', sans-serif;
   letter-spacing: 2.4px;
   text-align: center;
+  padding-bottom: 24px;
 }
 .intro .start-options {
   text-align: left;
@@ -116,7 +118,6 @@ a {
 }
 .intro .start-options .option-text {
   font-family: Georgia, 'Times New Roman', serif;
-  color: #777777;
 }
 .intro .start-options .button-wrapper {
   text-align: center;
@@ -165,6 +166,10 @@ a {
   position: relative;
   left: 86px;
 }
+.during-loading {
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.4);
+}
 /* inside main */
 .gender {
   background: rgba(255, 255, 255, 0.4);
@@ -211,25 +216,26 @@ a {
   border-bottom-left-radius: 4px;
   font-size: 1.4em !important;
 }
-.tabs .open {
-  color: #000000;
-  background: #FFFFFF;
-}
-.tabs .selected {
-  color: #000000;
-  background-color: rgba(255, 255, 255, 0.4);
-}
-.tabs .normal {
-  color: #777777;
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-  border-left: 1px solid rgba(255, 255, 255, 0.4);
-}
 .tabs a {
   cursor: pointer;
+  color: #777777;
 }
 .tabs a:hover {
   color: #000000;
+}
+.tabs .open {
+  background: #FFFFFF;
+}
+.tabs .open a {
+  color: #000000;
+}
+.tabs .selected {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.tabs .normal {
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
 }
 .top {
   font-family: 'Montserrat', sans-serif;
@@ -264,8 +270,7 @@ a {
 .top .copyright {
   font-size: 14px;
 }
-.options,
-.search {
+.options {
   position: absolute;
   background: #FFFFFF;
   top: 0;
@@ -278,20 +283,17 @@ a {
   margin-top: 8px;
   font-family: 'Montserrat', sans-serif;
 }
-.options .total,
-.search .total {
+.options .total {
   text-align: right;
   color: #777777;
   margin-right: 24px;
   margin-left: 14px;
   margin-bottom: 24px;
 }
-.options .total .number,
-.search .total .number {
+.options .total .number {
   color: #000000;
 }
-.options .total .lable,
-.search .total .lable {
+.options .total .lable {
   background-color: #f5625a;
   display: inline-block;
   padding: 2px 12px 4px 4px;
@@ -300,16 +302,21 @@ a {
   color: #FFFFFF;
   margin-left: 14px;
 }
-.options .total .link-enabled,
-.search .total .link-enabled {
+.options .total .link-enabled {
   cursor: pointer;
 }
-.options .total .link-disabled,
-.search .total .link-disabled {
+.options .total .link-disabled {
   background-color: #D3D3D3;
   cursor: default;
 }
-.options .wrapper {
+.options .title {
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 2px 14px;
+  background-color: #444444;
+  color: #FFFFFF;
+}
+.options .events-wrapper {
   display: table;
 }
 .options .kind {
@@ -328,18 +335,11 @@ a {
   padding: 0;
   list-style: none;
 }
-.options .title {
-  font-weight: bold;
-  text-transform: uppercase;
-  padding: 2px 14px;
-  background-color: #444444;
-  color: #FFFFFF;
-}
 .options .select-list .list-title {
   margin-top: 16px;
   margin-bottom: 10px;
 }
-.options .select-list .list-title a {
+.options .select-list a {
   cursor: pointer;
   background-color: #000000;
   color: #FFFFFF;
@@ -363,9 +363,43 @@ a {
 .options .select-list .list-item-disabled {
   text-decoration: line-through;
 }
-.search .wrapper {
+.options .name-wrapper {
   padding-right: 24px;
   padding-left: 24px;
+  min-width: 560px;
+}
+.options .name-wrapper .form-control {
+  margin-top: 16px;
+}
+.options .name-wrapper .dropdown-menu > .active > a,
+.options .name-wrapper .dropdown-menu > .active > a:focus,
+.options .name-wrapper .dropdown-menu > .active > a:hover {
+  background-color: #2BC0E4;
+}
+.options .name-wrapper .selected {
+  font-size: 14px;
+  margin-top: 24px;
+}
+.options .name-wrapper .selected .count {
+  font-family: Georgia, 'Times New Roman', serif;
+  margin-bottom: 10px;
+}
+.options .name-wrapper .selected li {
+  margin-top: 6px;
+}
+.options .name-wrapper .name {
+  margin-right: 9px;
+}
+.options .name-wrapper .country {
+  border-left: 1px solid #efefef;
+  border-right: 1px solid #efefef;
+  padding-left: 9px;
+  padding-right: 9px;
+}
+.options .name-wrapper .race-count {
+  margin-left: 9px;
+  color: #777777;
+  font-family: Georgia, 'Times New Roman', serif;
 }
 /* inside content */
 .summary {
@@ -412,9 +446,13 @@ a {
   left: 0%;
   right: 100%;
   width: 100%;
-  color: #777777;
   text-align: center;
   font-size: 14px;
+}
+.vis .hovered-swimmer a,
+.vis .show-links a {
+  cursor: pointer;
+  color: #777777;
 }
 .vis .hovered-swimmer {
   top: 20px;
@@ -444,11 +482,9 @@ a {
 }
 .results .table-wrapper {
   overflow: auto;
-  max-height: 200px;
+  max-height: 225px;
 }
 .results .race-athlete-table {
-  border-spacing: 0;
-  border-collapse: separate;
   position: relative;
 }
 .results thead .athlete,
@@ -456,14 +492,18 @@ a {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   font-weight: normal;
 }
-.results tbody .close,
+.results thead th {
+  text-align: center;
+}
+.results tbody .close-icon,
 .results tbody .athlete,
 .results tbody .record {
   border-top: 1px solid rgba(0, 0, 0, 0.2);
   text-align: center;
 }
-.results .close a {
+.results .close-icon a {
   cursor: pointer;
+  color: #000000;
 }
 .results .athlete,
 .results .record {
@@ -489,7 +529,7 @@ a {
   background-color: #2BC0E4;
 }
 .results .record {
-  min-width: 120px;
+  min-width: 145px;
   border-left: 1px solid rgba(0, 0, 0, 0.2);
   padding-top: 4px;
   padding-bottom: 4px;

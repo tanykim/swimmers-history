@@ -7,13 +7,11 @@ angular.module('swimmerApp')
     /* initial setting */
     $scope.openTab = '';
     $scope.selectedTab = 'event';
-    $scope.updateTab = function (v) {
-        $scope.selectedTab = v;
-        $scope.openTab = $scope.openTab === v ? '' : v;
-    };
 
+    //two options - event (meets-event category selection) or name search
+    //used for $scope.sel, selParent in processor,
+    //have default value when original data loaded
     $scope.category = {};
-    //$scope.allRaces = null;
     //pre-selected meets and events
     var selected = {
         'men': {
@@ -25,60 +23,92 @@ angular.module('swimmerApp')
             events: ['0IND-200Fr', '0IND-400Fr', '0IND-800Fr', '1TEAM-1X100Fr']
         }
     };
+    //this is NOT copied or derived from processor
+    $scope.searchedAthletes = [];
+    $scope.updateTab = function (v) {
+        $scope.openTab = $scope.openTab === v ? '' : v;
+        $scope.optionChanged = false;
+        if (v === 'event') {
+            $scope.searchedAthletes = [];
+        }
+    };
 
     /* loading and updating */
     //loading
     $scope.loaded = false;
     $scope.introPassed = false;
-    function completeLoading() {
+    function completeMainInit() {
         console.log('7.main, loading done');
         $scope.athletesOnFocus = [];
         $scope.$apply(function () {
+            $scope.visUpdating = false;
             $scope.introPassed = true;
         });
     }
     //vis update by user through tab menu
-    $scope.visUpdating = false;
-    function completeUpdating() {
+    function completeUpdating() { //used for callback
         console.log('---user update.main, ---vis update done');
         $scope.$apply(function () {
-            $scope.optionChanged = false;
             $scope.visUpdating = false;
-            $scope.openTab = '';
+            //set the tab
+            $scope.optionChanged = false;
+            $scope.selectedTab = $scope.openTab; //currently selected tab (used for processing/vis)
+            $scope.openTab = ''; //currently open tab (used for HTML)
         });
     }
+
+    /* vis control */
+    $scope.toggleLinkedNodes = function () {
+        $scope.isLinkedVisible = !$scope.isLinkedVisible;
+        if ($scope.isLinkedVisible) {
+            var mutualIds = processor.getMutualLinkedNodes();
+            visualizer.highlightLinkedNodes(mutualIds);
+        } else {
+            visualizer.hideLinkedNodes();
+        }
+    };
 
     /* vis-table control */
     //callbacks sent to processor and vis
     //update focused athletes after selected on the network vis
     //use scope.$apply for callbacked functions
-    function updateFocusedAthletes() {
+    function updateToDefaultView() {
+        $scope.selectedRaces = processor.selectedRaces;
         $scope.athletesOnFocus = processor.athletesOnFocus;
         $scope.sharedRaces = processor.sharedRaces;
         $scope.sharedRacesWinner = processor.sharedRacesWinner;
+        if ($scope.isLinkedVisible) {
+            $scope.isLinkedVisible = false;
+            visualizer.hideLinkedNodes();
+        }
     }
     function showAthlete(athlete) {
         processor.addFocusedAthlete(athlete);
         $scope.$apply(function () {
-            updateFocusedAthletes();
+            updateToDefaultView();
         });
     }
     function hideAthlete(index) {
         processor.removeFocusedAthlete(index);
         $scope.$apply(function () {
-            updateFocusedAthletes();
+            updateToDefaultView();
         });
     }
-    //from html table
+    //from html Result table
     $scope.hideAthlete = function (index, id) {
         visualizer.revertFocusedAthlete(index, id);
         processor.removeFocusedAthlete(index);
-        updateFocusedAthletes();
+        updateToDefaultView();
     };
-    $scope.showAthletesByRace = function (race) {
+    //highlight athlete(s) by select list in the result
+    $scope.showAthletesViaOption = function (type, val) {
         visualizer.resetClickedAthletes();
-        processor.addAthletesByRace(race);
-        updateFocusedAthletes();
+        if (type === 'event') {
+            processor.addAthletesByRace(val);
+        } else {
+            processor.addAthletesByAthlete($scope.searchedAthletes[val]);
+        }
+        updateToDefaultView();
         visualizer.updateFocusedAthletes($scope.athletesOnFocus);
     };
 
@@ -93,13 +123,18 @@ angular.module('swimmerApp')
         $scope.selectedAthletes = processor.selectedAthletes;
     };
 
-    //reselect options from html
+    //update button clicked: update athletes from the meets-event or search panel
     $scope.optionChanged = false;
-    $scope.reselectAthletes = function () {
+    $scope.updateAthletes = function () {
         if ($scope.optionChanged) {
             $scope.visUpdating = true;
             setTimeout(function () {
-                processor.resetSelection(updateFocusedAthletes);
+                processor.getSelectedAthletes(
+                    $scope.openTab === 'name' ?
+                    $scope.searchedAthletes :
+                    null
+                );
+                processor.resetSelection(updateToDefaultView);
                 processor.getGraphData(visualizer.drawVis, null, completeUpdating, showAthlete, hideAthlete);
             }, 100);
         }
@@ -110,6 +145,20 @@ angular.module('swimmerApp')
         }
     }, true);
 
+    //athlete search
+    $scope.addAthletes = function (a) {
+        $scope.optionChanged = true;
+        $scope.searchedAthletes.push(a);
+        processor.getSelectedAthletes($scope.searchedAthletes);
+        $scope.selectedAthletes = processor.selectedAthletes;
+    };
+    $scope.removeSearchedAthlete = function (index) {
+        $scope.optionChanged = true;
+        $scope.searchedAthletes.splice(index, 1);
+        processor.getSelectedAthletes($scope.searchedAthletes);
+        $scope.selectedAthletes = processor.selectedAthletes;
+    };
+
     /* init vis after all data loading */
     var mainWidth; //vis width
     function initVis() {
@@ -118,54 +167,50 @@ angular.module('swimmerApp')
         var g = $scope.genders[$scope.selectedGenderId];
         processor.setAthletes(g);
 
+        //for search by name
+        $scope.allAthletes = _.sortBy(processor.allAthletes, function (a) {
+            return a.records.length;
+        }).reverse();
+
         processor.getSelSets(angular.copy($scope.category), selected[g]);
         processor.getSelParentSets(angular.copy($scope.category), selected[g]);
         $scope.sel = processor.sel;
         $scope.selParent = processor.selParent;
 
         //get filtered athlete data for vis
-        processor.getFilteredAthletes();
+        processor.getSelectedAthletes();
         $scope.selectedAthletes = processor.selectedAthletes;
-        $scope.selectedRaces = processor.selectedRaces;
+        $scope.selectedRaces = processor.selectedRaces; //when meet-event option selected
 
         //get graph data of the selected athletes
-        processor.getGraphData(visualizer.drawVis, mainWidth, completeLoading, showAthlete, hideAthlete);
-
-        $scope.isLinkedVisible = false;
+        processor.getGraphData(visualizer.drawVis, mainWidth, completeMainInit, showAthlete, hideAthlete);
+        // $scope.isLinkedVisible = false;
     }
-    $scope.toggleLinkedNodes = function () {
-        $scope.isLinkedVisible = !$scope.isLinkedVisible;
-        if ($scope.isLinkedVisible) {
-            var mutualIds = processor.getMutualLinkedNodes();
-            visualizer.highlightLinkeNodes(mutualIds);
-        } else {
-            visualizer.hideLinkeNodes();
-        }
-    };
 
-    //update button when clicked;
-    var bElm = document.getElementById('init-button');
-    bElm.addEventListener('click', function () {
-        bElm.innerHTML='Generating Visualization...';
-        bElm.className = 'animate-flicker';
+    //update button when clicked
+    $scope.startMainLoading = function () {
+        $scope.mainLoading = true;
         setTimeout(function () {
             initVis();
         }, 100);
-    });
+    };
 
     /* swtich view by gender */
     $scope.genders = ['men', 'women'];
     $scope.selectedGenderId = 0;
     $scope.switchGender = function () {
         //switch between 0 and 1
-        $scope.selectedGenderId = $scope.selectedGenderId * -1 + 1;
-        console.log('------------- switch gender to ' + $scope.genders[$scope.selectedGenderId]);
-        processor.switchGender($scope.genders[$scope.selectedGenderId]);
-        processor.resetSelection(updateFocusedAthletes);
-        //reset selections
+        $scope.visUpdating = true;
         $scope.openTab = '';
-        $scope.selectedTab = 'event';
-        initVis();
+        console.log('-- switch gender to ' + $scope.genders[$scope.selectedGenderId]);
+        setTimeout(function () {
+            $scope.selectedGenderId = $scope.selectedGenderId * -1 + 1;
+            processor.switchGender($scope.genders[$scope.selectedGenderId]);
+            processor.resetSelection(updateToDefaultView);
+            //reset selections
+            $scope.selectedTab = 'event';
+            initVis();
+        }, 100);
     };
 
     //get data and draw SVG

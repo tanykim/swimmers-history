@@ -1,15 +1,16 @@
 <!-- gender-switch, top 100% width -->
 <div class="gender">
-    <div class="selected"><span class="number">{{ selectedAthletes.length }} {{ genders[selectedGenderId] }}</span> Swimmers</div>
+    <div class="selected" ng-hide="visUpdating"><span class="number">{{ selectedAthletes.length }} {{ genders[selectedGenderId] }}</span> Swimmers</div>
     <div class="gender-switch">
-        <a ng-click="switchGender()" class="link"><span class="typcn typcn-eye"></span> switch to {{ genders[selectedGenderId * -1 + 1] }}</a>
+        <a ng-click="switchGender()" class="link" ng-hide="visUpdating"><span class="typcn typcn-eye"></span> switch to {{ genders[selectedGenderId * -1 + 1] }}</a>
+        <span ng-show="visUpdating && openTab == ''" class="animate-flicker">Generating Visualization...</span>
     </div>
 </div>
 
 <!-- tabs on the left top -->
 <div class="tabs">
-    <div ng-class="openTab == 'event' ? 'open' : (selectedTab == 'event' ? 'selected': 'normal')"><a ng-click="updateTab('event')"><span class="typcn typcn-clipboard"></span></a></div>
-    <div ng-class="openTab == 'name' ? 'open' : (selectedTab == 'name' ? 'selected': 'normal' )"><a ng-click="updateTab('name')"><span class="typcn typcn-zoom"></span></a></div>
+    <div ng-class="openTab == 'event' ? 'open' : (selectedTab == 'event' ? 'selected' : 'normal')"><a ng-click="updateTab('event')"><span class="typcn typcn-clipboard"></span></a></div>
+    <div ng-class="openTab == 'name' ? 'open' : (selectedTab == 'name' ? 'selected' : 'normal')"><a ng-click="updateTab('name')"><span class="typcn typcn-zoom"></span></a></div>
 </div>
 
 <div class="top" id="top">
@@ -22,11 +23,12 @@
 </div>
 
 <!-- content main -->
-<div class="content" id="content">
+<div ng-hide="visUpdating">
 
     <!-- option summary -->
-    <div class="summary">
-        Competed at <span class="wrapper" ng-repeat="kind in ['meets', 'events']">
+    <div class="summary" ng-if="selectedTab == 'event'">
+        Competed at
+        <span class="wrapper" ng-repeat="kind in ['meets', 'events']">
             <span ng-repeat="(key, val) in sel[kind]">
                 <span class="kind" ng-if="selParent[kind][key]">
                     <span class="meets-title" ng-if="kind == 'meets'">{{ key.slice(1) }}</span>
@@ -38,15 +40,29 @@
             <span ng-if="kind == 'meets'" class="typcn typcn-times"></span>
         </span>
     </div>
+    <div class="summary" ng-if="selectedTab == 'name'">
+        Competed against
+        <span class="wrapper" ng-repeat="a in searchedAthletes track by $index">
+            <span class="kind"><span class="valid">{{ a.name }}</span></span>
+            <span ng-hide="$index == searchedAthletes.length - 1"> OR&nbsp;</span>
+        </span>
+    </div>
 
     <!-- table -->
     <div class="results">
         <div class="selected-lists">
-            Highlight all swimmer competed at
-            <select ng-model="selectedRace" ng-change="showAthletesByRace(selectedRace)">
-                <option value="" selected>Select a race</option>
-                <option ng-repeat="r in selectedRaces track by $index" value="{{r}}">{{ r.split('-')[0].slice(1) }} {{ r.split('-')[1] }} - {{ r.split('-')[4] }}</option>
-            </select>
+            <span ng-show="selectedTab == 'event'"> Highlight all swimmer competed at
+                <select ng-model="valRace" ng-change="showAthletesViaOption('event', valRace)">
+                    <option value="" selected>Select a race</option>
+                    <option ng-repeat="r in selectedRaces track by $index" value="{{r}}">{{ r.split('-')[0].slice(1) }} {{ r.split('-')[1] }} - {{ r.split('-')[4] }}</option>
+                </select>
+            </span>
+            <span ng-show="selectedTab == 'name'">  Highlight
+                <select ng-model="valName" ng-change="showAthletesViaOption('name', valName)">
+                    <option value="" selected>Select an athlete</option>
+                    <option ng-repeat="a in searchedAthletes track by $index" value="{{ $index }}"> {{ a.name }}</option>
+                </select>
+            </span>
         </div>
 
         <!-- no athletes are selected -->
@@ -76,7 +92,7 @@
                 <!-- athlete list -->
                 <tbody>
                     <tr ng-repeat="a in athletesOnFocus" ng-show="athletesOnFocus.length > 0">
-                        <td class="close">
+                        <td class="close-icon">
                             <a ng-click="hideAthlete($index, a.id)"><span class="typcn typcn-delete"></span></a>
                         </td>
                         <td class="athlete">
@@ -95,20 +111,25 @@
 
     <!-- vis -->
     <div class="vis">
-        <svg id="vis" width="100%" ng-hide="visUpdating"></svg>
-        <div ng-show="visUpdating">Updating vis now</div>
+        <svg id="vis" width="100%"></svg>
         <div class="hovered-swimmer" id="swimmer"></div>
-        <div class="show-links" ng-show="athletesOnFocus.length > 0"><input type="checkbox" ng-model="isLinkedVisible" ng-click="toggleLinkedNodes()"> Show focused swimmers' network</div>
+        <div class="show-links" ng-show="athletesOnFocus.length > 0">
+            <a ng-click="toggleLinkedNodes()">
+                <span ng-hide="isLinkedVisible">Show the network of focused swimmers</span>
+                <span ng-show="isLinkedVisible">Show only focused swimmers</span>
+            </a>
+        </div>
     </div>
 </div>
+<div ng-show="visUpdating" class="during-loading"></div>
 
 <!-- options -->
-<div class="options" ng-show="openTab == 'event'">
+<div class="options" ng-hide="openTab == ''">
 
     <!-- update button -->
     <div class="total">
-        <span class="number">{{ selectedAthletes.length }}</span> swimmers found
-        <div class="lable" ng-class="optionChanged && selectedAthletes.length > 0 ? 'link-enabled' : 'link-disabled'" ng-click="reselectAthletes()">
+        <span ng-show="optionChanged"><span class="number">{{ selectedAthletes.length }}</span> swimmers found</span>
+        <div class="lable" ng-class="optionChanged && selectedAthletes.length > 0 ? 'link-enabled' : 'link-disabled'" ng-click="updateAthletes()">
             <span class="typcn typcn-refresh"></span>
             <span ng-hide="visUpdating">Update</span>
             <span ng-show="visUpdating" class="animate-flicker">Updating Now...</span>
@@ -116,7 +137,7 @@
     </div>
 
     <!-- meets & events -->
-    <div class="wrapper">
+    <div class="events-wrapper" ng-show="openTab == 'event'">
         <div ng-repeat="kind in ['meets', 'events']" class="kind">
             <div class="title"> {{ kind }} </div>
             <ul class="select-list">
@@ -136,16 +157,24 @@
             </ul>
         </div>
     </div>
-</div>
 
-<!-- search -->
-<div class="search" ng-show="openTab == 'name'">
-    <div class="total">
-        <span class="number">{{ selectedAthletes.length }}</span> swimmers found
-    </div>
-    <div class="wrapper">
-        COMING SOON
-        Search: <br/>
-        <input type="text">
+    <!-- search by name -->
+    <div class="name-wrapper" ng-show="openTab == 'name'">
+        <div class="title">Swimmer Search</div>
+        <input type="text" ng-model="typedAthlete" class="form-control" uib-typeahead="(athlete.name + athlete.country) as athlete for athlete in allAthletes | filter:$viewValue | limitTo:20" placeholder="Type a swimmer's name or country" typeahead-template-url="athlete.html" typeahead-on-select="addAthletes($item); typedAthlete = '';" ng-blur="true">
+        <div class="selected" ng-show="searchedAthletes.length > 0">
+            <div class="count" ng-show="searchedAthletes.length == 1">
+                Searching swimmers who competed against the typed swimmer.
+            </div>
+            <div class="count" ng-show="searchedAthletes.length > 1">
+                Searching swimmers who competed against at least one of the typed {{ searchedAthletes.length }} swimmers.
+            </div>
+            <ul class="select-list">
+                <li ng-repeat="a in searchedAthletes track by $index">
+                    {{ a.name }} ({{ a.records.length }} races)</span>
+                    <a ng-click="removeSearchedAthlete($index)"><span class="typcn typcn-minus"></span></a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

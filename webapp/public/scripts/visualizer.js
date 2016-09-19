@@ -310,13 +310,14 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
     };
 
     /* toggle linked nodes/edges with all focused athletes */
-    this.highlightLinkeNodes = function (ids) {
+    this.highlightLinkedNodes = function (ids) {
         nodeG.selectAll('circle')
             .filter(function (d) {
                 return _.contains(ids, d.id);
             })
             .attr('linked', 'true')
             .attr('class', 'node-mutual-linked');
+
         //highlight links
         _.each(clickedIds, function (c, i) {
             _.each(ids.concat(_.clone(clickedIds).splice(i)), function (id) {
@@ -329,9 +330,19 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             });
         });
     };
-    this.hideLinkeNodes = function () {
-        nodeG.selectAll('.node-mutual-linked').attr('linked', 'false').attr('class', 'node-normal');
-        linkG.selectAll('.link-mutual-linked').attr('linked', 'false').attr('class', 'link-normal');
+    this.hideLinkedNodes = function () {
+        nodeG.selectAll('circle')
+            .filter(function (d) {
+                return d3.select(this).attr('linked') === 'true';
+            })
+            .attr('linked', 'false')
+            .attr('class', 'node-normal');
+        linkG.selectAll('line')
+            .filter(function (d) {
+                return d3.select(this).attr('linked') === 'true';
+            })
+            .attr('linked', 'false')
+            .attr('class', 'link-normal');
     };
 
     return this;

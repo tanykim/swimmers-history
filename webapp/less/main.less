@@ -39,9 +39,10 @@ body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
+    font-size: 16px;
 }
 a {
-   text-decoration: none;
+   text-decoration: none !important;
 }
 
 /* common */
@@ -125,6 +126,7 @@ a {
         .web-font();
         letter-spacing: 2.4px;
         text-align: center;
+        padding-bottom: 24px;
     }
     .start-options {
         text-align: left;
@@ -140,7 +142,6 @@ a {
         }
         .option-text {
             .serif();
-            color: @grey;
         }
         .button-wrapper {
             text-align: center;
@@ -195,6 +196,10 @@ a {
     position: relative;
     left: @tab-width;
 }
+.during-loading {
+    height: 100%;
+    background-color: @white-trans;
+}
 
 /* inside main */
 .gender {
@@ -239,25 +244,26 @@ a {
         border-bottom-left-radius: 4px;
         font-size: 1.4em !important;
     }
-    .open {
-        color: @black;
-        background: @white;
-    }
-    .selected {
-        color: @black;
-        background-color: @white-trans;
-    }
-    .normal {
-        color: @grey;
-        border-top: 1px solid @white-trans;
-        border-bottom: 1px solid @white-trans;
-        border-left: 1px solid @white-trans;
-    }
     a {
         .link();
+        color: @grey;
     }
     a:hover {
         color: @black;
+    }
+    .open {
+        background: @white;
+        a {
+            color: @black;
+        }
+    }
+    .selected {
+        background-color: @white-trans;
+    }
+    .normal {
+        border-top: 1px solid @white-trans;
+        border-bottom: 1px solid @white-trans;
+        border-left: 1px solid @white-trans;
     }
 }
 .top {
@@ -289,7 +295,7 @@ a {
         font-size: @small;
     }
 }
-.options, .search {
+.options {
     position: absolute;
     background: @white;
     top: 0;
@@ -327,9 +333,14 @@ a {
             cursor: default;
         }
     }
-}
-.options {
-    .wrapper {
+    .title {
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 2px 14px;
+        background-color: @darkGrey;
+        color: @white;
+    }
+    .events-wrapper {
         display: table;
     }
     .kind {
@@ -348,28 +359,21 @@ a {
         padding: 0;
         list-style: none;
     }
-    .title {
-        font-weight: bold;
-        text-transform: uppercase;
-        padding: 2px 14px;
-        background-color: @darkGrey;
-        color: @white;
-    }
     .select-list {
         .list-title {
             margin-top: 16px;
             margin-bottom: 10px;
-            a {
-                .link();
-                background-color: @black;
-                color: @white;
-                font-size: 12px !important;
-                width: 18px;
-                height: 18px;
-                border-radius: 9px;
-                display: inline-block;
-                text-align: center;
-            }
+        }
+        a {
+            .link();
+            background-color: @black;
+            color: @white;
+            font-size: 12px !important;
+            width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            display: inline-block;
+            text-align: center;
         }
         .list-title-text {
             font-weight: bold;
@@ -384,11 +388,43 @@ a {
             text-decoration: line-through;
         }
     }
-}
-.search {
-    .wrapper {
+    .name-wrapper {
         padding-right: 24px;
         padding-left: 24px;
+        min-width: 560px;
+        .form-control {
+            margin-top: 16px;
+        }
+        .dropdown-menu > .active >a,
+        .dropdown-menu > .active >a:focus,
+        .dropdown-menu > .active >a:hover {
+            background-color: @gs;
+        }
+        .selected {
+            font-size: @small;
+            margin-top: 24px;
+            .count {
+                .serif();
+                margin-bottom: 10px;
+            }
+            li {
+                margin-top: 6px;
+            }
+        }
+        .name {
+            margin-right: 9px;
+        }
+        .country {
+            border-left: 1px solid @lightestGrey;
+            border-right: 1px solid @lightestGrey;
+            padding-left: 9px;
+            padding-right: 9px;
+        }
+        .race-count {
+            margin-left: 9px;
+            color: @grey;
+            .serif();
+        }
     }
 }
 
@@ -435,9 +471,12 @@ a {
         left: 0%;
         right: 100%;
         width: 100%;
-        color: @grey;
         text-align: center;
         font-size: @small;
+        a {
+            .link();
+            color: @grey;
+        }
     }
     .hovered-swimmer {
         top: 20px;
@@ -467,11 +506,9 @@ a {
     }
     .table-wrapper {
         overflow: auto;
-        max-height: 200px;
+        max-height: 225px;
     }
     .race-athlete-table {
-        border-spacing: 0;
-        border-collapse: separate;
         position: relative;
     }
     thead {
@@ -479,16 +516,20 @@ a {
             border-bottom: 1px solid @black-trans-light;
             font-weight: normal;
         }
+        th{
+            text-align: center;
+        }
     }
     tbody {
-        .close, .athlete, .record {
+        .close-icon, .athlete, .record {
             border-top: 1px solid @black-trans-light;
             text-align: center;
         }
     }
-    .close {
+    .close-icon {
         a {
             .link();
+            color: @black;
         }
     }
     .athlete, .record {
@@ -510,7 +551,7 @@ a {
         background-color: @gs;
     }
     .record {
-        min-width: 120px;
+        min-width: 145px;
         border-left: 1px solid @black-trans-light;
         padding-top: 4px;
         padding-bottom: 4px;
@@ -560,5 +601,4 @@ a {
     font-size: 1.4em;
     line-height: 1em;
 }
-
 @import 'd3';
