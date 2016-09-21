@@ -5,6 +5,7 @@ angular.module('swimmerApp')
     function ($scope, $http, _, visualizer, processor) {
 
     /* initial setting */
+
     $scope.openTab = '';
     $scope.selectedTab = 'event';
 
@@ -15,8 +16,8 @@ angular.module('swimmerApp')
     //pre-selected meets and events
     var selected = {
         'men': {
-            meets: ['0OG-2016', '0OG-2012', '1WC-2015', '1WC-2013', '1WC-2011'],
-            events: ['0IND-200Fr', '0IND-100Fly', '0IND-200Fly', '0IND-200IM']
+            meets: ['0OG-2016', '0OG-2012', '0OG-2008'],
+            events: ['0IND-50Fr', '0IND-100Fr', '0IND-200Fr', '0IND-400Fr', '0IND-1500Fr', '1TEAM-4X100Fr', '1TEAM-4X200Fr']
         },
         'women': {
             meets: ['0OG-2016', '0OG-2012'],
@@ -33,8 +34,9 @@ angular.module('swimmerApp')
         }
     };
 
-    /* loading and updating */
-    //loading
+    /* loading and updating vis */
+
+    //data loading - used in Intro/Main view chnage
     $scope.loaded = false;
     $scope.introPassed = false;
     function completeMainInit() {
@@ -45,6 +47,7 @@ angular.module('swimmerApp')
             $scope.introPassed = true;
         });
     }
+
     //vis update by user through tab menu
     function completeUpdating() { //used for callback
         console.log('---user update.main, ---vis update done');
@@ -58,6 +61,8 @@ angular.module('swimmerApp')
     }
 
     /* vis control */
+
+    //toggle all linked nodes of the focused athletes
     $scope.toggleLinkedNodes = function () {
         $scope.isLinkedVisible = !$scope.isLinkedVisible;
         if ($scope.isLinkedVisible) {
@@ -69,37 +74,45 @@ angular.module('swimmerApp')
     };
 
     /* vis-table control */
+
     //callbacks sent to processor and vis
     //update focused athletes after selected on the network vis
     //use scope.$apply for callbacked functions
+
     function updateToDefaultView() {
         $scope.selectedRaces = processor.selectedRaces;
         $scope.athletesOnFocus = processor.athletesOnFocus;
         $scope.sharedRaces = processor.sharedRaces;
         $scope.sharedRacesWinner = processor.sharedRacesWinner;
+        //revert the vis to the status that linked nodes are not highlighted
         if ($scope.isLinkedVisible) {
             $scope.isLinkedVisible = false;
             visualizer.hideLinkedNodes();
         }
     }
+
+    //show/hide athlete functions are used callbacks from vis.js
     function showAthlete(athlete) {
         processor.addFocusedAthlete(athlete);
         $scope.$apply(function () {
             updateToDefaultView();
         });
     }
+
     function hideAthlete(index) {
         processor.removeFocusedAthlete(index);
         $scope.$apply(function () {
             updateToDefaultView();
         });
     }
+
     //from html Result table
     $scope.hideAthlete = function (index, id) {
         visualizer.revertFocusedAthlete(index, id);
         processor.removeFocusedAthlete(index);
         updateToDefaultView();
     };
+
     //highlight athlete(s) by select list in the result
     $scope.showAthletesViaOption = function (type, val) {
         visualizer.resetClickedAthletes();
@@ -112,22 +125,24 @@ angular.module('swimmerApp')
         visualizer.updateFocusedAthletes($scope.athletesOnFocus);
     };
 
-    /* option-vis control */
+    /* option control */
+
     //option control
     $scope.filterParent = function (kind, parent) {
         processor.filterParent(kind, parent);
         $scope.selectedAthletes = processor.selectedAthletes;
     };
+
     $scope.updateParentStatus = function (kind, parent) {
         processor.updateParentStatus(kind, parent);
         $scope.selectedAthletes = processor.selectedAthletes;
     };
 
     //update button clicked: update athletes from the meets-event or search panel
-    $scope.optionChanged = false;
+    $scope.optionChanged = false; //enable update button only when option is changed
     $scope.updateAthletes = function () {
         if ($scope.optionChanged) {
-            $scope.visUpdating = true;
+            $scope.visUpdating = true; //chnage the innerHTML of the update button
             setTimeout(function () {
                 processor.getSelectedAthletes(
                     $scope.openTab === 'name' ?
@@ -152,6 +167,7 @@ angular.module('swimmerApp')
         processor.getSelectedAthletes($scope.searchedAthletes);
         $scope.selectedAthletes = processor.selectedAthletes;
     };
+
     $scope.removeSearchedAthlete = function (index) {
         $scope.optionChanged = true;
         $scope.searchedAthletes.splice(index, 1);
@@ -160,6 +176,7 @@ angular.module('swimmerApp')
     };
 
     /* init vis after all data loading */
+
     var mainWidth; //vis width
     function initVis() {
 
@@ -184,7 +201,6 @@ angular.module('swimmerApp')
 
         //get graph data of the selected athletes
         processor.getGraphData(visualizer.drawVis, mainWidth, completeMainInit, showAthlete, hideAthlete);
-        // $scope.isLinkedVisible = false;
     }
 
     //update button when clicked
@@ -196,13 +212,14 @@ angular.module('swimmerApp')
     };
 
     /* swtich view by gender */
+
     $scope.genders = ['men', 'women'];
     $scope.selectedGenderId = 0;
     $scope.switchGender = function () {
         //switch between 0 and 1
         $scope.visUpdating = true;
         $scope.openTab = '';
-        console.log('-- switch gender to ' + $scope.genders[$scope.selectedGenderId]);
+        console.log('-- switch gender');
         setTimeout(function () {
             $scope.selectedGenderId = $scope.selectedGenderId * -1 + 1;
             processor.switchGender($scope.genders[$scope.selectedGenderId]);

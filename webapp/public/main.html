@@ -41,7 +41,7 @@
         </span>
     </div>
     <div class="summary" ng-if="selectedTab == 'name'">
-        Competed against
+        Competed with
         <span class="wrapper" ng-repeat="a in searchedAthletes track by $index">
             <span class="kind"><span class="valid">{{ a.name }}</span></span>
             <span ng-hide="$index == searchedAthletes.length - 1"> OR&nbsp;</span>
@@ -72,7 +72,7 @@
 
         <!-- no shared races -->
         <div class="no-races" ng-show="athletesOnFocus.length > 0 && sharedRaces.length == 0 ">
-            These {{ athletesOnFocus.length }} swimmers did not competed against each other
+            These {{ athletesOnFocus.length }} swimmers did not competed with each other
         </div>
 
         <div class="table-wrapper">
@@ -113,9 +113,9 @@
     <div class="vis">
         <svg id="vis" width="100%"></svg>
         <div class="hovered-swimmer" id="swimmer"></div>
-        <div class="show-links" ng-show="athletesOnFocus.length > 0">
+        <div class="show-links" ng-show="athletesOnFocus.length > 1">
             <a ng-click="toggleLinkedNodes()">
-                <span ng-hide="isLinkedVisible">Show the network of focused swimmers</span>
+                <span ng-hide="isLinkedVisible">Show the network including all of the focused swimmers</span>
                 <span ng-show="isLinkedVisible">Show only focused swimmers</span>
             </a>
         </div>
@@ -164,10 +164,10 @@
         <input type="text" ng-model="typedAthlete" class="form-control" uib-typeahead="(athlete.name + athlete.country) as athlete for athlete in allAthletes | filter:$viewValue | limitTo:20" placeholder="Type a swimmer's name or country" typeahead-template-url="athlete.html" typeahead-on-select="addAthletes($item); typedAthlete = '';" ng-blur="true">
         <div class="selected" ng-show="searchedAthletes.length > 0">
             <div class="count" ng-show="searchedAthletes.length == 1">
-                Searching swimmers who competed against the typed swimmer.
+                Searching swimmers who competed with the typed swimmer.
             </div>
             <div class="count" ng-show="searchedAthletes.length > 1">
-                Searching swimmers who competed against at least one of the typed {{ searchedAthletes.length }} swimmers.
+                Searching swimmers who competed with at least one of the typed {{ searchedAthletes.length }} swimmers.
             </div>
             <ul class="select-list">
                 <li ng-repeat="a in searchedAthletes track by $index">

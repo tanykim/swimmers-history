@@ -17,7 +17,8 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
     //used for add/remove - communicate with main.js
     var clickedIds = [];
 
-    /* interactoin when a node is dragged */
+    /* interaction when a node is dragged */
+
     function moveAthleteName(id) {
         var draggedNode = nodeG.select('circle[id=\'' + id + '\']');
         nodeG.select('#vis-athlete-name-' + id)
@@ -67,6 +68,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
     }
 
     /* interaction when vis is initiated */
+
     function ticked() {
         link.attr('x1', function(d) { return d.source.x; })
             .attr('y1', function(d) { return d.source.y; })
@@ -76,6 +78,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             .attr('cy', function(d) { return d.y; });
     }
 
+    //hide the view ($scope.visLoading at MainCtrl) until the simulation is almost done
     function checkInitDone(completeLoading) {
         //check if simulation stopped every 0.2 second
         function isAlmostDone() {
@@ -89,6 +92,8 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         isAlmostDone();
     }
 
+    /* interaction when node is hovered, out, and clicked */
+
     function showAthleteName(obj, d) {
         nodeG.append('text')
             .text(d.name)
@@ -99,7 +104,6 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             .attr('id', 'vis-athlete-name-' + d.id);
     }
 
-    /* interaction when node is hovered, out, and clicked */
     function showMouseover(obj, d) {
 
         if (obj.attr('clicked') === 'false') {
@@ -122,9 +126,9 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
 
         //highlight links and linked nodes
         _.each(connected, function (c) {
-            linkG.select('line[id=\'' + c + '-' + d.id + '\']')
-                .attr('class', 'link-over');
-            linkG.select('line[id=\'' + d.id + '-' + c + '\']')
+            var combination = Math.min(+c, +d.id) + '-' + Math.max(+c, +d.id);
+
+            linkG.select('line[id=\'' + combination + '\']')
                 .attr('class', 'link-over');
             nodeG.select('circle[id=\'' + c + '\']')
                 .attr('class', 'node-linked');
@@ -145,20 +149,22 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             nodeG.select('#vis-athlete-name-' + d.id).remove();
         }
         if (obj.attr('linked') === 'true') {
-            obj.attr('class', 'node-mutual-linked');
+            obj.attr('class', 'node-all-linked');
         }
         //revert all highlighted (linked) links and nodes
         linkG.selectAll('.link-over').attr('class', function () {
-            return d3.select(this).attr('linked') === 'true' ? 'link-mutual-linked' : 'link-normal';
+            return d3.select(this).attr('linked') === 'true' ? 'link-all-linked' : 'link-normal';
         });
         nodeG.selectAll('.node-linked').attr('class', function () {
             return d3.select(this).attr('clicked') === 'true' ?
                 'node-clicked' : //if previously clicked
-                (d3.select(this).attr('linked') === 'true' ? 'node-mutual-linked' : 'node-normal');
+                (d3.select(this).attr('linked') === 'true' ? 'node-all-linked' : 'node-normal');
         });
         document.getElementById('swimmer').innerHTML = '';
     }
 
+    //can be reverted from 1) the close(X) button fromt the HTML result table (obj is undefined)
+    //2) from clicking a already clicked node (toggle)
     this.revertFocusedAthlete = function (clickedIndex, aId, obj) {
         if (_.isUndefined(obj)) {
             obj = nodeG.select('circle[id=\'' + aId + '\']');
@@ -181,7 +187,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         }
     }
 
-    //TODO: sometimes the vis is frozen at the beginning
+    /* vis drawing - called from MainCtrl when 1) initial loading 2) update from options */
     this.drawVis = function (graph, pointRange, width, completeLoadingCb, showAthleteCb, hideAthleteCb) {
 
         //reset vis
@@ -233,7 +239,8 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             })
             .attr('class', 'link-normal')
             .attr('id', function (d) {
-                return d.source + '-' + d.target;
+                return Math.min(+d.source, +d.target) + '-' +
+                    Math.max(+d.source, +d.target);
             });
 
         //node as circles
@@ -282,7 +289,10 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         checkInitDone(completeLoadingCb);
     };
 
-    /* updated from the race selection at HTML */
+    /* updated from the race selection at HTML Result table */
+
+    //focusedAthletes already processed, update vis here
+    //athletes are slected via selection of race or athlete name in the HTML result table
     this.updateFocusedAthletes = function (athletes) {
 
         //make the node clicked status
@@ -301,6 +311,8 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //set clicked ids
         clickedIds = _.pluck(athletes, 'id');
     };
+
+    //when other race or athlete is selected, reset the previously selected ones
     this.resetClickedAthletes = function () {
         nodeG.selectAll('circle')
             .attr('clicked', 'false')
@@ -310,28 +322,36 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
     };
 
     /* toggle linked nodes/edges with all focused athletes */
+
+    //highlight all nodes and links that competed "against" the focused athletes
+    //this excludes athletes who competed as a team member at team events
+    //the passed IDs are processed via MainCntrl
     this.highlightLinkedNodes = function (ids) {
+
+        //filter all linked nodes
         nodeG.selectAll('circle')
             .filter(function (d) {
                 return _.contains(ids, d.id);
             })
             .attr('linked', 'true')
-            .attr('class', 'node-mutual-linked');
+            .attr('class', 'node-all-linked');
 
         //highlight links
         _.each(clickedIds, function (c, i) {
+            //concatnate the previously clicked IDs with added IDs
+            //splice its own id
             _.each(ids.concat(_.clone(clickedIds).splice(i)), function (id) {
-                linkG.select('line[id=\'' + c + '-' + id + '\']')
+                var combination = Math.min(+c, +id) + '-' + Math.max(+c, +id);
+                linkG.select('line[id=\'' + combination + '\']')
                     .attr('linked', 'true')
-                    .attr('class', 'link-mutual-linked');
-                linkG.select('line[id=\'' + id + '-' + c + '\']')
-                    .attr('linked', 'true')
-                    .attr('class', 'link-mutual-linked');
+                    .attr('class', 'link-all-linked');
             });
         });
     };
+
+    //hide from deselction at HTML vis
     this.hideLinkedNodes = function () {
-        nodeG.selectAll('circle')
+       nodeG.selectAll('circle')
             .filter(function (d) {
                 return d3.select(this).attr('linked') === 'true';
             })

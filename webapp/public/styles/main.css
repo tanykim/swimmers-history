@@ -522,7 +522,7 @@ a {
   font-weight: normal;
 }
 .results .athlete {
-  min-width: 140px;
+  min-width: 150px;
   box-sizing: border-box;
 }
 .results .winner {
@@ -635,7 +635,7 @@ a {
 .link-over {
   stroke: #2BC0E4;
 }
-.link-mutual-linked {
+.link-all-linked {
   stroke: #f5625a;
 }
 .node-common {
@@ -671,7 +671,7 @@ a {
   fill: #EAECC6;
   stroke: #2BC0E4;
 }
-.node-mutual-linked {
+.node-all-linked {
   stroke: #f5625a;
   fill: #FFFFFF;
 }

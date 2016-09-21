@@ -12,7 +12,6 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
     this.selectedAthletes = []; //athletes filtered by meet/event or name search
     this.selectedRaces = []; //races filtered by meets/event
     this.allLinks = []; //entire athletes links
-    this.selectedLinks = []; //filtered by selected athletes
     this.pointRange = []; //for vis node size
     this.graph = {}; //node and edge data structure for vis
 
@@ -281,21 +280,44 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         self.sharedRacesWinner = getWinnersIndex();
     };
 
+    //athletes who competed with ALL of the focused athletes
     this.getMutualLinkedNodes = function () {
 
-        //athletes who competed with ALL of the focused athletes
-        //equals to athletes who have at least 1 race in the shared race
-        return _.map(_.filter(self.selectedAthletes, function (a) {
-            for (var r in a.records) {
-                if (self.sharedRaces.indexOf(a.records[r].race_id) > -1 &&
-                    //filter already focused athletes
-                    _.pluck(self.athletesOnFocus, 'id').indexOf(a.id) === -1) {
-                    return true;
+        var focusedAIds = _.pluck(self.athletesOnFocus, 'id');
+        var linksByFIds = []; //links by focused ID
+
+        _.each(self.graph.links, function (l) {
+            //id pair from each link
+            var idPair = [l.source.id, l.target.id];
+            //compare the ID pair and the focused athletes IDs
+            _.each(focusedAIds, function (id, i) {
+                //if one of the pair is a focused athlete, get the other one of the pair
+                if (idPair.indexOf(id) > -1) {
+                    var linked = idPair[idPair.indexOf(id) * -1 + 1];
+                    //exclude the focused id
+                    if (!_.contains(focusedAIds, linked)) {
+                        if (!linksByFIds[i]) {
+                            linksByFIds[i] = [linked];
+                        } else {
+                            linksByFIds[i].push(linked);
+                        }
+                    }
                 }
-            }
-        }), function (a) {
-            return a.id;
+            });
         });
+
+        //get athletes who competed all of the focused ones
+        var linkedToAll = [];
+        _.each(linksByFIds, function (links, i) {
+            if (i === 1) {
+                linkedToAll = _.intersection(linksByFIds[i - 1], links);
+            } else if (i !== 0) {
+                linkedToAll = _.intersection(linkedToAll, links);
+            }
+        });
+
+        console.log(linksByFIds, _.flatten(linkedToAll));
+        return _.flatten(linkedToAll);
     };
 
     /* reset selection */
