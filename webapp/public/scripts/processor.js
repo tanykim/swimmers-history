@@ -5,8 +5,9 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
     var allGenderAthletes;
     var allGenderLinks;
 
-    this.sel = {}; //for options
+    //category
     this.selParent = {};
+    this.sel = {};
 
     this.allAthletes = []; //entire athletes of the selected gender
     this.selectedAthletes = []; //athletes filtered by meet/event or name search
@@ -33,6 +34,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
     };
 
     /* switch gender */
+
     this.switchGender = function (gender) {
         self.allAthletes = allGenderAthletes[gender];
         self.allLinks = allGenderLinks[gender];
@@ -40,30 +42,31 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
     };
 
     /* options - meet & events */
-    this.getSelSets = function (obj, selected) {
-        self.sel = _.object(_.map(obj, function (val, kind) {
-            var preset = selected[kind];
+
+    this.setSel = function (selected) {
+        _.each(selected, function (vals, kind) {
+            //example: kind(meets): '0OG-2016', kind(eventts): '0IND-50Fr'
+            _.each(vals, function (val) {
+                var sep = val.split('-');
+                self.selParent[kind][sep[0]] = true;
+                self.sel[kind][sep[0]][sep[1]] = true;
+            });
+        });
+    };
+
+    //set meets and events default value - false
+    this.getSelDefault = function (category) {
+        _.each(category, function (val, kind) {
+            self.selParent[kind] = {};
             var vals = _.object(_.map(val, function (d, typeId) {
                 var children = _.object(_.map(d.children, function (d) {
-                    var isSelected = _.contains(preset, typeId + '-' + d[0]);
-                    return [d[0], isSelected];
+                    return [d[0], false];
                 }));
+                self.selParent[kind][typeId] = false;
                 return [typeId, children];
             }));
-            return [kind, vals];
-        }));
-    };
-    this.getSelParentSets = function (obj, selected) {
-        self.selParent = _.object(_.map(obj, function (val, kind) {
-            var preset = selected[kind];
-            var vals = _.object(_.map(val, function (d, typeId) {
-                var hasSelectedChildren = _.map(d.children, function (c) {
-                    return _.contains(preset, typeId + '-' + c[0]);
-                });
-                return [typeId, hasSelectedChildren.indexOf(true) > -1];
-            }));
-            return [kind, vals];
-        }));
+            self.sel[kind] = vals;
+        });
     };
 
     /* filter athletes */
@@ -92,7 +95,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         var all = angular.copy(self.allAthletes);
         var sel = self.sel;
 
-        if (searchedAthletes) {
+        if (!_.isEmpty(searchedAthletes)) {
             self.selectedRaces = _.unique(_.flatten(_.map(angular.copy(searchedAthletes), function (a) {
                 return _.pluck(a.records, 'race_id');
             })));
@@ -316,7 +319,6 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
             }
         });
 
-        console.log(linksByFIds, _.flatten(linkedToAll));
         return _.flatten(linkedToAll);
     };
 

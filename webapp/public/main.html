@@ -9,8 +9,8 @@
 
 <!-- tabs on the left top -->
 <div class="tabs">
-    <div ng-class="openTab == 'event' ? 'open' : (selectedTab == 'event' ? 'selected' : 'normal')"><a ng-click="updateTab('event')"><span class="typcn typcn-clipboard"></span></a></div>
-    <div ng-class="openTab == 'name' ? 'open' : (selectedTab == 'name' ? 'selected' : 'normal')"><a ng-click="updateTab('name')"><span class="typcn typcn-zoom"></span></a></div>
+    <div ng-class="openTab == 'event' ? 'open' : (selectedTab == 'event' ? 'selected' : 'normal')"><a ng-click="toggleTabs('event')"><span class="typcn typcn-clipboard"></span></a></div>
+    <div ng-class="openTab == 'name' ? 'open' : (selectedTab == 'name' ? 'selected' : 'normal')"><a ng-click="toggleTabs('name')"><span class="typcn typcn-zoom"></span></a></div>
 </div>
 
 <div class="top" id="top">
