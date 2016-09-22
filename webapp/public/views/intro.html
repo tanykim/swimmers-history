@@ -1,0 +1,24 @@
+<div class="desc">
+    Explore <span class="no">869</span> men and <span class="no">779</span> women swimmers<br/>
+    who competed at <span class="no">544</span> final events <br/>
+    held at total <span class="no">17</span> of <span class="no">5</span> international competitions <br/>
+    from <span class="no">2007</span> to <span class="no">2016</span>.
+</div>
+
+<div class="start">
+    <div ng-class="loaded ? 'hide' : 'loading-text with'"> Loading Swimmer Data... </div>
+    <div class="start-options" ng-show="loaded">
+        <div class="with"> Start with an Example</div>
+        <div class="option-text">
+            <input type="radio" ng-model="selectedGenderId" ng-value="0"><span class="text-gender">Men- </span>all free style events in the last 3 Olympic Games <br/>
+            <input type="radio" ng-model="selectedGenderId" ng-value="1"><span class="text-gender">Women- </span>swimmers who competed with Katie Ledecky<br/>
+        </div>
+        <div class="button-wrapper">
+            <div class="visualize" ng-click="startMainLoading()">
+                <span class="typcn typcn-link"></span>
+                <span ng-hide="mainLoading">Explore the Network</span>
+                <span ng-show="mainLoading" class="animate-flicker">Generating Visualization...</span>
+            </div>
+        </div>
+    </div>
+</div>

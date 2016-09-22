@@ -1,0 +1,10 @@
+<!-- no athletes are selected -->
+<div class="show-links" ng-show="athletesOnFocus.length > 1">
+    <a ng-click="toggleLinkedNodes()">
+        <span class="typcn typcn-eye"></span>
+        <span ng-hide="isLinkedVisible">See network connecting all selected swimmers</span>
+        <span ng-show="isLinkedVisible">See only selected swimmers</span>
+    </a>
+</div>
+<svg width="100%" id="svg"><g id="vis"></g></svg>
+<div class="hovered-swimmer" id="swimmer"></div>

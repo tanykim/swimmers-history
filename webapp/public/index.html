@@ -3,7 +3,7 @@
 <head>
     <title>Swimmers Network</title>
     <meta name="viewport" content="width=device-width">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <!-- <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'> -->
     <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/>
     <link rel="stylesheet" href="components/typicons.font/src/font/typicons.min.css"/>
     <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
@@ -11,46 +11,28 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endinjector -->
 </head>
-<body ng-app="swimmerApp">
+<body ng-app="swimmerApp" ng-controller="MainCtrl">
+<div class="container">
 
+    <div class="row">
+        <!-- logo -->
+        <div class="col-xs-12 title-logo"> SWIMMER'S <br/> NETWORK </div>
 
-<!-- contents come here -->
-<div class="container" ng-controller="MainCtrl">
-
-    <!-- intro -->
-    <div class="intro" ng-hide="introPassed">
-        <div class="title"><img src="assets/logo.png" width="420" alt="Swimmer's Network"></div>
-        <div class="desc">
-            of <span class="no">869</span> men and <span class="no">779</span> women swimmers<br/>
-            who competed at <span class="no">544</span> final events <br/>
-            held at total <span class="no">17</span> international competitions of <span class="no">5</span> kinds<br/>
-            from <span class="no">2007</span> to <span class="no">2016</span>
+        <div class="col-xs-12 col-md-9 col-md-push-3">
+            <!-- intro -->
+            <div class="intro" ng-hide="introPassed" ng-include="'views/intro.html'"></div>
+            <!-- main content -->
+            <div class="content" ng-show="introPassed" ng-include="'views/content.html'"></div>
         </div>
-        <div ng-class="{expand: loaded}">
-            <div ng-class="loaded ? 'hide' : 'loading-text'"> Loading Swimmer Data... </div>
-            <div class="start-options" ng-show="loaded">
-                <div class="with"> Start with an Example</div>
-                <div class="option-text">
-                    <input type="radio" ng-model="selectedGenderId" ng-value="0"> &nbsp; Men's all free style events in the last 3 Olympic Games <br/>
-                    <input type="radio" ng-model="selectedGenderId" ng-value="1"> &nbsp; All women swimmers who competed with Katie Ledecky<br/>
-                </div>
-                <div class="button-wrapper">
-                    <div class="visualize" ng-click="startMainLoading()">
-                        <span class="typcn typcn-link"></span>
-                        <span ng-hide="mainLoading">Explore the Network</span>
-                        <span ng-show="mainLoading" class="animate-flicker">Generating Visualization...</span>
-                    </div>
-                </div>
-            </div>
+
+        <!-- left-menu -->
+        <div class="col-xs-12 col-md-3 col-md-pull-9">
+            <div class="left-menu" ng-include="'views/left-menu.html'"></div>
         </div>
     </div>
 
-    <div class="footer"  ng-hide="introPassed">
-        <ul class="menus" ng-include="'copyright.html'"></ul>
-    </div>
-
-    <!-- options, vis, tables  -->
-    <div class="main" id="main" ng-include="'main.html'" ng-show="introPassed"></div>
+    <!-- dummy to get vis width -->
+    <div class="row"><div class="col-sm-7 col-md-8 col-lg-9" id="vis-width"></div></div>
 </div>
 
 <!-- bower:js -->

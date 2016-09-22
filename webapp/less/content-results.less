@@ -1,0 +1,137 @@
+.results {
+    margin-top: @pg-lg;
+    .info-title {
+        color: @grey;
+    }
+    .info-options {
+        .option {
+            color: @main;
+            font-size: @xsmall;
+            padding-right: @pg-xs;
+            letter-spacing: @ls-md;
+        }
+        padding-left: 0;
+        margin-top: @pg-sm;
+        .option-li {
+            list-style: none;
+            margin-bottom: @pg-sm;
+        }
+    }
+    .option-dd-click {
+        color: @main;
+    }
+    .dropdown-menu {
+        margin-bottom: @pg-sm;
+        -webkit-box-shadow: 0 0 0 rgba(0,0,0,0); 
+        box-shadow: 0 0 0 rgba(0,0,0,0);
+        border: 1px solid @lightestGrey;
+    }
+    .dropdown-menu > li >a {
+        .link();
+        color: @darkGrey;
+        &:hover {
+            background-color: @lightestGrey-bg;
+        };
+    }
+    .sub {
+        color: @grey;
+    }
+    .no-races {
+        padding-top: @pg-sm;
+        padding-bottom: @pg-sm;
+        color: @main;
+    }
+    .table-wrapper {
+        border-top: 2px solid @lightestGrey-bg;
+        border-bottom: 2px solid @lightestGrey-bg;
+        font-size: @small;
+        overflow: auto;
+        margin-top: @pg-lg;
+    }
+    .race-athlete-table {
+        position: relative;
+    }
+    thead {
+        .result-summary, .record {
+            border-bottom: 2px solid @lightestGrey;
+            font-weight: normal;
+        }
+        th{
+            text-align: center;
+        }
+    }
+    tbody {
+        .close-icon, .athlete, .record {
+            border-top: 1px solid @lightestGrey;
+            text-align: center;
+        }
+    }
+    .close-icon {
+        a {
+            .link();
+            color: @black;
+        }
+    }
+    .result-summary {
+        padding: @pg-sm;
+        color: @grey;
+        .number {
+            color: @main;
+        }        
+    }
+    .athlete {
+        padding: @pg-xs @pg-sm;
+        min-width: 150px;
+        box-sizing: border-box;
+        .country {
+            color: @grey;
+            .lighter();
+        }
+    }
+    .winner {
+        background-color: @main;
+    }
+    .record {
+        min-width: 145px;
+        border-left: 1px solid @lightestGrey;
+        padding-top: @pg-xxs;
+        padding-bottom: @pg-xxs;
+        .place-wrapper, .swimtime {
+            display: inline-block;
+            box-sizing: border-box;
+        }
+        .place-wrapper {
+            text-align: right;
+            width: 28px;
+        }
+        .swimtime {
+            text-align: left;
+            width: 48px;
+        }
+        .place {
+            text-align: center;
+            box-sizing: border-box;
+            width: 24px;
+            height: 24px;
+            display: block;
+            padding-top: @pg-xxs;
+        }
+        .place-border {
+            border: 2px solid @black;
+            border-radius: 12px;
+            padding-top: 0;
+        }
+        .place1 {
+            .place-border();
+            background-color: @gold;
+        }
+        .place2 {
+            .place-border();
+            background-color: @silver;
+        }
+        .place3 {
+            .place-border();
+            background-color: @bronze;
+        }
+    }
+}

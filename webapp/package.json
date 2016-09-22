@@ -1,21 +1,21 @@
 {
-  "name": "team-usa-webapp",
+  "name": "swimmers-network",
   "version": "1.0.0",
-  "description": "data visualization with Rio 2016 Olympic Team USA",
+  "description": "swimmers network graph visualiation",
   "main": "index.html",
   "scripts": {
     "test": "none"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tanykim/2016-Olympics-Team-USA.git"
+    "url": "git+https://github.com/tanykim/swimmers-network.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tanykim/2016-Olympics-Team-USA/issues"
+    "url": "https://github.com/tanykim/swimmers-network/issues"
   },
-  "homepage": "https://github.com/tanykim/2016-Olympics-Team-USA#readme",
+  "homepage": "https://github.com/tanykim/swimmers-network#readme",
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-connect": "^1.0.2",

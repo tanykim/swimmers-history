@@ -100,7 +100,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             .attr('x', d.x)
             .attr('y', d.y)
             .attr('dy', -1 * parseInt(obj.attr('r')) - 6)
-            .attr('class', 'size-tiny unselectable pos-middle vis-athlete-name')
+            .attr('class', 'size-tiny unselectable pos-middle fill-darkGrey vis-athlete-name')
             .attr('id', 'vis-athlete-name-' + d.id);
     }
 
@@ -109,8 +109,6 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         if (obj.attr('clicked') === 'false') {
             //change the node color
             obj.attr('class', 'node-over');
-            //add athlete's name
-            showAthleteName(obj, d);
         }
 
         //highlight connected link
@@ -127,7 +125,6 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //highlight links and linked nodes
         _.each(connected, function (c) {
             var combination = Math.min(+c, +d.id) + '-' + Math.max(+c, +d.id);
-
             linkG.select('line[id=\'' + combination + '\']')
                 .attr('class', 'link-over');
             nodeG.select('circle[id=\'' + c + '\']')
@@ -135,18 +132,22 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         });
 
         //add html
-        document.getElementById('swimmer').innerHTML =
+        var swimmerName = document.getElementById('swimmer');
+        swimmerName.innerHTML =
             '<i>' + d.name +
             '</i> competed against <i>' + connected.length + '</i> swimmer' +
             (connected.length > 1 ? 's' : '') +
             ' at <i>' +  d.records.length + '</i> races';
+        var nameWidth = swimmerName.clientWidth;
+        swimmerName.style.left = (d.x - nameWidth / 2) + 'px';
+        swimmerName.style.top = (d.y - +obj.attr('r') - 20) + 'px';
     }
 
     function showMouseout(obj, d) {
         //return only if it's not unclicked
         if (obj.attr('clicked') === 'false') {
             obj.attr('class', 'node-normal');
-            nodeG.select('#vis-athlete-name-' + d.id).remove();
+            //nodeG.select('#vis-athlete-name-' + d.id).remove();
         }
         if (obj.attr('linked') === 'true') {
             obj.attr('class', 'node-all-linked');
@@ -179,6 +180,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         if (obj.attr('clicked') === 'false') { //show
             clickedIds.push(d.id);
             obj.attr('clicked', 'true').attr('class', 'node-clicked');
+            showAthleteName(obj, d);
             showAthleteCb(d); //call back to main.js
         } else { //hide
             var clickedIndex = clickedIds.indexOf(d.id);
@@ -188,7 +190,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
     }
 
     /* vis drawing - called from MainCtrl when 1) initial loading 2) update from options */
-    this.drawVis = function (graph, pointRange, width, completeLoadingCb, showAthleteCb, hideAthleteCb) {
+    this.drawVis = function (graph, pointRange, completeLoadingCb, showAthleteCb, hideAthleteCb) {
 
         //reset vis
         linksData = angular.copy(graph.links);
@@ -203,13 +205,11 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //TODO: zoom in /pan
         console.log('5.vis, vis started');
 
-        if (width) {
-            w = width;
-            dim = width * 0.6;
-            svg = d3.select('#vis').attr('height', dim);
-        } else {
-            width = dim / 0.6;
-        }
+        //-30 is for bootstrap padding
+        w = document.getElementById('vis-width').clientWidth - 30;
+        dim = w * 0.6;
+        d3.select('#svg').attr('height', w * 0.8);
+        svg = d3.select('#vis');
 
         //1: no animation at first, 0: move more, dispersed
         var decayRange = d3.scaleLinear().range([0.5, 1]).domain([1, 800]);
@@ -226,16 +226,16 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
                 .strength( -1 * dim / 5)
                 .distanceMax(dim / 2)
             )
-            .force('center', d3.forceCenter(width / 2, dim / 2));
+            .force('center', d3.forceCenter(w / 2, w * 0.8 / 2));
+            // .force('center', d3.forceCenter(0, 0));
 
         //link as lines
-        linkG = svg.append('g')
-            .attr('class', 'links');
+        linkG = svg.append('g').attr('id', 'links');
         link = linkG.selectAll('line')
             .data(graph.links)
             .enter().append('line')
             .attr('stroke-width', function (d) {
-                return d.value * 0.5;
+                return d.value;
             })
             .attr('class', 'link-normal')
             .attr('id', function (d) {
@@ -244,13 +244,12 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             });
 
         //node as circles
-        //set radius size (min: 4), point range min is roughly 700
+        //set radius size (min: 3), point range min is roughly 700
         var radius = d3.scaleLinear()
-            .range([4, graph.nodes.length * 1.6])
+            .range([9, graph.nodes.length * 1.8])
             .domain(pointRange);
 
-        nodeG = svg.append('g')
-            .attr('class', 'nodes');
+        nodeG = svg.append('g').attr('id', 'nodes');
         node = nodeG.selectAll('circle')
             .data(graph.nodes)
             .enter().append('circle')
@@ -265,6 +264,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
                 return Math.sqrt(radius(total));
             })
             .attr('clicked', 'false')
+            .attr('class', 'node-normal')
             .call(d3.drag()
                 .on('start', dragstarted)
                 .on('drag', dragged)

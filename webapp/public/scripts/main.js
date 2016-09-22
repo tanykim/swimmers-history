@@ -67,12 +67,6 @@ angular.module('swimmerApp')
 
     function updateToDefaultView() {
 
-        //reset selected races and searched athletes
-        $scope.selectedRaces = processor.selectedRaces;
-        if ($scope.openTab === 'event') {
-            $scope.searchedAthletes = [];
-        }
-
         //reset results in table
         $scope.athletesOnFocus = processor.athletesOnFocus;
         $scope.sharedRaces = processor.sharedRaces;
@@ -108,21 +102,25 @@ angular.module('swimmerApp')
     };
 
     //highlight athlete(s) by select list in the result
-    $scope.showAthletesViaOption = function (type, val) {
+    function updateResultsAndVis() {
         visualizer.resetClickedAthletes();
-        if (type === 'event') {
-            processor.addAthletesByRace(val);
-        } else {
-            processor.addAthletesByAthlete($scope.searchedAthletes[val]);
-        }
         updateToDefaultView();
-        visualizer.updateFocusedAthletes($scope.athletesOnFocus);
+        visualizer.updateFocusedAthletes($scope.athletesOnFocus);        
+    }
+
+    $scope.showAthletesByRace = function (val) {
+        processor.addAthletesByRace(val);
+        updateResultsAndVis();
+    };
+
+    $scope.showAthletesByName = function (val) {
+        processor.addAthletesByAthlete($scope.topAthletes[val]);
+        updateResultsAndVis();
     };
 
     /* option control */
 
     //user-typed names in option-name
-    //this is NOT copied or derived from processor
     $scope.searchedAthletes = [];
 
     //enable update button only when option is changed
@@ -151,9 +149,22 @@ angular.module('swimmerApp')
         if ($scope.optionChanged) {
             $scope.visUpdating = true; //chnage the innerHTML of the update button
             setTimeout(function () {
-                processor.getSelectedAthletes($scope.openTab === 'name' ? $scope.searchedAthletes : null);
+                processor.getSelectedAthletes($scope.openTab === 'name' ? $scope.searchedAthletes : []);
+
+                //reset selected races and searched athletes
+                $scope.selectedRaces = processor.selectedRaces;
+                $scope.topAthletes = processor.topAthletes;
+
+                if ($scope.openTab === 'event') {
+                    $scope.searchedAthletes = [];
+                } else {
+                    processor.getSelDefault($scope.category);
+                    $scope.sel = processor.sel;
+                    $scope.selParent = processor.selParent;
+                }
+
                 processor.resetSelection(updateToDefaultView);
-                processor.getGraphData(visualizer.drawVis, null, completeUpdating, showAthlete, hideAthlete);
+                processor.getGraphData(visualizer.drawVis, completeUpdating, showAthlete, hideAthlete);
             }, 100);
         }
     };
@@ -165,6 +176,12 @@ angular.module('swimmerApp')
 
     //athlete search
     $scope.addAthletes = function (a) {
+        //check if previously added 
+        for (var i in $scope.searchedAthletes) {
+            if ($scope.searchedAthletes[i].id === a.id) {
+                return false;
+            }
+        }
         $scope.optionChanged = true;
         $scope.searchedAthletes.push(a);
         processor.getSelectedAthletes($scope.searchedAthletes);
@@ -180,7 +197,7 @@ angular.module('swimmerApp')
 
     /* init vis after all data loading */
 
-    var mainWidth; //vis width
+    //var mainWidth; //vis width
 
     function initVis() {
 
@@ -199,7 +216,7 @@ angular.module('swimmerApp')
             processor.setSel(defaultEvents);
             $scope.selectedTab = 'event';
         } else {
-            processor.getSelDefault(angular.copy($scope.category));
+            processor.getSelDefault($scope.category);
             defaultAthletes = _.filter(angular.copy(processor.allAthletes), function (a) {
                 return a.name === defaultName;
             });
@@ -214,9 +231,10 @@ angular.module('swimmerApp')
         processor.getSelectedAthletes(defaultAthletes);
         $scope.selectedRaces = processor.selectedRaces;
         $scope.selectedAthletes = processor.selectedAthletes;
+        $scope.topAthletes = processor.topAthletes;
 
         //get graph data of the selected athletes
-        processor.getGraphData(visualizer.drawVis, mainWidth, completeMainInit, showAthlete, hideAthlete);
+        processor.getGraphData(visualizer.drawVis, completeMainInit, showAthlete, hideAthlete);
     }
 
     //intro visualize button clicked
@@ -250,6 +268,7 @@ angular.module('swimmerApp')
     };
 
     //get data and draw SVG
+    $scope.loaded = false;
     $http.get('data/data.json').then(function (d) {
 
         console.log('1.main, data receiverd', d.data);
@@ -263,16 +282,6 @@ angular.module('swimmerApp')
 
         //pass all data
         processor.setAllAthletes(d.data.athletes, d.data.graph);
-
-        //set vis area size; 90 is left tab area, 200 is right menu
-        var calMainWidth = document.documentElement.clientWidth - 90 - 200;
-        var maxMainWidth = 860;
-        mainWidth = Math.min(calMainWidth, maxMainWidth);
-        var mainDom = document.getElementById('main');
-        mainDom.style.width = mainWidth + 'px';
-        mainDom.style.height = document.documentElement.clientHeight + 'px';
-        mainDom.style['margin-left'] = Math.max((calMainWidth - 30 - maxMainWidth) / 2, 0) + 'px';
-        document.getElementById('top').style.left = mainWidth + 'px';
 
         //loading done after 1 second
         setTimeout(function () {

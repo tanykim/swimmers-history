@@ -1,0 +1,28 @@
+.left-menu {
+    margin-top: @pg-lg;
+    border-top: 4px solid #f1f3f5;
+    padding-top: @pg-lg * 2;
+    letter-spacing: @ls-sm;
+    .menus {
+        &:nth-child(1) {
+            text-transform: uppercase;
+        }
+        font-size: @small;
+        color: @sub;
+        .lighter();
+        margin-bottom: @pg-lg * 2;
+        padding-left: 0;
+        li {
+            list-style: none;
+            margin-bottom: @pg-sm;
+            padding-left: 0;
+        }
+        a {
+            color: @grey;
+            font-weight: normal;
+            &:hover {
+                color: @darkGrey;
+            }
+        }
+    }
+}

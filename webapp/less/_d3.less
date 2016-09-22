@@ -1,4 +1,3 @@
-
 /* d3 */
 .pos-middle {
     text-anchor: middle;
@@ -36,6 +35,9 @@
 .stroke-lightestGrey {
     stroke: @lightestGrey;
 }
+.fill-darkGrey {
+    fill: @darkGrey;
+}
 .fill-grey {
     fill: @grey;
 }
@@ -46,7 +48,7 @@
 /* d3 project specific */
 .link-normal {
     stroke: @black;
-    stroke-opacity: 0.2;
+    stroke-opacity: 0.1;
 }
 .link-over {
     stroke: @over;
@@ -66,7 +68,6 @@
 .node-over {
     .node-common();
     fill: @over;
-    stroke: @over;
     cursor: pointer;
 }
 .node-clicked {
@@ -77,7 +78,6 @@
 .node-linked {
     .node-common();
     fill: @linked;
-    stroke: @over;
 }
 .node-all-linked {
     stroke: @highlight;

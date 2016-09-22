@@ -12,6 +12,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
     this.allAthletes = []; //entire athletes of the selected gender
     this.selectedAthletes = []; //athletes filtered by meet/event or name search
     this.selectedRaces = []; //races filtered by meets/event
+    this.topAthletes = []; //top athletes by meets/event
     this.allLinks = []; //entire athletes links
     this.pointRange = []; //for vis node size
     this.graph = {}; //node and edge data structure for vis
@@ -119,17 +120,29 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
             if (validRecords.length > 0) {
                 allTotalPoints.push(totalPoint);
                 athlete.records = validRecords;
+                athlete.totalPoint = totalPoint;
                 athletes.push(athlete);
             }
         });
+        
+        //from meet/event serach -> get upto 30 or 10% of selected athletes
+        if (_.isEmpty(searchedAthletes)) {
+            self.topAthletes = _.sortBy(angular.copy(athletes), function (a) {
+                return a.totalPoint;
+            }).reverse().slice(0, Math.min(30, Math.round(athletes.length / 10)));
+        } else {
+            self.topAthletes = searchedAthletes;
+        }
+
         self.selectedAthletes = athletes;
         self.pointRange = [_.min(allTotalPoints), _.max(allTotalPoints)];
+
         console.log('3.processor, filter athletes');
     };
 
     /* get graph data */
 
-    this.getGraphData = function (drawVis, width, completeLoadingCb, showAthleteCb, hideAthleteCb) {
+    this.getGraphData = function (drawVis, completeLoadingCb, showAthleteCb, hideAthleteCb) {
         //selected athletes' id
         var aIds = _.pluck(self.selectedAthletes, 'id');
         var links = [];
@@ -158,7 +171,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         };
 
         console.log('4.processor, graph data done');
-        drawVis(self.graph, self.pointRange, width, completeLoadingCb, showAthleteCb, hideAthleteCb);
+        drawVis(self.graph, self.pointRange, completeLoadingCb, showAthleteCb, hideAthleteCb);
     };
 
     /* update - meet & events change */
@@ -228,6 +241,12 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
 
     this.addFocusedAthlete = function (athlete) {
 
+        //check if previously added 
+        for (var i in self.athletesOnFocus) {
+            if (self.athletesOnFocus[i].id === athlete.id) {
+                return false;
+            }
+        }
         var raceIds = _.pluck(athlete.records, 'race_id');
 
         //find shared races among all focused athletes
@@ -327,7 +346,6 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         self.athletesOnFocus = [];
         self.sharedRaces = [];
         self.sharedRacesWinner = [];
-        self.selectedRaces = self.selectedRaces;
         updateToDefaultView();
     };
 

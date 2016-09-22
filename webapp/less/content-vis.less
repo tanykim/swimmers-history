@@ -1,0 +1,36 @@
+.vis {
+    margin-top: @pg-sm;
+    position: relative;
+    svg {
+        border: @bd-thin-xlg;
+        border-radius: @bd-radius;
+    }
+    .hovered-swimmer, .show-links {
+        position: absolute;
+        font-size: @small;
+        background-color: @white-trans;
+    }
+    .hovered-swimmer {
+        .unselectable();
+        padding-right: @pg-xs;
+        padding-left: @pg-xs;
+        display: inline-table;
+        i {
+            font-style: normal;
+            color: @highlight;
+        }
+    }
+    .show-links {
+        top: 0;
+        width: 100%;
+        left: 2px;
+        right: 2px;
+        margin-top: @pg-sm;
+        text-align: center;
+        color: @grey;
+        a {
+            .link();
+            color: @highlight;
+        }
+    }
+}
