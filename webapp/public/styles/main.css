@@ -116,11 +116,14 @@ a {
 .intro .start-options .button-wrapper .visualize {
   text-align: center;
   border: 1px solid #f5625a;
-  padding: 15px 18px;
+  padding: 15px 28px;
   border-radius: 4px;
   display: inline-block;
   letter-spacing: 0.08em;
   color: #f5625a;
+}
+.intro .start-options .button-wrapper .visualize:hover {
+  background-color: #ffebea;
 }
 .left-menu {
   margin-top: 28px;
@@ -144,6 +147,7 @@ a {
   padding-left: 0;
 }
 .left-menu .menus a {
+  cursor: pointer;
   color: #868e96;
   font-weight: normal;
 }
@@ -258,6 +262,9 @@ a {
 }
 .options .total .link-enabled {
   cursor: pointer;
+}
+.options .total .link-enabled:hover {
+  background-color: #ffebea;
 }
 .options .total .link-disabled {
   border: 1px solid #dee2e6;
@@ -500,7 +507,7 @@ a {
   font-weight: lighter;
 }
 .results .winner {
-  background-color: #2bc0e4;
+  background-color: #91f0f9;
 }
 .results .record {
   min-width: 145px;
@@ -528,6 +535,7 @@ a {
   height: 24px;
   display: block;
   padding-top: 4px;
+  letter-spacing: -1px;
 }
 .results .record .place-border {
   border: 2px solid #343a40;
@@ -597,16 +605,48 @@ a {
   cursor: pointer;
   color: #f5625a;
 }
-/* Extra small devices (phones, less than 768px) */
-/* No media query since this is the default in Bootstrap */
-/* Small devices (tablets, 768px and up) */
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-  .content {
-    margin-top: -92px;
-  }
+.sub-content {
+  border-right: 1px solid #21d7c4;
+  border-left: 1px solid #21d7c4;
+  background-color: #f8f9fa;
+  position: absolute;
+  top: -92px;
+  right: 0;
+  width: 100%;
+  min-height: 100%;
+  padding: 15px;
 }
-/* Large devices (large desktops, 1200px and up) */
+.sub-content .close-icon {
+  text-align: right;
+}
+.sub-content .close-icon a {
+  color: #495057;
+  cursor: pointer;
+}
+.sub-content h1 {
+  color: #21d7c4;
+  letter-spacing: 0.08em;
+  font-size: 18px;
+  margin-top: 43px;
+  margin-bottom: 15px;
+  font-weight: lighter;
+  text-transform: uppercase;
+}
+.sub-content p,
+.sub-content ul {
+  font-size: 14px;
+  line-height: 200%;
+}
+.sub-content p {
+  margin-bottom: 15px;
+}
+.sub-content p a {
+  color: #21d7c4;
+}
+.sub-content p i {
+  font-style: normal;
+  color: #f5625a;
+}
 /* d3 */
 .pos-middle {
   text-anchor: middle;
@@ -693,9 +733,19 @@ a {
   stroke-width: 1;
   stroke: #ffffff;
   stroke-opacity: 0.5;
-  fill: #21d7c4;
+  fill: #91f0f9;
 }
 .node-all-linked {
   stroke: #f5625a;
   fill: #ffffff;
 }
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+/* Small devices (tablets, 768px and up) */
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .content {
+    margin-top: -92px;
+  }
+}
+/* Large devices (large desktops, 1200px and up) */

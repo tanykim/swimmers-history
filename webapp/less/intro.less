@@ -44,11 +44,14 @@
             .visualize {
                 text-align: center;
                 border: @bd-thin-hl;
-                padding: @pg-sm @pg-md;
+                padding: @pg-sm @pg-lg;
                 border-radius: @bd-radius;
                 display: inline-block;
                 letter-spacing: @ls-md;
                 color: @highlight;
+                &:hover {
+                    background-color: @highlight-light;
+                }
             }
         }
     }

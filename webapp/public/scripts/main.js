@@ -10,13 +10,26 @@ angular.module('swimmerApp')
     $scope.selectedGenderId = 0;
     $scope.openTab = '';
     $scope.selectedTab = '';
-    $scope.category = {}; //for option-events $scope.sel, selParent in processor,
+    $scope.category = {}; //for option-events $scope.sel, selParent in processor
+
+    //left menu
+    $scope.sub = { data: false, insights: false };
+    $scope.hideSub = function () {
+        $scope.sub.data = false;
+        $scope.sub.insights = false;
+    };
 
     //default values when original data loaded or gender switched
     //event(meets-event category selection) is for men, name(name search) is women
+        // '0IND-100Bk', '0IND-200Bk',
+        // '0IND-100Br', '0IND-200Br',
+        // '0IND-100Fly', '0IND-200Fly',
+        // '0IND-200IM', '0IND-400IM',
+        // '1TEAM-4X100Fr', '1TEAM-4X100M', '1TEAM-4X200Fr']
     var defaultEvents = {
         meets: ['0OG-2016', '0OG-2012', '0OG-2008'],
-        events: ['0IND-50Fr', '0IND-100Fr', '0IND-200Fr', '0IND-400Fr', '0IND-1500Fr', '1TEAM-4X100Fr', '1TEAM-4X200Fr']
+        events: ['0IND-50Fr', '0IND-100Fr', '0IND-200Fr', '0IND-400Fr', '0IND-1500Fr',
+            '1TEAM-4X100Fr', '1TEAM-4X200Fr']
     };
     var defaultName = 'Kathleen Ledecky';
 
@@ -105,7 +118,7 @@ angular.module('swimmerApp')
     function updateResultsAndVis() {
         visualizer.resetClickedAthletes();
         updateToDefaultView();
-        visualizer.updateFocusedAthletes($scope.athletesOnFocus);        
+        visualizer.updateFocusedAthletes($scope.athletesOnFocus);
     }
 
     $scope.showAthletesByRace = function (val) {
@@ -176,7 +189,7 @@ angular.module('swimmerApp')
 
     //athlete search
     $scope.addAthletes = function (a) {
-        //check if previously added 
+        //check if previously added
         for (var i in $scope.searchedAthletes) {
             if ($scope.searchedAthletes[i].id === a.id) {
                 return false;

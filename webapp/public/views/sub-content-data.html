@@ -1,0 +1,44 @@
+<div ng-include="'views/sub-content-close.html'"></div>
+
+<h1> What is dataset? </h1>
+<p>
+    The original data are acquired from <a href="https://www.swimrankings.net/" target="_blank">Swim Rankings</a>. The website provides the public with the results of major swim competitions and swimmer's records. Among the various types of data and according web pages, in order to derive the interesting and meaninful relation of the elite swimmers, I focus on the final races of the internationally recognized competitions. The nextwork of swimmers is defined as follows.
+</p>
+<p>
+    <i> Each swimmer is a node presented as a circle. </i> The importance of a node is decided on the record of the collected races; FINA applies points to the competitors. The points are typically around +700 and swimmers with higher places and better records (e.g., game record or world record) earns higher points. Each node is represented as a circle whose area is proportional to the accumulated points.
+</p>
+<p>
+    <i> The link (edge) of two swimmers is presented a semi-transparent straight line. </i> If a pair of swimmers competed against each other at a race, they are linked. Swimming together representing a same country in a same team event is not considered for links. The thickness of the line represents the number of the shared raced by the two linked swimmers.
+</p>
+<h1>Which competetions (meets) are covered?</h1>
+<p>
+    The data source site Swim Ranking currently open data from 2007 to the public. Among various international swim meets, I focus the followings.
+</p>
+<ul>
+	<li> Olympic Games (OG, Every 4-th years - 2008, 2012, 2016) </li>
+	<li> World Championships (WC, Every odd years - 2007, 2009, 2011, 2013, 2015) </li>
+	<li> European Championships (EC, Every even years - 2008, 2010, 2012, 2014, 2016) </li>
+	<li> Commonwealth Games (CG, Every non-olympic 4-th years - 2010, 2014) </li>
+	<li> Pan Pacific Championships (PPC, Every non-olympic 4-th years - 2010, 2015) </li>
+</ul>
+<h1>Which events covered?</h1>
+<p> Events are largely divided into two - individul and medley. In this project, I cover the results of the events whose type is competed at the Olympics. For example, shorter distance (50m) backstroke and breaststroke races are served in the Wrold Championships but not in the Olympics. Between the races of men and women, there is no perfect symmetry; the longest free style for men is 1500m, whereas women compete at 800m. Here is the list of events in the dataset I use.
+</p>
+<ul>
+    <li> 50m Freestyle </li>
+    <li> 100m Freestyle </li>
+    <li> 200m Freestyle </li>
+    <li> 400m Freestyle </li>
+    <li> 800m Freestyle (Women) / 1500m Freestyle (Men) </li>
+    <li> 100m Backstroke </li>
+    <li> 200m Backstroke </li>
+    <li> 100m Breaststroke </li>
+    <li> 200m Breaststroke </li>
+    <li> 100m Butterfly </li>
+    <li> 200m Butterfly </li>
+    <li> 200m Medley </li>
+    <li> 400m Medley </li>
+    <li> 4 X 100m Freestyle </li>
+    <li> 4 X 200m Freestyle </li>
+    <li> 4 X 100m Medley </li>
+</ul>

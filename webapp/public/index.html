@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Swimmers Network</title>
+    <title>Swimmer's Network</title>
     <meta name="viewport" content="width=device-width">
-    <!-- <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'> -->
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
     <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/>
     <link rel="stylesheet" href="components/typicons.font/src/font/typicons.min.css"/>
     <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
@@ -23,6 +23,9 @@
             <div class="intro" ng-hide="introPassed" ng-include="'views/intro.html'"></div>
             <!-- main content -->
             <div class="content" ng-show="introPassed" ng-include="'views/content.html'"></div>
+            <!-- sub content -->
+            <div class="sub-content data" ng-show="sub.data" ng-include="'views/sub-content-data.html'"></div> 
+            <div class="sub-content insights" ng-show="sub.insights" ng-include="'views/sub-content-insights.html'"></div> 
         </div>
 
         <!-- left-menu -->
