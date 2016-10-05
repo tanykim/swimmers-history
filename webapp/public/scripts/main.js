@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('swimmerApp')
-    .controller('MainCtrl', ['$scope', '$http', '_', 'visualizer', 'processor',
-    function ($scope, $http, _, visualizer, processor) {
+    .controller('MainCtrl', ['$scope', '$http', '$location', '$anchorScroll', '_', 'visualizer', 'processor',
+    function ($scope, $http, $location, $anchorScroll, _, visualizer, processor) {
 
     /* initial setting */
 
@@ -102,6 +102,8 @@ angular.module('swimmerApp')
         $scope.$apply(function () {
             updateToDefaultView();
         });
+        $location.hash('results');
+        $anchorScroll();
     }
 
     function hideAthlete(index) {
