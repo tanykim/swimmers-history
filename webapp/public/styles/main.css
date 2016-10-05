@@ -70,6 +70,7 @@ a {
   font-size: 18px;
   letter-spacing: 0.08em;
   color: #2bc0e4;
+  cursor: pointer;
 }
 .intro .desc {
   letter-spacing: 0.04em;

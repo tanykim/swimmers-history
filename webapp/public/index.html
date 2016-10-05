@@ -16,7 +16,7 @@
 
     <div class="row">
         <!-- logo -->
-        <div class="col-xs-12 title-logo"> SWIMMER'S <br/> NETWORK </div>
+        <div class="col-xs-12 title-logo" ng-click="goToIntro()"> SWIMMER'S <br/> NETWORK </div>
 
         <div class="col-xs-12 col-md-9 col-md-push-3">
             <!-- intro -->
@@ -24,8 +24,8 @@
             <!-- main content -->
             <div class="content" ng-show="introPassed" ng-include="'views/content.html'"></div>
             <!-- sub content -->
-            <div class="sub-content data" ng-show="sub.data" ng-include="'views/sub-content-data.html'"></div> 
-            <div class="sub-content insights" ng-show="sub.insights" ng-include="'views/sub-content-insights.html'"></div> 
+            <div class="sub-content data" ng-show="sub.data" ng-include="'views/sub-content-data.html'"></div>
+            <div class="sub-content insights" ng-show="sub.insights" ng-include="'views/sub-content-insights.html'"></div>
         </div>
 
         <!-- left-menu -->

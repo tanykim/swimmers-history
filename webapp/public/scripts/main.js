@@ -6,11 +6,22 @@ angular.module('swimmerApp')
 
     /* initial setting */
 
-    $scope.genders = ['men', 'women'];
-    $scope.selectedGenderId = 0;
-    $scope.openTab = '';
-    $scope.selectedTab = '';
-    $scope.category = {}; //for option-events $scope.sel, selParent in processor
+    function initIntro() {
+        $scope.genders = ['men', 'women'];
+        $scope.selectedGenderId = 0;
+        $scope.openTab = '';
+        $scope.selectedTab = '';
+        $scope.introPassed = false;
+        $scope.visUpdating = false;
+        $scope.mainLoading = false;
+        //user-typed names in option-name
+        $scope.searchedAthletes = [];
+        //enable update button only when option is changed
+        $scope.optionChanged = false;
+    }
+
+    initIntro();
+    $scope.goToIntro = initIntro;
 
     //left menu
     $scope.sub = { data: false, insights: false };
@@ -19,13 +30,11 @@ angular.module('swimmerApp')
         $scope.sub.insights = false;
     };
 
+    /* loading and updating vis */
+
     //default values when original data loaded or gender switched
     //event(meets-event category selection) is for men, name(name search) is women
-        // '0IND-100Bk', '0IND-200Bk',
-        // '0IND-100Br', '0IND-200Br',
-        // '0IND-100Fly', '0IND-200Fly',
-        // '0IND-200IM', '0IND-400IM',
-        // '1TEAM-4X100Fr', '1TEAM-4X100M', '1TEAM-4X200Fr']
+    $scope.category = {}; //for option-events $scope.sel, selParent in processor
     var defaultEvents = {
         meets: ['0OG-2016', '0OG-2012', '0OG-2008'],
         events: ['0IND-50Fr', '0IND-100Fr', '0IND-200Fr', '0IND-400Fr', '0IND-1500Fr',
@@ -33,11 +42,6 @@ angular.module('swimmerApp')
     };
     var defaultName = 'Kathleen Ledecky';
 
-    /* loading and updating vis */
-
-    //data loading - used in Intro/Main view chnage
-    $scope.loaded = false;
-    $scope.introPassed = false;
     function completeMainInit() {
         console.log('7.main, loading done');
         $scope.athletesOnFocus = [];
@@ -138,12 +142,6 @@ angular.module('swimmerApp')
 
     /* option control */
 
-    //user-typed names in option-name
-    $scope.searchedAthletes = [];
-
-    //enable update button only when option is changed
-    $scope.optionChanged = false;
-
     //when tab is selected
     $scope.toggleTabs = function (v) {
         $scope.openTab = $scope.openTab === v ? '' : v;
@@ -186,6 +184,7 @@ angular.module('swimmerApp')
             }, 100);
         }
     };
+
     $scope.$watch('sel', function (newVal, oldVal) {
         if (!_.isUndefined(oldVal) && newVal !== oldVal) {
             $scope.optionChanged = true;
@@ -214,8 +213,6 @@ angular.module('swimmerApp')
     };
 
     /* init vis after all data loading */
-
-    //var mainWidth; //vis width
 
     function initVis() {
 
@@ -287,7 +284,6 @@ angular.module('swimmerApp')
     };
 
     //get data and draw SVG
-    $scope.loaded = false;
     $http.get('data/data.json').then(function (d) {
 
         console.log('1.main, data receiverd', d.data);
