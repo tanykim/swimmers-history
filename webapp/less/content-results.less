@@ -17,12 +17,15 @@
             margin-bottom: @pg-sm;
         }
     }
-    .option-dd-click {
+    .option-click, .option-dd-click {
         color: @main;
+    }
+    .option-click {
+        .link();
     }
     .dropdown-menu {
         margin-bottom: @pg-sm;
-        -webkit-box-shadow: 0 0 0 rgba(0,0,0,0); 
+        -webkit-box-shadow: 0 0 0 rgba(0,0,0,0);
         box-shadow: 0 0 0 rgba(0,0,0,0);
         border: 1px solid @lightestGrey;
     }
@@ -77,7 +80,7 @@
         color: @grey;
         .number {
             color: @main;
-        }        
+        }
     }
     .athlete {
         padding: @pg-xs @pg-sm;

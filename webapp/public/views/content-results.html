@@ -1,8 +1,8 @@
 <div class="info-title"> Select swimmers and see the results of their shared races </div>
 <ul class="info-options">
     <li class="option-li"> <span class="option">Option 1</span> Click nodes (swimmers) in the graph below</li>
-    <li class="option-li"> 
-        <span class="option">Option 2</span> Select all swimmers at one of the 
+    <li class="option-li">
+        <span class="option">Option 2</span> Select all swimmers at one of the
         <span uib-dropdown on-toggle="toggled(open)">
           <a href id="race-dropdown" uib-dropdown-toggle class="option-dd-click">
             shared races <span class="caret"></span>
@@ -13,15 +13,17 @@
         </span>
         <span class="sub">(reset previous selection)</span>
     </li>
-    <li class="option-li"> 
-        <span class="option">Option 3</span> Select one of the
+    <li class="option-li">
+        <span class="option">Option 3</span> Select
+        <span ng-show="selectedTab == 'name' && topAthletes.length > 1"><a ng-click="showAllSearchedAthletes()" class="option-click">all searched swimmers</a> or </span>
+        one of the
         <span uib-dropdown on-toggle="toggled(open)">
             <a href id="athlete-dropdown" class="option-dd-click" uib-dropdown-toggle>
-                <span ng-show="selectedTab == 'name'">searched</span><span ng-show="selectedTab == 'event'">highly-ranked</span> swimmers<span class="caret"></span>
+                <span ng-show="selectedTab == 'name'">searched</span><span ng-show="selectedTab == 'event'">highly-ranked</span> swimmers <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="athlete-dropdown">
                 <li ng-repeat="a in topAthletes track by $index" ng-click="showAthletesByName($index)"><a>{{ a.name }}</a></li>
-            </ul> 
+            </ul>
         </span>
         <span class="sub">(reset previous selection)</span>
     </li>

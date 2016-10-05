@@ -438,8 +438,12 @@ a {
   list-style: none;
   margin-bottom: 15px;
 }
+.results .option-click,
 .results .option-dd-click {
   color: #2bc0e4;
+}
+.results .option-click {
+  cursor: pointer;
 }
 .results .dropdown-menu {
   margin-bottom: 15px;

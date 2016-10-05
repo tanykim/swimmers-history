@@ -126,6 +126,11 @@ angular.module('swimmerApp')
         updateResultsAndVis();
     };
 
+    $scope.showAllSearchedAthletes = function () {
+        processor.addAllSearchedAthletes();
+        updateResultsAndVis();
+    };
+
     $scope.showAthletesByName = function (val) {
         processor.addAthletesByAthlete($scope.topAthletes[val]);
         updateResultsAndVis();
@@ -251,7 +256,8 @@ angular.module('swimmerApp')
     }
 
     //intro visualize button clicked
-    $scope.startMainLoading = function () {
+    $scope.startMainLoading = function (genderId) {
+        $scope.selectedGenderId = genderId;
         $scope.mainLoading = true;
         setTimeout(function () {
             initVis();
