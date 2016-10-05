@@ -240,6 +240,14 @@ a {
   padding-left: 15px;
   padding-bottom: 15px;
 }
+.options .top-wrapper .close-icon {
+  text-align: right;
+  margin-bottom: 15px;
+}
+.options .top-wrapper .close-icon a {
+  color: #495057;
+  cursor: pointer;
+}
 .options .desc {
   color: #868e96;
   font-size: 14px;

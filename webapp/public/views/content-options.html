@@ -1,5 +1,9 @@
 <!-- update button -->
 <div class="row top-wrapper">
+    <!-- close the option -->
+    <div class="col-xs-12 close-icon">
+        <a ng-click="toggleTabs(openTab)"><span class="typcn typcn-delete"></span></a>
+    </div>
     <div class="col-xs-12 col-sm-6 desc">
         <span ng-if="openTab == 'event'">Search swimmers by the combination of meets (competition) and events (final races)</span>
         <span ng-if="openTab == 'name'">Search swimers who competed against or with (as other legs at team events) the typed swimmer(s).</span>
