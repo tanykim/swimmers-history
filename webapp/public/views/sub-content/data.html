@@ -1,4 +1,4 @@
-<div ng-include="'views/sub-content-close.html'"></div>
+<div ng-include="'views/sub-content/close.html'"></div>
 
 <h1> What is dataset? </h1>
 <p>
@@ -8,11 +8,11 @@
     <i> Each swimmer is a node presented as a circle. </i> The importance of a node is decided on the record of the collected races; FINA applies points to the competitors. The points are typically around +700 and swimmers with higher places and better records (e.g., game record or world record) earns higher points. Each node is represented as a circle whose area is proportional to the accumulated points.
 </p>
 <p>
-    <i> The link (edge) of two swimmers is presented a semi-transparent straight line. </i> If a pair of swimmers competed against each other at a race, they are linked. Swimming together representing a same country in a same team event is not considered for links. The thickness of the line represents the number of the shared raced by the two linked swimmers.
+    <i> Swimmers are linked if they have competed aginst one other at one or multiple races. </i> The link (edge) of two swimmers is presented a semi-transparent straight line. The thickness of the line represents the number of the shared raced by the two linked swimmers. Swimming together representing a same country in a same team event is not considered for links.
 </p>
-<h1>Which competetions (meets) are covered?</h1>
+<h1>Which competetions/meets are covered?</h1>
 <p>
-    The data source site Swim Ranking currently open data from 2007 to the public. Among various international swim meets, I focus the followings.
+    The data source site Swim Ranking currently open data from 2007 to the public. Among various international swim games, I focus the followings <i>5 competitions</i>. From 2007 to 2016, <i> total 17 meets </i> are covered.
 </p>
 <ul>
 	<li> Olympic Games (OG, Every 4-th years - 2008, 2012, 2016) </li>
@@ -23,6 +23,8 @@
 </ul>
 <h1>Which events covered?</h1>
 <p> Events are largely divided into two - individul and medley. In this project, I cover the results of the events whose type is competed at the Olympics. For example, shorter distance (50m) backstroke and breaststroke races are served in the Wrold Championships but not in the Olympics. Between the races of men and women, there is no perfect symmetry; the longest free style for men is 1500m, whereas women compete at 800m. Here is the list of events in the dataset I use.
+</p>
+<p> The dataset inlcudes only final races. You can explore total <i>544 races</i> (16 events X 2 genders X 17 meets) through Swimmer's Network. At the end, I derived total <i>869 men</i> and <i>779 women</i> swimmers.
 </p>
 <ul>
     <li> 50m Freestyle </li>

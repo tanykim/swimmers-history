@@ -6,7 +6,6 @@
     <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
     <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/>
     <link rel="stylesheet" href="components/typicons.font/src/font/typicons.min.css"/>
-    <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
     <!-- injector:css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endinjector -->
@@ -24,8 +23,8 @@
             <!-- main content -->
             <div class="content" ng-show="introPassed" ng-include="'views/content.html'"></div>
             <!-- sub content -->
-            <div class="sub-content data" ng-show="sub.data" ng-include="'views/sub-content-data.html'"></div>
-            <div class="sub-content insights" ng-show="sub.insights" ng-include="'views/sub-content-insights.html'"></div>
+            <div class="sub-content data" ng-show="sub.data" ng-include="'views/sub-content/data.html'"></div>
+            <div class="sub-content insights" ng-show="sub.insights" ng-include="'views/sub-content/insights.html'"></div>
         </div>
 
         <!-- left-menu -->
@@ -43,8 +42,6 @@
 <script src="components/d3/d3.js"></script>
 <script src="components/underscore/underscore.js"></script>
 <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script src="components/jquery/dist/jquery.js"></script>
-<script src="components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="components/angular-sanitize/angular-sanitize.js"></script>
 <!-- endbower -->
 

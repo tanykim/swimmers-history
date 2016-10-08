@@ -1,4 +1,6 @@
 /* html base */
+@import 'public/components/bootstrap/less/bootstrap';
+
 body {
     font-family: 'Spoqa Han Sans', Helvetica, arial, sans-serif;
     margin: 0;
@@ -42,12 +44,12 @@ a {
     line-height: 1em;
 }
 
-@import '_colors';
-@import '_size';
-@import 'title-logo';
-@import 'intro';
-@import 'left-menu';
-@import 'content';
-@import 'sub-content';
-@import '_d3';
-@import '_responsive';
+@import 'common/_colors';
+@import 'common/_size';
+@import 'views/title-logo';
+@import 'views/intro';
+@import 'views/left-menu';
+@import 'views/content';
+@import 'views/sub-content';
+@import 'common/_d3';
+@import 'common/_responsive';

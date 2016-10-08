@@ -15,6 +15,7 @@ module.exports = function (grunt) {
 
     // Define the configuration for all the tasks
     grunt.initConfig({
+        // TODO: Bootstrap not inlcuded in the index.html
         // TODO: Required config property "wiredep.task.src" missing. Use --force to continue.
         wiredep: {
             task: {

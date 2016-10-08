@@ -4,20 +4,20 @@
 </div>
 
 <!-- menu (option tabs and gender switch) -->
-<div class="menu" ng-hide="visUpdating && openTab == ''" ng-include="'views/content-menu.html'"></div>
+<div class="menu" ng-hide="visUpdating && openTab == ''" ng-include="'views/content/menu.html'"></div>
 
 <!-- options -->
-<div class="row options" ng-class="{'options-round': openTab == 'name'}" ng-hide="openTab == ''" ng-include="'views/content-options.html'"></div>
+<div class="row options" ng-class="{'options-round': openTab == 'name'}" ng-hide="openTab == ''" ng-include="'views/content/options.html'"></div>
 
 <!-- content/main -->
 <div ng-hide="visUpdating || openTab != ''">
 
     <!-- summary -->
-    <div class="summary" ng-class="{'summary-round': selectedTab == 'name'}" ng-include="'views/content-summary.html'"></div>
+    <div class="summary" ng-class="{'summary-round': selectedTab == 'name'}" ng-include="'views/content/summary.html'"></div>
 
     <!-- vis -->
-    <div class="vis" ng-include="'views/content-vis.html'"></div>
+    <div class="vis" ng-include="'views/content/vis.html'"></div>
 
     <!-- table -->
-    <div class="results" ng-include="'views/content-results.html'" id="results"></div>
+    <div class="results" ng-include="'views/content/results.html'" id="results"></div>
 </div>
