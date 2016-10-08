@@ -1,0 +1,5 @@
+<a>
+    <span ng-bind-html="match.label.name | uibTypeaheadHighlight:query" class="name"></span>
+    <span ng-bind-html="match.label.country | uibTypeaheadHighlight:query" class="country"></span>
+    <span class="race-count"><span ng-bind-html="match.label.records.length"></span> races</span>
+</a>
