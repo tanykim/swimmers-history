@@ -1,8 +1,23 @@
 .title-logo {
     padding-top: @pg-lg;
     height: @title-height - @pg-lg;
-    font-size: @large;
-    letter-spacing: @ls-md;
     color: @main;
     .link();
+    .swimmer {
+        font-size: @large;
+        letter-spacing: @ls-lg;
+    }
+    .network {
+        font-size: @xlarge;
+        .lighter();
+        letter-spacing: @ls-md;
+    }
+    .overlay {
+        background-image: url('../assets/wave.svg');
+        position: absolute;
+        height: 100%;
+        width: 50%;
+        top: 0;
+        left: 0;
+    }
 }

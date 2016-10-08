@@ -6790,10 +6790,25 @@ a {
 .title-logo {
   padding-top: 28px;
   height: 92px;
-  font-size: 18px;
-  letter-spacing: 0.08em;
   color: #2bc0e4;
   cursor: pointer;
+}
+.title-logo .swimmer {
+  font-size: 18px;
+  letter-spacing: 0.2em;
+}
+.title-logo .network {
+  font-size: 28px;
+  font-weight: lighter;
+  letter-spacing: 0.08em;
+}
+.title-logo .overlay {
+  background-image: url('../assets/wave.svg');
+  position: absolute;
+  height: 100%;
+  width: 50%;
+  top: 0;
+  left: 0;
 }
 .intro .desc {
   letter-spacing: 0.04em;
