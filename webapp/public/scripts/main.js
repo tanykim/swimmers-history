@@ -113,6 +113,12 @@ angular.module('swimmerApp')
     }
 
     //from html Result table
+    $scope.hideAllAthletes = function () {
+        visualizer.revertToDefault();
+        processor.resetSelection(updateToDefaultView);
+        $anchorScroll('vis');
+    };
+
     $scope.hideAthlete = function (index, id) {
         visualizer.revertFocusedAthlete(index, id);
         processor.removeFocusedAthlete(index);

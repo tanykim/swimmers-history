@@ -21,7 +21,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
 
     function moveAthleteName(id) {
         var draggedNode = nodeG.select('circle[id=\'' + id + '\']');
-        nodeG.select('#vis-athlete-name-' + id)
+        nodeG.select('#vis-g-athlete-name-' + id)
             .transition()
             .attr('x', draggedNode.attr('cx'))
             .attr('y', draggedNode.attr('cy'));
@@ -147,7 +147,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //return only if it's not unclicked
         if (obj.attr('clicked') === 'false') {
             obj.attr('class', 'node-normal');
-            //nodeG.select('#vis-athlete-name-' + d.id).remove();
+            //nodeG.select('#vis-g-athlete-name-' + d.id).remove();
         }
         if (obj.attr('linked') === 'true') {
             obj.attr('class', 'node-all-linked');
@@ -173,7 +173,21 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         clickedIds.splice(clickedIndex, 1);
         //vis revert to normal
         obj.attr('clicked', 'false').attr('class', 'node-normal');
-        nodeG.select('#vis-athlete-name-' + aId).remove();
+        nodeG.select('#vis-g-athlete-name-' + aId).remove();
+    };
+
+    //remove all selected athletes from the close icon above table
+    this.revertToDefault = function() {
+        clickedIds = [];
+        nodeG.selectAll('circle')
+            .attr('clicked', 'false')
+            .attr('linked', 'false')
+            .attr('class', 'node-normal');
+        linkG.selectAll('line')
+            .attr('clicked', 'false')
+            .attr('linked', 'false')
+            .attr('class', 'link-normal');
+        nodeG.selectAll('.vis-athlete-name').remove();
     };
 
     function showClick(obj, d, showAthleteCb, hideAthleteCb) {
@@ -209,7 +223,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         w = document.getElementById('vis-width').clientWidth - 30;
         dim = w * 0.6;
         d3.select('#svg').attr('height', w * 0.8);
-        svg = d3.select('#vis');
+        svg = d3.select('#vis-g');
 
         //1: no animation at first, 0: move more, dispersed
         var decayRange = d3.scaleLinear().range([0.5, 1]).domain([1, 800]);
@@ -351,7 +365,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
 
     //hide from deselction at HTML vis
     this.hideLinkedNodes = function () {
-       nodeG.selectAll('circle')
+        nodeG.selectAll('circle')
             .filter(function (d) {
                 return d3.select(this).attr('linked') === 'true';
             })

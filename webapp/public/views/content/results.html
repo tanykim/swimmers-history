@@ -14,25 +14,35 @@
         <span class="sub">(reset previous selection)</span>
     </li>
     <li class="option-li">
-        <span class="option">Option 3</span> Select
-        <span ng-show="selectedTab == 'name' && topAthletes.length > 1"><a ng-click="showAllSearchedAthletes()" class="option-click">all searched swimmers</a> or </span>
-        one of the
+        <span class="option">Option 3</span> Select one of the
         <span uib-dropdown on-toggle="toggled(open)">
             <a href id="athlete-dropdown" class="option-dd-click" uib-dropdown-toggle>
-                <span ng-show="selectedTab == 'name'">searched</span><span ng-show="selectedTab == 'event'">highly-ranked</span> swimmers <span class="caret"></span>
+                <span ng-show="selectedTab == 'name'">searched</span>
+                <span ng-show="selectedTab == 'event'">highly-ranked</span>
+                swimmers <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="athlete-dropdown">
                 <li ng-repeat="a in topAthletes track by $index" ng-click="showAthletesByName($index)"><a>{{ a.name }}</a></li>
             </ul>
         </span>
+    </li>
+    <li class="option-li" ng-show="selectedTab == 'name' && topAthletes.length > 1">
+        <span class="option">Option 4</span> Select
+        <a ng-click="showAllSearchedAthletes()" class="option-click">all searched swimmers</a>
+        </span>
         <span class="sub">(reset previous selection)</span>
     </li>
 </ul>
 
+<!-- remove all -->
+<div class="remove-all" ng-show="athletesOnFocus.length > 1">
+    <a ng-click="hideAllAthletes()"><span class="typcn typcn-delete"></span> Remove all swimmers</a>
+</div>
+
 <!-- table -->
 <div class="table-wrapper" ng-show="athletesOnFocus.length > 0">
     <!-- no shared races -->
-    <div class="no-races" ng-show="sharedRaces.length == 0 ">
+    <div class="no-races" ng-show="sharedRaces.length == 0">
         These {{ athletesOnFocus.length }} swimmers did not compete with each other
     </div>
     <table class="race-athlete-table">

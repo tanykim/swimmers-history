@@ -1,7 +1,9 @@
 .results {
     margin-top: @pg-lg;
     .info-title {
-        color: @grey;
+        color: @highlight;
+        font-size: @small;
+        letter-spacing: @ls-md;
     }
     .info-options {
         .option {
@@ -24,7 +26,8 @@
         .link();
     }
     .dropdown-menu {
-        margin-bottom: @pg-sm;
+        margin-top: @pg-xs;
+        margin-bottom: @pg-lg;
         -webkit-box-shadow: 0 0 0 rgba(0,0,0,0);
         box-shadow: 0 0 0 rgba(0,0,0,0);
         border: 1px solid @lightestGrey;
@@ -38,6 +41,15 @@
     }
     .sub {
         color: @grey;
+    }
+    .remove-all {
+        font-size: @small;
+        margin-bottom: @pg-sm * -1;
+        padding-top: @pg-sm;
+        a {
+            .link();
+            color: @black;
+        }
     }
     .no-races {
         padding-top: @pg-sm;
@@ -84,7 +96,7 @@
     }
     .athlete {
         padding: @pg-xs @pg-sm;
-        min-width: 150px;
+        min-width: 162px;
         box-sizing: border-box;
         .country {
             color: @grey;
@@ -92,7 +104,7 @@
         }
     }
     .winner {
-        background-color: @main-light;
+        background-color: @main;
     }
     .record {
         min-width: 145px;

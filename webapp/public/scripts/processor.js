@@ -254,13 +254,21 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         };
     }
 
+    function isAlreadyFocused(athlete) {
+        var result = false;
+        for (var i in self.athletesOnFocus) {
+            if (self.athletesOnFocus[i].id === athlete.id) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
     this.addFocusedAthlete = function (athlete) {
 
         //check if previously added
-        for (var i in self.athletesOnFocus) {
-            if (self.athletesOnFocus[i].id === athlete.id) {
-                return false;
-            }
+        if (isAlreadyFocused(athlete)) {
+            return false;
         }
         var raceIds = _.pluck(athlete.records, 'race_id');
 
@@ -313,8 +321,11 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
     };
 
     this.addAthletesByAthlete = function (athlete) {
-        self.athletesOnFocus = [getAthleteObj(athlete)];
-        self.sharedRaces = _.pluck(athlete.records, 'race_id');
+        if (isAlreadyFocused(athlete)) {
+            return false;
+        }
+        self.athletesOnFocus.push(getAthleteObj(athlete));
+        self.sharedRaces = getSharedRaces();
         self.sharedRacesWinner = getWinnersIndex();
     };
 
