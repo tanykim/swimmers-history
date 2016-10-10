@@ -21,7 +21,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
 
     function moveAthleteName(id) {
         var draggedNode = nodeG.select('circle[id=\'' + id + '\']');
-        nodeG.select('#vis-g-athlete-name-' + id)
+        nodeG.select('.vis-athlete-name[id=\'' + id + '\']')
             .transition()
             .attr('x', draggedNode.attr('cx'))
             .attr('y', draggedNode.attr('cy'));
@@ -32,7 +32,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
 
         //check if simulation stopped every 0.2 second
         function isStopped() {
-            if (simulation.alpha() < 0.05) {
+            if (simulation.alpha() < 0.02) {
                 moveAthleteName(selectedNodeId);
             } else {
                 setTimeout(isStopped, 200);
@@ -62,7 +62,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         d.fy = null;
 
         //check simluation status
-        if (isClicked) {
+        if (isClicked === 'true') {
             checkSimulationStatus(d.id);
         }
     }
@@ -101,7 +101,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             .attr('y', d.y)
             .attr('dy', -1 * parseInt(obj.attr('r')) - 6)
             .attr('class', 'size-tiny unselectable pos-middle fill-darkGrey vis-athlete-name')
-            .attr('id', 'vis-athlete-name-' + d.id);
+            .attr('id', d.id);
     }
 
     function showMouseover(obj, d) {
@@ -173,7 +173,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         clickedIds.splice(clickedIndex, 1);
         //vis revert to normal
         obj.attr('clicked', 'false').attr('class', 'node-normal');
-        nodeG.select('#vis-g-athlete-name-' + aId).remove();
+        nodeG.select('.vis-athlete-name[id=\'' + aId + '\']').remove();
     };
 
     //remove all selected athletes from the close icon above table
@@ -241,7 +241,6 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
                 .distanceMax(dim / 2)
             )
             .force('center', d3.forceCenter(w / 2, w * 0.8 / 2));
-            // .force('center', d3.forceCenter(0, 0));
 
         //link as lines
         linkG = svg.append('g').attr('id', 'links');
@@ -283,7 +282,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
                 .on('start', dragstarted)
                 .on('drag', dragged)
                 .on('end', function (d) {
-                    return dragended(d, d.clicked);
+                    return dragended(d, d3.select(this).attr('clicked'));
                 }))
             .on('mouseover', function (d) {
                 showMouseover(d3.select(this), d);

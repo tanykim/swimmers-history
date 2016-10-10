@@ -6893,6 +6893,16 @@ a {
 .left-menu .menus a:hover {
   color: #495057;
 }
+.left-menu .menus .share {
+  display: inline-block;
+  margin-top: -0.75em;
+  vertical-align: middle;
+  margin-right: 0.5em;
+}
+.left-menu .menus .typcn {
+  font-size: 2em;
+  line-height: 0.5em;
+}
 .content {
   margin-bottom: 84px;
 }
@@ -7369,6 +7379,7 @@ a {
   color: #f5625a;
 }
 .sub-content {
+  z-index: 1000;
   border-right: 1px solid #21d7c4;
   border-left: 1px solid #21d7c4;
   background-color: #f8f9fa;
@@ -7377,14 +7388,20 @@ a {
   right: 0;
   width: 100%;
   min-height: 100%;
-  padding: 15px;
+  padding: 28px;
 }
-.sub-content .close-icon {
-  text-align: right;
-}
+.sub-content .back-icon a,
 .sub-content .close-icon a {
   color: #495057;
   cursor: pointer;
+}
+.sub-content .back-icon {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 14px;
+}
+.sub-content .close-icon {
+  text-align: right;
 }
 .sub-content h1 {
   color: #21d7c4;
@@ -7394,6 +7411,11 @@ a {
   margin-bottom: 15px;
   font-weight: lighter;
   text-transform: uppercase;
+}
+.sub-content h2 {
+  color: #21d7c4;
+  font-size: 16px;
+  letter-spacing: 0.08em;
 }
 .sub-content p,
 .sub-content ul {
@@ -7409,6 +7431,25 @@ a {
 .sub-content p i {
   font-style: normal;
   color: #f5625a;
+}
+.sub-content ul {
+  padding-left: 0;
+  list-style: none;
+}
+.sub-content ul li {
+  line-height: 160%;
+  margin-bottom: 15px;
+}
+.sub-content ul li b {
+  font-weight: normal;
+  background-color: #343a40;
+  color: #ffffff;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+.sub-content ul li i {
+  font-style: normal;
+  color: #868e96;
 }
 /* d3 */
 .pos-middle {

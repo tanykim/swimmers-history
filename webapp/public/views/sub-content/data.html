@@ -10,37 +10,41 @@
 <p>
     <i> Swimmers are linked if they have competed aginst one other at one or multiple races. </i> The link (edge) of two swimmers is presented a semi-transparent straight line. The thickness of the line represents the number of the shared raced by the two linked swimmers. Swimming together representing a same country in a same team event is not considered for links.
 </p>
+
 <h1>Which competetions/meets are covered?</h1>
 <p>
     The data source site Swim Ranking currently open data from 2007 to the public. Among various international swim games, I focus the followings <i>5 competitions</i>. From 2007 to 2016, <i> total 17 meets </i> are covered.
 </p>
 <ul>
-	<li> Olympic Games (OG, Every 4-th years - 2008, 2012, 2016) </li>
-	<li> World Championships (WC, Every odd years - 2007, 2009, 2011, 2013, 2015) </li>
-	<li> European Championships (EC, Every even years - 2008, 2010, 2012, 2014, 2016) </li>
-	<li> Commonwealth Games (CG, Every non-olympic 4-th years - 2010, 2014) </li>
-	<li> Pan Pacific Championships (PPC, Every non-olympic 4-th years - 2010, 2015) </li>
+	<li> <b>OG</b> Olympic Games / <i>Every 4-th years - 2008, 2012, 2016</i> </li>
+	<li> <b>WC</b> World Championships / <i>Every odd years - 2007, 2009, 2011, 2013, 2015</i> </li>
+	<li> <b>EC</b> European Championships / <i>Every even years - 2008, 2010, 2012, 2014, 2016</i> </li>
+	<li> <b>CG</b> Commonwealth Games / <i>Every non-olympic 4-th years - 2010, 2014</i> </li>
+	<li> <b>PPC</b> Pan Pacific Championships / <i>Every non-olympic 4-th years - 2010, 2015</i> </li>
 </ul>
+
 <h1>Which events covered?</h1>
-<p> Events are largely divided into two - individul and medley. In this project, I cover the results of the events whose type is competed at the Olympics. For example, shorter distance (50m) backstroke and breaststroke races are served in the Wrold Championships but not in the Olympics. Between the races of men and women, there is no perfect symmetry; the longest free style for men is 1500m, whereas women compete at 800m. Here is the list of events in the dataset I use.
+<p>
+    Events are largely divided into two - individul (IND) and team (TEAM). In this project, I exclude events that are not introduced to the Olympics. For example, shorter distance (50m) backstroke and breaststroke races are competed in the Wrold Championships but not in the Olympics. Between the races of men and women, there is no perfect symmetry; the longest free style for men is 1500m, whereas women compete at 800m. Here is the list of events in the dataset I use.
 </p>
-<p> The dataset inlcudes only final races. You can explore total <i>544 races</i> (16 events X 2 genders X 17 meets) through Swimmer's Network. At the end, I derived total <i>869 men</i> and <i>779 women</i> swimmers.
+<p>
+    The dataset inlcudes only final races. You can explore total <i>544 races</i> (16 events X 2 genders X 17 meets) through Swimmer's Network. At the end, I derived total <i>869 men</i> and <i>779 women</i> swimmers.
 </p>
 <ul>
-    <li> 50m Freestyle </li>
-    <li> 100m Freestyle </li>
-    <li> 200m Freestyle </li>
-    <li> 400m Freestyle </li>
-    <li> 800m Freestyle (Women) / 1500m Freestyle (Men) </li>
-    <li> 100m Backstroke </li>
-    <li> 200m Backstroke </li>
-    <li> 100m Breaststroke </li>
-    <li> 200m Breaststroke </li>
-    <li> 100m Butterfly </li>
-    <li> 200m Butterfly </li>
-    <li> 200m Medley </li>
-    <li> 400m Medley </li>
-    <li> 4 X 100m Freestyle </li>
-    <li> 4 X 200m Freestyle </li>
-    <li> 4 X 100m Medley </li>
+    <li> <b>IND</b> 50m Freestyle </li>
+    <li> <b>IND</b> 100m Freestyle </li>
+    <li> <b>IND</b> 200m Freestyle </li>
+    <li> <b>IND</b> 400m Freestyle </li>
+    <li> <b>IND</b> 800m Freestyle (Women) / 1500m Freestyle (Men) </li>
+    <li> <b>IND</b> 100m Backstroke </li>
+    <li> <b>IND</b> 200m Backstroke </li>
+    <li> <b>IND</b> 100m Breaststroke </li>
+    <li> <b>IND</b> 200m Breaststroke </li>
+    <li> <b>IND</b> 100m Butterfly </li>
+    <li> <b>IND</b> 200m Butterfly </li>
+    <li> <b>IND</b> 200m Medley </li>
+    <li> <b>IND</b> 400m Medley </li>
+    <li> <b>TEAM</b> 4 X 100m Freestyle </li>
+    <li> <b>TEAM</b> 4 X 200m Freestyle </li>
+    <li> <b>TEAM</b> 4 X 100m Medley </li>
 </ul>

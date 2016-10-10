@@ -28,8 +28,13 @@ angular.module('swimmerApp')
     $scope.hideSub = function () {
         $scope.sub.data = false;
         $scope.sub.insights = false;
+        $anchorScroll();
     };
-
+    $scope.$watch('sub', function (val) {
+        if (val.data || val.insights) {
+            $anchorScroll();
+        }
+    }, true);
     /* loading and updating vis */
 
     //default values when original data loaded or gender switched
