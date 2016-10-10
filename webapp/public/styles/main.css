@@ -6917,11 +6917,17 @@ a {
   margin-top: 15px;
   letter-spacing: 0.04em;
   margin-left: 0;
+  overflow: hidden;
 }
 .menu .tab,
 .menu .gender-switch {
-  padding: 15px 18px;
-  display: inline-block;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.menu .tab-wrapper {
+  padding-left: 0;
+  padding-right: 0;
+  display: table;
 }
 .menu .tab {
   font-size: 14px;
@@ -6929,6 +6935,9 @@ a {
   text-align: center;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
+  float: none;
+  display: table-cell;
+  vertical-align: middle;
 }
 .menu .tab a {
   color: #343a40;
@@ -6939,9 +6948,7 @@ a {
 }
 .menu .selected {
   background-color: #f1f3f5;
-  border-top: 1px solid #f1f3f5;
-  border-right: 1px solid #f1f3f5;
-  border-left: 1px solid #f1f3f5;
+  border: 1px solid #f1f3f5;
 }
 .menu .open {
   background-color: #ffffff;
@@ -6952,15 +6959,14 @@ a {
   border-left: 1px solid #2bc0e4;
 }
 .menu .normal {
-  border-top: 1px solid #ffffff;
-  border-right: 1px solid #ffffff;
-  border-left: 1px solid #ffffff;
+  border: 1px solid #ffffff;
 }
 .menu .normal a {
   color: #868e96;
 }
 .menu .gender-switch {
-  float: right;
+  padding-right: 0;
+  text-align: right;
   cursor: pointer;
 }
 .menu .gender-switch a {
@@ -6974,19 +6980,41 @@ a {
 }
 .options {
   margin-top: -1px;
-  margin-left: 0;
-  margin-right: 0;
-  padding-top: 18px;
-  padding-bottom: 18px;
+  margin-left: 15px;
+  margin-right: 15px;
+  padding-top: 0px;
+}
+.options .top-border {
+  height: 4px;
+}
+.options .top-border .left-of-selected {
+  border-top: 1px solid #2bc0e4;
+  border-left: 1px solid #2bc0e4;
+  border-top-left-radius: 4px;
+  height: 100%;
+}
+.options .top-border .right-of-selected {
+  border-top: 1px solid #2bc0e4;
+  height: 100%;
+}
+.options .top-border .left-tab {
+  border-left: 1px solid #2bc0e4;
+  height: 100%;
+}
+.options .top-border .right-tab {
+  border-left: 1px solid #2bc0e4;
+  border-right: 1px solid #2bc0e4;
+}
+.options .top-border .right-corner {
+  border-top: 1px solid #2bc0e4;
+  border-right: 1px solid #2bc0e4;
   border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  border-bottom-left-radius: 4px;
-  border: 1px solid #2bc0e4;
+  height: 100%;
 }
 .options .top-wrapper {
-  padding-right: 15px;
-  padding-left: 15px;
-  padding-bottom: 15px;
+  padding: 15px;
+  border-left: 1px solid #2bc0e4;
+  border-right: 1px solid #2bc0e4;
 }
 .options .top-wrapper .close-icon {
   text-align: right;
@@ -7034,8 +7062,14 @@ a {
   font-weight: lighter;
   letter-spacing: 0.08em;
 }
-.options .events-wrapper {
-  padding: 15px;
+.options .events-wrapper,
+.options .name-wrapper {
+  padding: 15px 15px 28px 15px;
+  border-right: 1px solid #2bc0e4;
+  border-bottom: 1px solid #2bc0e4;
+  border-left: 1px solid #2bc0e4;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 .options .events-wrapper ul {
   margin: 0;
@@ -7074,7 +7108,6 @@ a {
   text-decoration: line-through;
 }
 .options .name-wrapper {
-  padding: 15px;
   /* placeholder color change */
 }
 .options .name-wrapper .form-control {
@@ -7139,6 +7172,7 @@ a {
   border-top-left-radius: 4px;
 }
 .summary {
+  margin-top: -1px;
   background-color: #f1f3f5;
   padding-top: 24px;
   padding-right: 18px;
@@ -7544,7 +7578,36 @@ a {
   fill: #ffffff;
 }
 /* Extra small devices (phones, less than 768px) */
-/* No media query since this is the default in Bootstrap */
+@media (max-width: 992px) {
+  .left-menu {
+    margin-top: 0;
+  }
+  .options .right-of-selected {
+    border-right: 1px solid #2bc0e4;
+    border-top-right-radius: 4px;
+  }
+  .options .right-tab {
+    border-left: none !important;
+    height: 100%;
+  }
+  .options .total {
+    margin-top: 15px;
+  }
+  .options .total .label {
+    margin-top: 15px;
+  }
+  .options .kind:first-child {
+    border-right: none;
+  }
+  .options .kind:last-child {
+    margin-top: 28px;
+    padding-top: 28px;
+    border-top: 1px solid #dee2e6;
+  }
+  .options .name-wrapper .form-control {
+    width: 100%;
+  }
+}
 /* Small devices (tablets, 768px and up) */
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {

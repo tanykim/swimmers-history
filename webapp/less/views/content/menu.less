@@ -2,9 +2,15 @@
     margin-top: @pg-sm;
     letter-spacing: @ls-sm;
     margin-left: 0;
+    overflow: hidden;
     .tab, .gender-switch {
-        padding: @pg-sm @pg-md;
-        display: inline-block;
+        padding-top: @pg-sm;
+        padding-bottom: @pg-sm;
+    }
+    .tab-wrapper {
+        padding-left: 0;
+        padding-right: 0;
+        display: table;
     }
     .tab {
         font-size: @small;
@@ -12,6 +18,9 @@
         text-align: center;
         border-top-right-radius: @bd-radius;
         border-top-left-radius: @bd-radius;
+        float: none;
+        display: table-cell;
+        vertical-align: middle;
         a {
             color: @black;
             .link();
@@ -22,9 +31,7 @@
     }
     .selected {
         background-color: @lightestGrey-bg;
-        border-top: 1px solid @lightestGrey-bg;
-        border-right: 1px solid @lightestGrey-bg;
-        border-left: 1px solid @lightestGrey-bg;
+        border: 1px solid @lightestGrey-bg;
     }
     .open {
         background-color: @white;
@@ -35,15 +42,14 @@
         border-left: @bd-thin-main;
     }
     .normal {
-        border-top: @bd-thin-w;
-        border-right: @bd-thin-w;
-        border-left: @bd-thin-w;
+        border: @bd-thin-w;
         a {
             color: @grey;
         }
     }
     .gender-switch {
-        float: right;
+        padding-right: 0;
+        text-align: right;
         .link();
         a {
             color: @grey;

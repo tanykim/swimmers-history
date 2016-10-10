@@ -1,9 +1,11 @@
-<div class="tab" ng-class="openTab == 'event' ? 'open' : (selectedTab == 'event' ? 'selected' : 'normal')">
-    <a ng-click="toggleTabs('event')"><span class="typcn typcn-clipboard"></span> Meets &amp; Events</a>
-</div>
-<div class="tab" ng-class="openTab == 'name' ? 'open' : (selectedTab == 'name' ? 'selected' : 'normal')">
-    <a ng-click="toggleTabs('name')"><span class="typcn typcn-zoom"></span> Name Search</a>
-</div>
-<div class="gender-switch">
+<div class="col-xs-12 col-md-4 col-md-push-8 gender-switch">
     <a ng-click="switchGender()"><span class="typcn typcn-eye"></span> switch to {{ genders[selectedGenderId * -1 + 1] }}</a>
+</div>
+<div class="col-xs-12 col-md-8 col-md-pull-4 tab-wrapper">
+    <div class="col-xs-6 tab" ng-class="openTab == 'event' ? 'open' : (selectedTab == 'event' ? 'selected' : 'normal')">
+        <a ng-click="toggleTabs('event')"><span class="typcn typcn-clipboard"></span> Meets &amp; Events</a>
+    </div>
+    <div class="col-xs-6 tab" ng-class="openTab == 'name' ? 'open' : (selectedTab == 'name' ? 'selected' : 'normal')">
+        <a ng-click="toggleTabs('name')"><span class="typcn typcn-zoom"></span> Name Search</a>
+    </div>
 </div>

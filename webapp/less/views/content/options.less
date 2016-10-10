@@ -3,18 +3,40 @@
 }
 .options {
     margin-top: -1px;
-    margin-left: 0;
-    margin-right: 0;
-    padding-top: @pg-md;
-    padding-bottom: @pg-md;
-    border-top-right-radius: @bd-radius;
-    border-bottom-right-radius: @bd-radius;
-    border-bottom-left-radius: @bd-radius;
-    border: @bd-thin-main;
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-top: 0px;
+    .top-border {
+        height: @bd-radius;
+        .left-of-selected {
+            border-top: @bd-thin-main;
+            border-left: @bd-thin-main;
+            border-top-left-radius: @bd-radius;
+            height: 100%;
+        }
+        .right-of-selected {
+            border-top: @bd-thin-main;
+            height: 100%;
+        }
+        .left-tab {
+            border-left: @bd-thin-main;
+            height: 100%;
+        }
+        .right-tab {
+            border-left: @bd-thin-main;
+            border-right: @bd-thin-main;
+        }
+        .right-corner {
+            border-top: @bd-thin-main;
+            border-right: @bd-thin-main;
+            border-top-right-radius: @bd-radius;
+            height: 100%;
+        }
+    }
     .top-wrapper {
-        padding-right: @pg-sm;
-        padding-left: @pg-sm;
-        padding-bottom: @pg-sm;
+        padding: @pg-sm;
+        border-left: @bd-thin-main;
+        border-right: @bd-thin-main;
         .close-icon {
             text-align: right;
             margin-bottom: @pg-sm;
@@ -62,8 +84,15 @@
         .lighter();
         letter-spacing: @ls-md;
     }
+    .events-wrapper, .name-wrapper {
+        padding: @pg-sm @pg-sm @pg-lg @pg-sm;
+        border-right: @bd-thin-main;
+        border-bottom: @bd-thin-main;
+        border-left: @bd-thin-main;
+        border-bottom-right-radius: @bd-radius;
+        border-bottom-left-radius: @bd-radius
+    }
     .events-wrapper {
-        padding: @pg-sm;
         ul {
             margin: 0;
             padding: 0;
@@ -103,7 +132,6 @@
         }
     }
     .name-wrapper {
-        padding: @pg-sm;
         .form-control {
             width: 50%;
             -webkit-box-shadow: inset 0 0 0 rgba(0,0,0,0) !important;
