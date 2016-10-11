@@ -22,20 +22,16 @@
         display: table-cell;
         vertical-align: middle;
         a {
-            color: @black;
             .link();
-            &:hover {
-                color: @darkGrey;
-            }
+            color: @oc-gray-8;
         }
     }
     .selected {
-        background-color: @lightestGrey-bg;
-        border: 1px solid @lightestGrey-bg;
+        background-color: @oc-gray-1;
+        border: 1px solid @oc-gray-1;
     }
     .open {
         background-color: @white;
-        color: @main;
         border-top: @bd-thin-main;
         border-right: @bd-thin-main;
         border-bottom: @bd-thin-w;
@@ -43,18 +39,25 @@
     }
     .normal {
         border: @bd-thin-w;
-        a {
-            color: @grey;
-        }
+/*        a {
+            color: @oc-gray-6;
+        }*/
     }
     .gender-switch {
         padding-right: 0;
         text-align: right;
-        .link();
+/*        .link();
         a {
-            color: @grey;
+            color: @oc-gray-6;
             &:hover {
-                color: @darkGrey;
+                color: @oc-gray-7;
+            }
+        }*/
+        a {
+            color: @oc-gray-6;
+            .link();
+            &:hover {
+                color: @oc-gray-7;
             }
         }
     }

@@ -6768,18 +6768,16 @@ a {
 }
 /* grey scale */
 /* from open-color https://yeun.github.io/open-color */
-/* grey 8 for main text */
-/* grey 7 for mouseover, result line */
-/* grey 6 for sub text */
-/* grey 5 for inactive text */
-/* grey 4 for form border */
-/* grey 3 for layout */
-/* grey 1 for background */
+/* main text */
+/* mouseover, result line */
+/* sub text */
+/* inactive text */
+/* border */
+/* layout */
+/* background */
 /* content colors */
-/* background gradation blue */
 /* vis */
 /* result */
-/*@darkGrey-trans: fade(@darkGrey, 20%);*/
 /* font-size */
 /* letter spacing */
 /* word spacing */
@@ -6940,11 +6938,8 @@ a {
   vertical-align: middle;
 }
 .menu .tab a {
-  color: #343a40;
   cursor: pointer;
-}
-.menu .tab a:hover {
-  color: #495057;
+  color: #343a40;
 }
 .menu .selected {
   background-color: #f1f3f5;
@@ -6952,7 +6947,6 @@ a {
 }
 .menu .open {
   background-color: #ffffff;
-  color: #2bc0e4;
   border-top: 1px solid #2bc0e4;
   border-right: 1px solid #2bc0e4;
   border-bottom: 1px solid #ffffff;
@@ -6960,17 +6954,24 @@ a {
 }
 .menu .normal {
   border: 1px solid #ffffff;
-}
-.menu .normal a {
-  color: #868e96;
+  /*        a {
+            color: @oc-gray-6;
+        }*/
 }
 .menu .gender-switch {
   padding-right: 0;
   text-align: right;
-  cursor: pointer;
+  /*        .link();
+        a {
+            color: @oc-gray-6;
+            &:hover {
+                color: @oc-gray-7;
+            }
+        }*/
 }
 .menu .gender-switch a {
   color: #868e96;
+  cursor: pointer;
 }
 .menu .gender-switch a:hover {
   color: #495057;
