@@ -1,4 +1,4 @@
-<span class="number">{{ selectedAthletes.length }} {{ genders[selectedGenderId] }}</span> 
+<span class="number">{{ selectedAthletes.length }} {{ genders[selectedGenderId] }}</span>
 swimmers competed
 <span ng-if="selectedTab == 'event'">
     at
@@ -7,7 +7,8 @@ swimmers competed
             <span class="kind" ng-if="selParent[kind][key]">
                 <span class="meets-title" ng-if="kind == 'meets'">{{ key.slice(1) }}</span>
                 <span ng-repeat="(k, v) in val" ng-class="sel[kind][key][k] ? 'valid' : 'none'" >
-                    <span ng-if="sel[kind][key][k]" > {{ k }} </span>
+                    <span ng-if="sel[kind][key][k] && kind == 'meets'" >{{ k.slice(1) }}</span>
+                    <span ng-if="sel[kind][key][k] && kind == 'events'" >{{ k }}</span>
                 </span>
             </span>
         </span>

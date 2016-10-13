@@ -8,22 +8,20 @@ meets = {}
 with open('R_results/json/meets.json') as meetsObj:
     meets = json.load(meetsObj)
 
-print(meets)
-
 genders = {
     '1': {'name': 'men', 'styles': [1, 2, 3, 5, 8, 10, 11, 13, 14, 16, 17, 18, 19, 27, 29, 40]},
     '2': {'name': 'women', 'styles': [1, 2, 3, 5, 6, 10, 11, 13, 14, 16, 17, 18, 19, 27, 29, 40]}
 }
 
-# #simple version for testing
-# # meets = {
-# #     "589276": {"type":"2","year":"2015","location":"Kazan (RUS)","name":"FINA: 16th World Championships"},
-# #     "563769": {"type":"1","year":"2012","location":"London (GBR)","name":"XXX Olympic Games"},
-# #     "596227": {"type":"1","year":"2016","location":"Rio (BRA)","name":"XXXI Olympic Games"},
-# #     "546176": {"type": "7450054", "year": "2010", "location": "Irvine (USA)", "name": "11th Pan Pacific Championships"}
-# # }
+#simple version for testing
+# meets = {
+#     "589276": {"type":"2","year":"2015","location":"Kazan (RUS)","name":"FINA: 16th World Championships"},
+#     "563769": {"type":"1","year":"2012","location":"London (GBR)","name":"XXX Olympic Games"},
+#     "596227": {"type":"1","year":"2016","location":"Rio (BRA)","name":"XXXI Olympic Games"},
+#     "546176": {"type": "7450054", "year": "2010", "location": "Irvine (USA)", "name": "11th Pan Pacific Championships"}
+# }
 # genders = {
-#     '1': {'name': 'men', 'styles': [1]}
+#     '1': {'name': 'men', 'styles': [1, 2]}
 #     # '2': {'name': 'women', 'styles': [1]}
 # }
 
@@ -33,6 +31,18 @@ meets_name = {
     '3': ['European Championships', '2EC'],
     '5': ['Commonwealth Games', '3CG'],
     '7450054': ['Pan Pacific Championships', '4PPC']
+}
+meet_year_letter = {
+    '2016': 'a',
+    '2015': 'b',
+    '2014': 'c',
+    '2013': 'd',
+    '2012': 'e',
+    '2011': 'f',
+    '2010': 'g',
+    '2009': 'h',
+    '2008': 'i',
+    '2007': 'j'
 }
 events_name = {
     '1': ['50m Freestyle', '50Fr', '0IND'],
@@ -59,7 +69,7 @@ all_athletes = {'men': {}, 'women': {}}
 node_edges = {'men': [], 'women': []}
 
 # add race at each html read
-race = {'men': {}, 'women': {}}
+#race = {'men': {}, 'women': {}}
 
 # collect athletes from all html files
 all_athletes = {'men': {}, 'women': {}}
@@ -109,6 +119,19 @@ def add_new_athlete(athlete_name, country, record, gender, id):
 def is_athlete_entered(id, gender):
     return True if (id in all_athletes[gender]) else False
 
+def has_only_lastname(id, gender):
+    return True if all_athletes[gender][id]['name'].split(' ')[0][1] == '.' else False
+
+def get_fullname(names):
+    athlete_name = names[0].string.split(', ')
+    ans = []
+    for an in athlete_name:
+        n_array = an.strip().split(' ')
+        ns = map(lambda x: x.strip().capitalize(), n_array)
+        n = ' '.join(ns)
+        ans.append(n)
+    return ans[1].strip() + ' ' + ans[0].strip()
+
 def get_swimtime(t):
     tsplit = t.split(':')
     minute = 0
@@ -141,14 +164,14 @@ def get_athletes_by_html (race_id, results, gender):
         elif place == '-':
             place = place_no
             point = int(places[1].string)
-            print(point)
             next_swimtime = get_swimtime(next_elem.find('td', class_='swimtime').string.strip())
             swimtime = get_swimtime(swimtime_str)
             if swimtime < next_swimtime:
                 place_no += 1
-                print(swimtime, next_swimtime, place_no)
         else:
-            place = re.sub('[.]', '', str(place)).strip()
+            #strip <img> tag for 1, 2, 3.
+            place_w_dot = re.findall('[0-9][.]', str(place))[0]
+            place = re.sub('[.]', '', place_w_dot).strip()
             point = int(places[1].string)
 
         record = {
@@ -166,8 +189,7 @@ def get_athletes_by_html (race_id, results, gender):
             # case of race: get 4 athletes ID in relay
             for a in names[1].find_all('a'):
                 id = re.findall('[0-9]*$', a['href'])[0]
-                is_already_entered = is_athlete_entered(id, gender)
-                if is_already_entered:
+                if is_athlete_entered(id, gender):
                     update_athlete_info(gender, id, record)
                 else:
                     # remove &nbsp in the name
@@ -177,7 +199,7 @@ def get_athletes_by_html (race_id, results, gender):
                     last_name_array = athlete_name.replace(first_name, '').split(' ')
                     last_names = map(lambda x: x.strip().capitalize(), last_name_array)
                     last_name = ' '.join(last_names)
-                    full_name = first_name + ' ' + last_name
+                    full_name = first_name.strip() + ' ' + last_name.strip()
                     add_new_athlete(full_name, names[0].string, record, gender, id)
                 athlete_ids.append(id)
 
@@ -185,18 +207,14 @@ def get_athletes_by_html (race_id, results, gender):
         else:
             # check if already athlete is in the dictionary
             id = re.findall('[0-9]*$', names[0].a['href'])[0]
-            is_already_entered = is_athlete_entered(id, gender)
-            if is_already_entered:
+            if is_athlete_entered(id, gender):
+                if has_only_lastname(id, gender):
+                    fullname = get_fullname(names)
+                    all_athletes[gender][id]['name'] = fullname
                 update_athlete_info(gender, id, record)
             else:
-                athlete_name = names[0].string.split(', ')
-                ans = []
-                for an in athlete_name:
-                    n_array = an.strip().split(' ')
-                    ns = map(lambda x: x.strip().capitalize(), n_array)
-                    n = ' '.join(ns)
-                    ans.append(n)
-                add_new_athlete((ans[1] + ' ' + ans[0]), names[1].string, record, gender, id)
+                fullname = get_fullname(names)
+                add_new_athlete(fullname, names[1].string, record, gender, id)
             athlete_ids.append(id)
 
     # create node-edge dataset
@@ -213,22 +231,21 @@ for meet in meets:
             file_id = meet['id'] + '-' + gender + '-' + str(style)
 
             # set race id with meet and even info
-            race_id = meets_name[meet['type']][1] + '-' + \
+            race_id = meets_name[meet['type']][1] + '-' + meet_year_letter[meet['year']] + \
                        meet['year'] + '--' + \
                        events_name[str(style)][2] + '-' + \
                        events_name[str(style)][1]
 
             # get meet/race info from the scrapped html file - remove \n, then resoup
-            html = BeautifulSoup(open('R_results/html/' + file_id + '.html'), 'lxml')
+            html = BeautifulSoup(open('R_results/html/' + file_id + '.html'), 'html.parser')
             result_string = str(html.find('table', {'class', 'meetResult'})).replace('\n', '')
-            result_html = BeautifulSoup(result_string, 'lxml')
+            result_html = BeautifulSoup(result_string, 'html.parser')
 
             # update race object with race date
-            race_date = result_html.find('tr').find_all('th')[1].string.split('-')[0].strip()
-            race[genders[gender]['name']][race_id] = race_date
+            #race_date = result_html.find('tr').find_all('th')[1].string.split('-')[0].strip()
+            #race[genders[gender]['name']][race_id] = race_date
             results = list(result_html.find('table').children)[1:]
-
-            print (race_id, race_date)
+            print (race_id)
             get_athletes_by_html(race_id, results, genders[gender]['name'])
 
 print('Men athletes', len(all_athletes['men']))
@@ -250,8 +267,8 @@ meets_grouped = _.groupBy(meets, lambda x, *a: x['type'])
 for k, v in meets_grouped.iteritems():
     print (k)
     # [year, location]
-    children = _.map(v, lambda x, *a: [x['year'], x['year'] + ' - ' + x['location']])
-    children = _.sortBy(children, lambda x, *a: -1 * int(x[0]))
+    children = _.map(v, lambda x, *a: [(meet_year_letter[x['year']] + str(x['year'])), x['year'] + ' - ' + x['location']])
+    children = _.sortBy(children, lambda x, *a: x[0])
     meets_grouped[k] = {
         'name': meets_name[k][0],
         'children': children
@@ -287,7 +304,7 @@ print('graph', node_edges)
 print('meets', meets_list)
 print('events', events_list)
 print('athletes', athletes_list)
-print('race', race)
+#print('race', race)
 
 # save files
 simplejson = json
@@ -295,10 +312,9 @@ jsondata = simplejson.dumps({
         'graph': node_edges,
         'meets': meets_list,
         'events': events_list,
-        'athletes': athletes_list,
-        'race': race
+        'athletes': athletes_list
+        #'race': race
     }, separators=(',',':'), sort_keys=True)
 fd = open('../webapp/public/data/data.json', 'w')
 fd.write(jsondata)
 fd.close()
-

@@ -44,7 +44,7 @@ This project includes two steps of data generation - 1) scrapping html pages wit
 **Environment**
 
 *  R: version 3.2.4
-*  Python: 2.7.5
+*  Python: 3.5.2
 
 ## Front-End Development Set-up
 

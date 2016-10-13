@@ -41,7 +41,7 @@ angular.module('swimmerApp')
     //event(meets-event category selection) is for men, name(name search) is women
     $scope.category = {}; //for option-events $scope.sel, selParent in processor
     var defaultEvents = {
-        meets: ['0OG-2016', '0OG-2012', '0OG-2008'],
+        meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008'],
         events: ['0IND-50Fr', '0IND-100Fr', '0IND-200Fr', '0IND-400Fr', '0IND-1500Fr',
             '1TEAM-4X100Fr', '1TEAM-4X200Fr']
     };

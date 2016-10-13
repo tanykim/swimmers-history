@@ -108,5 +108,4 @@ for (meet in meetList) {
   i = i + 1
 }
 # save as json file
-write(toJSON(meetListArray), "../python/R_results/json/meets.json")  
-
+write(toJSON(meetListArray), "../python/R_results/json/meets.json")

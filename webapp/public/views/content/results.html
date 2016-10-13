@@ -8,7 +8,7 @@
             shared races <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="race-dropdown">
-            <li ng-repeat="r in selectedRaces track by $index" ng-click="showAthletesByRace(r)"><a>{{ r.split('-')[0].slice(1) }} {{ r.split('-')[1] }} - {{ r.split('-')[4] }}</a></li>
+            <li ng-repeat="r in selectedRaces track by $index" ng-click="showAthletesByRace(r)"><a>{{ r.split('-')[0].slice(1) }} {{ r.split('-')[1].slice(1) }} - {{ r.split('-')[4] }}</a></li>
           </ul>
         </span>
         <span class="sub">(reset previous selection)</span>
