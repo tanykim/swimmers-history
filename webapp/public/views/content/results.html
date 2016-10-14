@@ -52,7 +52,7 @@
                 <th colspan="2" class="result-summary"><span class="number">{{ athletesOnFocus.length }}</span> swimmer<span ng-if="athletesOnFocus.length > 1">s</span> &amp; <span class="number">{{ sharedRaces.length }}</span> race<span ng-if="sharedRaces.length > 1">s</span></th>
                 <th ng-repeat="r in sharedRaces" class="record">
                     <span class="race-meet">{{ r.split('-')[0].slice(1) }}</span>
-                    {{ r.split('-')[1] }}
+                    {{ r.split('-')[1].slice(1) }}
                     <span class="dash">-</span>
                     {{ r.split('-')[4] }}
                 </th>

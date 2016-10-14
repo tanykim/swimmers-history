@@ -7369,11 +7369,21 @@ a {
   border: 1px solid #dee2e6;
   border-radius: 4px;
 }
-.vis .hovered-swimmer,
 .vis .show-links {
-  position: absolute;
+  width: 100%;
+  margin-bottom: 15px;
+  text-align: center;
   font-size: 14px;
-  background-color: rgba(255, 255, 255, 0.7);
+}
+.vis .show-links .select-network {
+  display: inline-block;
+}
+.vis .show-links .select-network input {
+  margin-right: 4px;
+}
+.vis .show-links .select-network {
+  margin-left: 15px;
+  margin-right: 15px;
 }
 .vis .hovered-swimmer {
   -webkit-user-select: none;
@@ -7385,25 +7395,15 @@ a {
   -o-user-select: none;
   user-select: none;
   pointer-events: none;
+  position: absolute;
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.7);
   padding-right: 6px;
   padding-left: 6px;
   display: inline-table;
 }
 .vis .hovered-swimmer i {
   font-style: normal;
-  color: #f5625a;
-}
-.vis .show-links {
-  top: 0;
-  width: 100%;
-  left: 2px;
-  right: 2px;
-  margin-top: 15px;
-  text-align: center;
-  color: #868e96;
-}
-.vis .show-links a {
-  cursor: pointer;
   color: #f5625a;
 }
 .sub-content {

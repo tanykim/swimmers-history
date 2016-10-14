@@ -18,6 +18,7 @@ angular.module('swimmerApp')
         $scope.searchedAthletes = [];
         //enable update button only when option is changed
         $scope.optionChanged = false;
+        $scope.isLinkedVisible = 0;
     }
 
     initIntro();
@@ -71,12 +72,13 @@ angular.module('swimmerApp')
     /* vis control */
 
     //toggle all linked nodes of the focused athletes
-    $scope.toggleLinkedNodes = function () {
-        $scope.isLinkedVisible = !$scope.isLinkedVisible;
-        if ($scope.isLinkedVisible) {
+    $scope.toggleLinkedNodes = function (isNetwork) {
+        if (isNetwork) {
+            $scope.isLinkedVisible = 1;
             var mutualIds = processor.getMutualLinkedNodes();
             visualizer.highlightLinkedNodes(mutualIds);
         } else {
+            $scope.isLinkedVisible = 0;
             visualizer.hideLinkedNodes();
         }
     };
@@ -95,8 +97,8 @@ angular.module('swimmerApp')
         $scope.sharedRacesWinner = processor.sharedRacesWinner;
 
         //revert the vis to the status that linked nodes are not highlighted
-        if ($scope.isLinkedVisible) {
-            $scope.isLinkedVisible = false;
+        if ($scope.isLinkedVisible === 1) {
+            $scope.isLinkedVisible = 0;
             visualizer.hideLinkedNodes();
         }
     }
@@ -315,7 +317,7 @@ angular.module('swimmerApp')
             $scope.$apply(function () {
                 $scope.loaded = true;
             });
-        }, 1000);
+        }, 100);
         // $scope.loaded = true;
         // $scope.introPassed = true;
         // initVis();
