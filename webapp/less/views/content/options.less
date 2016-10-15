@@ -107,20 +107,23 @@
             margin-top: @pg-md;
             margin-bottom: @pg-xs;
             letter-spacing: @ls-sm;
+            .bold();
+        }
+        .list-title-btn {
+            display: inline-block;
+            line-height: @pg-md;
         }
         a {
             .link();
+            .bold();
+            margin-left: @pg-xs;
             background-color: @oc-gray-7;
             color: @white;
-            font-size: @xsmall !important;
             width: @pg-md;
             height: @pg-md;
             border-radius: @pg-md / 2;
             display: inline-block;
             text-align: center;
-        }
-        .list-title-text {
-            .bold();
         }
         .list-item, .list-item-disabled {
             font-size: @small;

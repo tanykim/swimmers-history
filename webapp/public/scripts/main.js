@@ -18,11 +18,29 @@ angular.module('swimmerApp')
         $scope.searchedAthletes = [];
         //enable update button only when option is changed
         $scope.optionChanged = false;
-        $scope.isLinkedVisible = 0;
     }
 
     initIntro();
-    $scope.goToIntro = initIntro;
+
+    //update focused athletes after selected on the network vis
+    function updateToDefaultView() {
+
+        //reset results in table
+        $scope.athletesOnFocus = processor.athletesOnFocus;
+        $scope.sharedRaces = processor.sharedRaces;
+        $scope.sharedRacesWinner = processor.sharedRacesWinner;
+
+        //revert the vis to the status that linked nodes are not highlighted
+        if ($scope.isLinkedVisible === 1) {
+            $scope.isLinkedVisible = 0;
+            visualizer.hideLinkedNodes();
+        }
+    }
+
+    $scope.goToIntro = function () {
+        initIntro();
+        processor.resetSelection(updateToDefaultView);
+    };
 
     //left menu
     $scope.sub = { data: false, insights: false };
@@ -86,22 +104,7 @@ angular.module('swimmerApp')
     /* vis-table control */
 
     //callbacks sent to processor and vis
-    //update focused athletes after selected on the network vis
     //use scope.$apply for callbacked functions
-
-    function updateToDefaultView() {
-
-        //reset results in table
-        $scope.athletesOnFocus = processor.athletesOnFocus;
-        $scope.sharedRaces = processor.sharedRaces;
-        $scope.sharedRacesWinner = processor.sharedRacesWinner;
-
-        //revert the vis to the status that linked nodes are not highlighted
-        if ($scope.isLinkedVisible === 1) {
-            $scope.isLinkedVisible = 0;
-            visualizer.hideLinkedNodes();
-        }
-    }
 
     //show/hide athlete functions are used callbacks from vis.js
     function showAthlete(athlete) {

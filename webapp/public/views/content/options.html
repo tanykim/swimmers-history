@@ -32,9 +32,9 @@
         <ul class="select-list">
             <li ng-repeat="(key, val) in category[kind]">
                 <div class="list-title">
-                    <span class="list-title-text">{{ val.name }}</span>
-                    <span ng-show="selParent[kind][key]"><a ng-click="filterParent(kind, key)"><span class="typcn typcn-minus"></span></a></span>
-                    <span ng-hide="selParent[kind][key]"><a ng-click="filterParent(kind, key)"><span class="typcn typcn-plus"></span></a></span>
+                    {{ val.name }}
+                    <span ng-show="selParent[kind][key]" class="list-title-btn"><a ng-click="filterParent(kind, key)">-</a></span>
+                    <span ng-hide="selParent[kind][key]" class="list-title-btn"><a ng-click="filterParent(kind, key)">+</a></span>
                 </div>
                 <ul>
                     <li ng-repeat="child in val.children" ng-class="child[0]=='800Fr' && genders[selectedGenderId]=='men' || child[0]=='1500Fr' && genders[selectedGenderId]=='women' ? 'list-item-disabled': 'list-item'">
@@ -55,7 +55,7 @@
             <ul class="select-list">
                 <li ng-repeat="a in searchedAthletes track by $index">
                     {{ a.name }} <span class="lighter">({{ a.country }}, {{ a.records.length }} races)</span>
-                    <a ng-click="removeSearchedAthlete($index)"><span class="typcn typcn-minus"></span></a>
+                    <a ng-click="removeSearchedAthlete($index)">-</a>
                 </li>
             </ul>
         </div>

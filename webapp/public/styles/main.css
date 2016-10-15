@@ -7074,20 +7074,23 @@ a {
   margin-top: 18px;
   margin-bottom: 6px;
   letter-spacing: 0.04em;
+  font-weight: bold;
+}
+.options .select-list .list-title-btn {
+  display: inline-block;
+  line-height: 18px;
 }
 .options .select-list a {
   cursor: pointer;
+  font-weight: bold;
+  margin-left: 6px;
   background-color: #495057;
   color: #ffffff;
-  font-size: 12px !important;
   width: 18px;
   height: 18px;
   border-radius: 9px;
   display: inline-block;
   text-align: center;
-}
-.options .select-list .list-title-text {
-  font-weight: bold;
 }
 .options .select-list .list-item,
 .options .select-list .list-item-disabled {
@@ -7286,6 +7289,9 @@ a {
 .results tbody .record {
   border-top: 1px solid #dee2e6;
   text-align: center;
+}
+.results .close-icon {
+  font-size: 1.2em;
 }
 .results .close-icon a {
   cursor: pointer;
