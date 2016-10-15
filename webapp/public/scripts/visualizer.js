@@ -106,6 +106,10 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
 
     function showMouseover(obj, d) {
 
+        if ('ontouchstart' in document) {
+            return false;
+        }
+
         if (obj.attr('clicked') === 'false') {
             //change the node color
             obj.attr('class', 'node-over');
@@ -291,7 +295,6 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
                 showMouseout(d3.select(this), d);
             })
             .on('click', function (d) {
-                //TODO: set click toggle - remove
                 showClick(d3.select(this), d, showAthleteCb, hideAthleteCb);
             });
 

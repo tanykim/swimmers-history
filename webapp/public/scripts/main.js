@@ -109,7 +109,11 @@ angular.module('swimmerApp')
         $scope.$apply(function () {
             updateToDefaultView();
         });
-        $anchorScroll('results');
+        if ('ontouchstart' in document) {
+            return false;
+        } else {
+            $anchorScroll('results');
+        }
     }
 
     function hideAthlete(index) {
