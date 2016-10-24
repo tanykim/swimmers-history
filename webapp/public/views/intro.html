@@ -3,18 +3,18 @@
 </div>
 
 <div class="start">
-    <div ng-class="loaded ? 'hide' : 'loading-text with'"> Loading Swimmer Data... </div>
-    <div class="start-options" ng-show="loaded">
+    <div ng-class="isLoaded.data ? 'hide' : 'loading-text with'"> Loading Swimmer Data... </div>
+    <div class="start-options" ng-show="isLoaded.data">
         <div class="with"> Start with an Example</div>
         <div class="option-text">
-            <input type="radio" ng-model="selectedGenderId" value="0"><span class="text-gender">Men- </span>all free style events in the last 3 Olympic Games <br/>
-            <input type="radio" ng-model="selectedGenderId" value="1"><span class="text-gender">Women- </span>swimmers who competed with Katie Ledecky<br/>
+            <input type="radio" ng-model="isLoaded.men" ng-value="true"><span class="text-gender">Men- </span>all free style events in the last 3 Olympic Games <br/>
+            <input type="radio" ng-model="isLoaded.men" ng-value="false"><span class="text-gender">Women- </span>swimmers who competed with Katie Ledecky<br/>
         </div>
         <div class="button-wrapper">
-            <div class="visualize" ng-click="startMainLoading(selectedGenderId)">
+            <div class="visualize" ng-click="startMainLoading()">
                 <span class="typcn typcn-link"></span>
-                <span ng-hide="mainLoading">Explore the Network</span>
-                <span ng-show="mainLoading" class="animate-flicker">Generating Visualization...</span>
+                <span ng-hide="isLoadingStarted.content">Explore the Network</span>
+                <span ng-show="isLoadingStarted.content" class="animate-flicker">Generating Visualization...</span>
             </div>
         </div>
     </div>

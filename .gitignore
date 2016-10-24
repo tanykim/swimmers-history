@@ -17,3 +17,4 @@ python/testing*
 .idea/
 _old*
 data.json
+webapp/npm-debug.log

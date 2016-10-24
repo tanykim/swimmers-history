@@ -83,7 +83,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //check if simulation stopped every 0.2 second
         function isAlmostDone() {
             if (simulation.alpha() < 0.2) {
-                console.log('6.vis, initiation done');
+                console.log('6.visualizer, initiation done');
                 completeLoading();
             } else {
                 setTimeout(isAlmostDone, 200);
@@ -151,7 +151,6 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
         //return only if it's not unclicked
         if (obj.attr('clicked') === 'false') {
             obj.attr('class', 'node-normal');
-            //nodeG.select('#vis-g-athlete-name-' + d.id).remove();
         }
         if (obj.attr('linked') === 'true') {
             obj.attr('class', 'node-all-linked');
@@ -208,6 +207,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
     }
 
     /* vis drawing - called from MainCtrl when 1) initial loading 2) update from options */
+
     this.drawVis = function (graph, pointRange, completeLoadingCb, showAthleteCb, hideAthleteCb) {
 
         //reset vis
@@ -219,9 +219,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             nodeG.remove();
         }
 
-        //TODO: meticulous distance depending on the node length
-        //TODO: zoom in /pan
-        console.log('5.vis, vis started');
+        console.log('5.visualizer, vis started');
 
         //-30 is for bootstrap padding
         w = document.getElementById('vis-width').clientWidth - 30;

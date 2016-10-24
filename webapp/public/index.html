@@ -46,13 +46,14 @@
             <div class="swimmer"> SWIMMER'S </div>
             <div class="network"> NETWORK </div>
             <div class="overlay"></div>
+            {{ introPassed }}
         </div>
 
         <div class="col-xs-12 col-md-9 col-md-push-3">
             <!-- intro -->
-            <div class="intro" ng-hide="introPassed" ng-include="'views/intro.html'"></div>
+            <div class="intro" ng-hide="isLoaded.content" ng-include="'views/intro.html'"></div>
             <!-- main content -->
-            <div class="content" ng-show="introPassed" ng-include="'views/content.html'"></div>
+            <div class="content" ng-show="isLoaded.content" ng-include="'views/content.html'" ng-controller="ContentCtrl"></div>
             <!-- sub content -->
             <div class="sub-content data" ng-show="sub.data" ng-include="'views/sub-content/data.html'"></div>
             <div class="sub-content insights" ng-show="sub.insights" ng-include="'views/sub-content/insights.html'"></div>
@@ -73,16 +74,18 @@
 <script src="components/d3/d3.js"></script>
 <script src="components/underscore/underscore.js"></script>
 <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<!-- <script src="components/jquery/dist/jquery.js"></script> -->
-<!-- <script src="components/bootstrap/dist/js/bootstrap.js"></script> -->
 <script src="components/angular-sanitize/angular-sanitize.js"></script>
 <!-- endbower -->
 
 <!-- injector:js -->
 <script src="scripts/app.js"></script>
+<script src="scripts/controllers/content.js"></script>
+<script src="scripts/controllers/contents/panels.js"></script>
+<script src="scripts/controllers/contents/vis.js"></script>
 <script src="scripts/main.js"></script>
-<script src="scripts/processor.js"></script>
-<script src="scripts/visualizer.js"></script>
+<script src="scripts/services/processor.js"></script>
+<script src="scripts/services/storage.js"></script>
+<script src="scripts/services/visualizer.js"></script>
 <!-- endinjector -->
 </body>
 </html>

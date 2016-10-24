@@ -1,0 +1,117 @@
+<!-- tabs -->
+<!-- ng-hide="$parent.isLoadingStarted.vis && $parent.openTab == ''" -->
+<div class="menu">
+    <div class="col-xs-12 col-md-4 col-md-push-8 gender-switch">
+        <a ng-click="$parent.switchGender()">
+            <span class="typcn typcn-eye"></span>  switch to
+            <span ng-if="$parent.$parent.isLoaded.men"> women </span>
+            <span ng-if="!$parent.$parent.isLoaded.men"> men </span>
+        </a>
+    </div>
+    <div class="col-xs-12 col-md-8 col-md-pull-4 tab-wrapper">
+        <div class="col-xs-6 tab" ng-class="$parent.openTab == 'event' ? 'open' : ($parent.selectedTab == 'event' ? 'selected' : 'normal')">
+            <a ng-click="toggleTabs('event')"><span class="typcn typcn-clipboard"></span> Meets &amp; Events</a>
+        </div>
+        <div class="col-xs-6 tab" ng-class="$parent.openTab == 'name' ? 'open' : ($parent.selectedTab == 'name' ? 'selected' : 'normal')">
+            <a ng-click="toggleTabs('name')"><span class="typcn typcn-zoom"></span> Name Search</a>
+        </div>
+    </div>
+</div>
+
+<!-- summary -->
+<div class="summary" ng-hide="$parent.openTab != ''" ng-class="{'summary-round': $parent.selectedTab == 'name'}">
+    <span class="number">{{ athletesCount }}</span>
+    <span ng-if="$parent.$parent.isLoaded.men"> men </span>
+    <span ng-if="!$parent.$parent.isLoaded.men"> women </span>
+    swimmers competed {{ $parent.selectedTab }}
+    <span ng-if="$parent.selectedTab == 'event'">
+        at
+        <span class="wrapper" ng-repeat="kind in ['meets', 'events']">
+            <span ng-repeat="(key, val) in sel[kind]">
+                <span class="kind" ng-if="selParent[kind][key]">
+                    <span class="meets-title" ng-if="kind == 'meets'">{{ key.slice(1) }}</span>
+                    <span ng-repeat="(k, v) in val" ng-class="sel[kind][key][k] ? 'valid' : 'none'" >
+                        <span ng-if="sel[kind][key][k] && kind == 'meets'" >{{ k.slice(1) }}</span>
+                        <span ng-if="sel[kind][key][k] && kind == 'events'" >{{ k }}</span>
+                    </span>
+                </span>
+            </span>
+            <span ng-if="kind == 'meets'" class="typcn typcn-times"></span>
+        </span>
+    </span>
+    <span ng-if="$parent.selectedTab == 'name'">
+        with
+        <span class="wrapper" ng-repeat="a in searchedAthletes track by $index">
+            <span class="kind"><span class="valid">{{ a.name }}</span></span>
+            <span ng-hide="$index == searchedAthletes.length - 1"> OR&nbsp;</span>
+        </span>
+    </span>
+</div>
+
+<div class="options" ng-show="$parent.openTab !=='' ">
+    <!-- top border -->
+    <div class="row top-border">
+        <div class="col-xs-6 col-md-4" ng-class="$parent.openTab == 'event'? 'left-tab' : 'left-of-selected'"></div>
+        <div class="col-xs-6 col-md-4" ng-class="$parent.openTab == 'name'? 'right-tab' : 'right-of-selected'"></div>
+        <div class="hidden-xs hidden-sm col-md-4 right-corner"></div>
+    </div>
+
+    <!-- update button -->
+    <div class="row top-wrapper">
+        <!-- close the option -->
+        <div class="col-xs-12 close-icon">
+            <a ng-click="toggleTabs($parent.openTab)"><span class="typcn typcn-delete"></span></a>
+        </div>
+        <div class="col-xs-12 col-sm-6 desc">
+            <span ng-if="$parent.openTab == 'event'">Search swimmers by the combination of meets (competition) and events (final races)</span>
+            <span ng-if="$parent.openTab == 'name'">Search swimers who competed against or with (as other legs at team events) the typed swimmer(s).</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 total">
+            <span ng-show="optionChanged"><span class="number">{{ selectedAthletes.length }}</span> swimmers found</span>
+            <div class="lable" ng-class="optionChanged && selectedAthletes.length > 0 ? 'link-enabled' : 'link-disabled'" ng-click="updateAthletes()">
+                <span class="typcn typcn-refresh"></span>
+                <span ng-hide="isLoadingStarted.vis">Update</span>
+                <span ng-show="isLoadingStarted.vis" class="animate-flicker">Updating Now...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- meets & events -->
+    <div class="row events-wrapper" ng-show="$parent.openTab == 'event'">
+        <div ng-repeat="kind in ['meets', 'events']" class="col-xs-12 col-sm-6 kind">
+            <div class="title"> {{ kind }} </div>
+            <ul class="select-list">
+                <li ng-repeat="(key, val) in category[kind]">
+                    <div class="list-title">
+                        {{ val.name }}
+                        <a ng-click="filterParent(kind, key)">
+                            <span ng-show="selParent[kind][key]" class="list-title-btn">-</span>
+                            <span ng-hide="selParent[kind][key]" class="list-title-btn">+</span>
+                        </a>
+                    </div>
+                    <ul>
+                        <li ng-repeat="child in val.children" ng-class="child[0]=='800Fr' && genders[selectedGenderId]=='men' || child[0]=='1500Fr' && genders[selectedGenderId]=='women' ? 'list-item-disabled': 'list-item'">
+                            <input type="checkbox" ng-model="sel[kind][key][child[0]]" ng-change="updateParentStatus(kind, key, child[0])" ng-hide="child[0]=='800Fr' && genders[selectedGenderId]=='men' || child[0]=='1500Fr' && genders[selectedGenderId]=='women'">
+                            {{ child[1] }}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- search by name -->
+    <div class="row name-wrapper" ng-show="$parent.openTab == 'name'">
+        <div class="col-xs-12">
+            <input type="text" ng-model="typedAthlete" class="form-control" uib-typeahead="(athlete.name + athlete.country) as athlete for athlete in allAthletes | filter:$viewValue | limitTo:20" placeholder="Type a swimmer's name or country" typeahead-template-url="views/content/options-athlete.html" typeahead-on-select="addAthletes($item); typedAthlete = '';" ng-blur="true">
+            <div class="selected" ng-show="searchedAthletes.length > 0">
+                <ul class="select-list">
+                    <li ng-repeat="a in searchedAthletes track by $index">
+                        {{ a.name }} <span class="lighter">({{ a.country }}, {{ a.records.length }} races)</span>
+                        <a ng-click="removeSearchedAthlete($index)">-</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

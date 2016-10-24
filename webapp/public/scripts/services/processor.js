@@ -1,81 +1,27 @@
 'use strict';
 
-angular.module('swimmerApp').service('processor', ['_', function (_) {
+angular.module('swimmerApp').service('processor', ['_', 'storage', function (_, storage) {
 
-    var allGenderAthletes;
-    var allGenderLinks;
+    //athletes filtered by meet/event or name search - used in panel (athlete count)
+    this.selectedAthletes = [];
 
-    //category
-    this.selParent = {};
-    this.sel = {};
-
-    this.allAthletes = []; //entire athletes of the selected gender
-    this.selectedAthletes = []; //athletes filtered by meet/event or name search
-    this.selectedRaces = []; //races filtered by meets/event
-    this.topAthletes = []; //top athletes by meets/event
-    this.searchedAthletes = []; //searched athletes
-    this.allLinks = []; //entire athletes links
-    this.pointRange = []; //for vis node size
+    //for vis
     this.graph = {}; //node and edge data structure for vis
+    this.pointRange = []; //for vis node size
+    this.selectedRaces = []; //races filtered by meets/event, for HTML
+    this.topAthletes = []; //top athletes by meets/event, for HTML
 
+    //vis investigation data - focused athletes from vis or result HTML
     this.athletesOnFocus = [];
     this.sharedRaces = [];
     this.sharedRacesWinner = [];
 
     var self = this;
 
-    /* init */
-
-    this.setAllAthletes = function (athletes, links) {
-        allGenderAthletes = athletes;
-        allGenderLinks = links;
-    };
-
-    this.setAthletes = function (gender) {
-        self.allAthletes = allGenderAthletes[gender];
-        self.allLinks = allGenderLinks[gender];
-        console.log('2.processor, save original objects');
-    };
-
-    /* switch gender */
-
-    this.switchGender = function (gender) {
-        self.allAthletes = allGenderAthletes[gender];
-        self.allLinks = allGenderLinks[gender];
-        console.log('processor, gender switched');
-    };
-
-    /* options - meet & events */
-
-    this.setSel = function (selected) {
-        _.each(selected, function (vals, kind) {
-            //example: kind(meets): '0OG-2016', kind(eventts): '0IND-50Fr'
-            _.each(vals, function (val) {
-                var sep = val.split('-');
-                self.selParent[kind][sep[0]] = true;
-                self.sel[kind][sep[0]][sep[1]] = true;
-            });
-        });
-    };
-
-    //set meets and events default value - false
-    this.getSelDefault = function (category) {
-        _.each(category, function (val, kind) {
-            self.selParent[kind] = {};
-            var vals = _.object(_.map(val, function (d, typeId) {
-                var children = _.object(_.map(d.children, function (d) {
-                    return [d[0], false];
-                }));
-                self.selParent[kind][typeId] = false;
-                return [typeId, children];
-            }));
-            self.sel[kind] = vals;
-        });
-    };
-
     /* filter athletes */
 
     function getSelectedRaces(sel) {
+        // var sel = storage.sel;
         var races = [];
         for (var meet in sel.meets) {
             for (var year in sel.meets[meet]) {
@@ -93,26 +39,13 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         return races;
     }
 
-    this.getSelectedAthletes = function (searchedAthletes) {
+    function getAthletesData() {
 
-        //all athletes info must kept original for repeated links calculation
-        var all = angular.copy(self.allAthletes);
-        var sel = self.sel;
-
-        if (!_.isEmpty(searchedAthletes)) {
-            self.searchedAthletes = searchedAthletes;
-            self.selectedRaces = _.unique(_.flatten(_.map(angular.copy(searchedAthletes), function (a) {
-                return _.pluck(a.records, 'race_id');
-            })));
-        } else {
-            //filter races by selection and get 1-level list
-            self.selectedRaces = getSelectedRaces(self.sel);
-        }
         var athletes = [];
         var allTotalPoints = [];
 
-        _.each(all, function (athlete) {
-            //check records are included in the selected meets and events
+        //check records are included in the selected meets and events
+        _.each(angular.copy(storage.allAthletes), function (athlete) {
             var totalPoint = 0;
             var validRecords = [];
             _.each(athlete.records, function (r) {
@@ -129,19 +62,28 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
             }
         });
 
-        //from meet/event serach -> get upto 30 or 10% of selected athletes
-        if (_.isEmpty(searchedAthletes)) {
-            self.topAthletes = _.sortBy(angular.copy(athletes), function (a) {
-                return a.totalPoint;
-            }).reverse().slice(0, Math.min(30, Math.round(athletes.length / 10)));
-        } else {
-            self.topAthletes = searchedAthletes;
-        }
-
         self.selectedAthletes = athletes;
         self.pointRange = [_.min(allTotalPoints), _.max(allTotalPoints)];
+    }
 
-        console.log('3.processor, filter athletes');
+    this.getVisDataBySel = function (sel) {
+        self.selectedRaces = getSelectedRaces(sel);
+        getAthletesData();
+        self.topAthletes = _.sortBy(angular.copy(self.selectedAthletes), function (a) {
+            return a.totalPoint;
+        }).reverse().slice(0, Math.min(30, Math.round(self.selectedAthletes.length / 10)));
+
+        console.log('3.processor, filter athletes - by selection');
+    };
+
+    this.getVisDataByNames = function (searchedAthletes) {
+        self.selectedRaces = _.unique(_.flatten(_.map(angular.copy(searchedAthletes), function (a) {
+            return _.pluck(a.records, 'race_id');
+        })));
+        self.topAthletes = searchedAthletes;
+        getAthletesData();
+
+        console.log('3.processor, filter athletes - by names');
     };
 
     /* get graph data */
@@ -150,7 +92,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
         //selected athletes' id
         var aIds = _.pluck(self.selectedAthletes, 'id');
         var links = [];
-        _.each(angular.copy(self.allLinks), function (d) {
+        _.each(angular.copy(storage.allLinks), function (d) {
             //check if both source and target are in the selected ids
             if (aIds.indexOf(d.source) > -1 && aIds.indexOf(d.target) > -1) {
                 var validRecords = [];
@@ -176,28 +118,6 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
 
         console.log('4.processor, graph data done');
         drawVis(self.graph, self.pointRange, completeLoadingCb, showAthleteCb, hideAthleteCb);
-    };
-
-    /* update - meet & events change */
-
-    this.updateParentStatus = function (kind, parent) {
-        var childrenVals = _.values(self.sel[kind][parent]);
-        //if none of the children are selected, set the parent false
-        if (childrenVals.indexOf(true) === -1) {
-            self.selParent[kind][parent] = false;
-        } else {
-            self.selParent[kind][parent] = true;
-        }
-        self.getSelectedAthletes();
-    };
-    this.filterParent = function (kind, parent) {
-        self.selParent[kind][parent] = !self.selParent[kind][parent];
-        var childrenKeys = _.keys(self.sel[kind][parent]);
-        _.each(childrenKeys, function (key) {
-            var update = self.selParent[kind][parent] ? true : false;
-            self.sel[kind][parent][key] = update;
-        });
-        self.getSelectedAthletes();
     };
 
     /* add and remove athletes */
@@ -284,7 +204,6 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
 
         //get shared races winner index after adding all athletes
         self.sharedRacesWinner = getWinnersIndex();
-
     };
 
     this.removeFocusedAthlete = function (index) {
@@ -313,7 +232,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
     };
 
     this.addAllSearchedAthletes = function () {
-        self.athletesOnFocus = _.map(angular.copy(self.searchedAthletes), function (a) {
+        self.athletesOnFocus = _.map(angular.copy(storage.searchedAthletes), function (a) {
             return getAthleteObj(a);
         });
         self.sharedRaces = getSharedRaces();
@@ -369,6 +288,7 @@ angular.module('swimmerApp').service('processor', ['_', function (_) {
     };
 
     /* reset selection */
+
     this.resetSelection = function(updateToDefaultView) {
         self.athletesOnFocus = [];
         self.sharedRaces = [];

@@ -1,7 +1,91 @@
-<!-- no athletes are selected -->
-<div class="show-links" ng-show="athletesOnFocus.length > 1">
-    <span class="select-network"><input type="radio" ng-model="isLinkedVisible" value="1" ng-change="toggleLinkedNodes(true)"> Both nodes &amp; edges (network)</span>
-    <span class="select-network"><input type="radio" ng-model="isLinkedVisible" value="0" ng-change="toggleLinkedNodes(false)"> Only nodes (selected swimmers)</span>
+<!-- vis -->
+<div class="graph" id="vis">
+    <div class="show-links" ng-show="athletesOnFocus.length > 1">
+        <span class="select-network"><input type="radio" ng-model="isLinkedVisible" value="1" ng-change="toggleLinkedNodes(true)"> Both nodes &amp; edges (network)</span>
+        <span class="select-network"><input type="radio" ng-model="isLinkedVisible" value="0" ng-change="toggleLinkedNodes(false)"> Only nodes (selected swimmers)</span>
+    </div>
+    <svg width="100%" id="svg"><g id="vis-g"></g></svg>
+    <div class="hovered-swimmer" id="swimmer"></div>
 </div>
-<svg width="100%" id="svg"><g id="vis-g"></g></svg>
-<div class="hovered-swimmer" id="swimmer"></div>
+
+<!-- results -->
+<div class="results" id="results">
+    <div class="info-title"> Select swimmers and see the results of their shared races </div>
+    <ul class="info-options">
+        <li class="option-li"> <span class="option">Option 1</span> Click nodes (swimmers) in the graph below</li>
+        <li class="option-li">
+            <span class="option">Option 2</span> Select all swimmers at one of the
+            <span uib-dropdown on-toggle="toggled(open)">
+              <a href id="race-dropdown" uib-dropdown-toggle class="option-dd-click">
+                shared races <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="race-dropdown">
+                <li ng-repeat="r in selectedRaces track by $index" ng-click="showAthletesByRace(r)"><a>{{ r.split('-')[0].slice(1) }} {{ r.split('-')[1].slice(1) }} - {{ r.split('-')[4] }}</a></li>
+              </ul>
+            </span>
+            <span class="sub">(reset previous selection)</span>
+        </li>
+        <li class="option-li">
+            <span class="option">Option 3</span> Select one of the
+            <span uib-dropdown on-toggle="toggled(open)">
+                <a href id="athlete-dropdown" class="option-dd-click" uib-dropdown-toggle>
+                    <span ng-show="$parent.selectedTab == 'name'">searched</span>
+                    <span ng-show="$parent.selectedTab == 'event'">highly-ranked</span>
+                    swimmers <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="athlete-dropdown">
+                    <li ng-repeat="a in topAthletes track by $index" ng-click="showAthletesByName($index)"><a>{{ a.name }}</a></li>
+                </ul>
+            </span>
+        </li>
+        <li class="option-li" ng-show="$parent.selectedTab == 'name' && topAthletes.length > 1">
+            <span class="option">Option 4</span> Select
+            <a ng-click="showAllSearchedAthletes()" class="option-click">all searched swimmers</a>
+            </span>
+            <span class="sub">(reset previous selection)</span>
+        </li>
+    </ul>
+
+    <!-- remove all -->
+    <div class="remove-all" ng-show="athletesOnFocus.length > 1">
+        <a ng-click="hideAllAthletes()"><span class="typcn typcn-delete"></span> Remove all swimmers</a>
+    </div>
+
+    <!-- table -->
+    <div class="table-wrapper" ng-show="athletesOnFocus.length > 0">
+        <!-- no shared races -->
+        <div class="no-races" ng-show="sharedRaces.length == 0">
+            These {{ athletesOnFocus.length }} swimmers did not compete with each other
+        </div>
+        <table class="race-athlete-table">
+            <!-- race list -->
+            <thead>
+                <tr ng-if="sharedRaces.length > 0" class="thead">
+                    <th colspan="2" class="result-summary"><span class="number">{{ athletesOnFocus.length }}</span> swimmer<span ng-if="athletesOnFocus.length > 1">s</span> &amp; <span class="number">{{ sharedRaces.length }}</span> race<span ng-if="sharedRaces.length > 1">s</span></th>
+                    <th ng-repeat="r in sharedRaces" class="record">
+                        <span class="race-meet">{{ r.split('-')[0].slice(1) }}</span>
+                        {{ r.split('-')[1].slice(1) }}
+                        <span class="dash">-</span>
+                        {{ r.split('-')[4] }}
+                    </th>
+                </tr>
+            </thead>
+            <!-- athlete list -->
+            <tbody>
+                <tr ng-repeat="a in athletesOnFocus">
+                    <td class="close-icon">
+                        <a ng-click="hideAthlete($index, a.id)"><span class="typcn typcn-delete"></span></a>
+                    </td>
+                    <td class="athlete">
+                        <div>{{ a.name }}</div>
+                        <div class="country">{{ a.country }}</div>
+                    </td>
+                    <td ng-repeat="r in sharedRaces" class="record" ng-class="{ winner: sharedRacesWinner[$index].indexOf($parent.$index) > -1 }">
+                        <div class="place-wrapper"><span ng-class="'place place' + a.records[r].place">{{ a.records[r].place }}</span></div>
+                        <div class="swimtime">{{ a.records[r].swimtime }}</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

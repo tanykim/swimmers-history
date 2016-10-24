@@ -1,23 +1,10 @@
-<!-- content -->
-<div class="during-loading" ng-show="visUpdating && openTab == ''">
+<!-- vis loading status -->
+<div class="during-loading" ng-show="isLoadingStarted.panels && $parent.isLoaded.content">
     <span class="animate-flicker">Generating Visualization...</span>
 </div>
 
-<!-- menu (option tabs and gender switch) -->
-<div class="menu" ng-hide="visUpdating && openTab == ''" ng-include="'views/content/menu.html'"></div>
+<!-- panel -->
+<div ng-include="'views/content/panels.html'" ng-controller="PanelsCtrl" ng-hide="isLoadingStarted.panels && $parent.isLoaded.content"></div>
 
-<!-- options -->
-<div class="row options" ng-class="{'options-round': openTab == 'name'}" ng-hide="openTab == ''" ng-include="'views/content/options.html'"></div>
-
-<!-- content/main -->
-<div ng-hide="visUpdating || openTab != ''">
-
-    <!-- summary -->
-    <div class="summary" ng-class="{'summary-round': selectedTab == 'name'}" ng-include="'views/content/summary.html'"></div>
-
-    <!-- vis -->
-    <div class="vis" ng-include="'views/content/vis.html'" id="vis"></div>
-
-    <!-- table -->
-    <div class="results" ng-include="'views/content/results.html'" id="results"></div>
-</div>
+<!-- vis: summary, graph, results-->
+<div ng-show="!isLoadingStarted.vis && openTab == ''" ng-include="'views/content/vis.html'" ng-controller="VisCtrl"></div>

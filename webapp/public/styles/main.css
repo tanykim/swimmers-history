@@ -6966,9 +6966,6 @@ a {
 .menu .gender-switch a:hover {
   color: #495057;
 }
-.options-round {
-  border-top-left-radius: 4px;
-}
 .options {
   margin-top: -1px;
   margin-left: 15px;
@@ -7203,6 +7200,51 @@ a {
 .summary .kind .meets-title {
   margin-right: 4px;
 }
+.graph {
+  margin-top: 15px;
+  position: relative;
+}
+.graph svg {
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+.graph .show-links {
+  width: 100%;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 14px;
+}
+.graph .show-links .select-network {
+  display: inline-block;
+}
+.graph .show-links .select-network input {
+  margin-right: 4px;
+}
+.graph .show-links .select-network {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.graph .hovered-swimmer {
+  -webkit-user-select: none;
+  /* Chrome/Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE10+ */
+  -o-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  position: absolute;
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding-right: 6px;
+  padding-left: 6px;
+  display: inline-table;
+}
+.graph .hovered-swimmer i {
+  font-style: normal;
+  color: #f5625a;
+}
 .results {
   margin-top: 28px;
 }
@@ -7366,51 +7408,6 @@ a {
   border-radius: 12px;
   padding-top: 0;
   background-color: #d88133;
-}
-.vis {
-  margin-top: 15px;
-  position: relative;
-}
-.vis svg {
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-}
-.vis .show-links {
-  width: 100%;
-  margin-bottom: 15px;
-  text-align: center;
-  font-size: 14px;
-}
-.vis .show-links .select-network {
-  display: inline-block;
-}
-.vis .show-links .select-network input {
-  margin-right: 4px;
-}
-.vis .show-links .select-network {
-  margin-left: 15px;
-  margin-right: 15px;
-}
-.vis .hovered-swimmer {
-  -webkit-user-select: none;
-  /* Chrome/Safari */
-  -moz-user-select: none;
-  /* Firefox */
-  -ms-user-select: none;
-  /* IE10+ */
-  -o-user-select: none;
-  user-select: none;
-  pointer-events: none;
-  position: absolute;
-  font-size: 14px;
-  background-color: rgba(255, 255, 255, 0.7);
-  padding-right: 6px;
-  padding-left: 6px;
-  display: inline-table;
-}
-.vis .hovered-swimmer i {
-  font-style: normal;
-  color: #f5625a;
 }
 .sub-content {
   z-index: 1000;
