@@ -43,10 +43,8 @@ angular.module('swimmerApp')
 
         //set category selection, searched name, and tab status differently by gender
         if (g === 'men') {
-            $scope.selectedTab = 'event';
             storage.setSel(defaultEvents);
         } else {
-            $scope.selectedTab = 'name';
             var defaultAthletes = _.filter(angular.copy(storage.allAthletes), function (a) {
                 return a.name === defaultName;
             });

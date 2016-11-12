@@ -30,7 +30,7 @@ angular.module('swimmerApp')
     $scope.updateToDefaultView = updateToDefaultView();
 
     function completeMainInit() {
-        console.log('7.vis, vis animation done');
+        console.log('7.vis, vis animation done', $scope.$parent.selectedTab);
 
         $scope.$emit('updatedClicked', false);
 

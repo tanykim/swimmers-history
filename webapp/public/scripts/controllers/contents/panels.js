@@ -118,21 +118,27 @@ angular.module('swimmerApp')
             $scope.athletesCount = processor.selectedAthletes.length;
             $scope.$parent.isLoadingStarted.vis = true; //chnage the innerHTML of the update button
         }, 100);
+
+        console.log($scope.$parent.selectedTab);
     };
 
     //vis generation from the intro
     function setVisData() {
         //already set form the parent scope
         $scope.category = storage.category;
-        $scope.allAthletes = storage.allAthletes;
+        $scope.allAthletes = _.sortBy(angular.copy(storage.allAthletes), function (a) {
+            return a.records.length;
+        }).reverse();
         $scope.sel = angular.copy(storage.sel);
         $scope.selParent = angular.copy(storage.selParent);
         $scope.searchedAthletes = angular.copy(storage.searchedAthletes);
 
         var g = $scope.$parent.isLoaded.men ? 'men' : 'women';
         if (g === 'men') {
+            $scope.$parent.selectedTab = 'event';
             processor.getVisDataBySel($scope.sel);
         } else {
+            $scope.$parent.selectedTab = 'name';
             processor.getVisDataByNames($scope.searchedAthletes);
         }
 

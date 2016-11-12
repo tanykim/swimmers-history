@@ -7182,12 +7182,12 @@ a {
 }
 .summary .wrapper {
   font-size: 14px;
-  display: inline-block;
   margin-bottom: 6px;
   margin-left: 4px;
 }
 .summary .kind {
-  padding: 2px 4px 2px 8px;
+  display: inline-block;
+  padding: 1px 4px 1px 8px;
   margin-right: 4px;
   border-radius: 4px;
   margin-bottom: 6px;
@@ -7420,6 +7420,7 @@ a {
   width: 100%;
   min-height: 100%;
   padding: 28px;
+  /* bootstrap */
 }
 .sub-content .back-icon a,
 .sub-content .close-icon a {
@@ -7482,6 +7483,31 @@ a {
 .sub-content ul li i {
   font-style: normal;
   color: #868e96;
+}
+.sub-content .panel-group {
+  font-size: 14px;
+}
+.sub-content .panel {
+  -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  border-radius: 0;
+}
+.sub-content .panel-default {
+  border: 1px solid #ced4da;
+}
+.sub-content .panel-heading {
+  color: #343a40;
+  background-color: #f1f3f5;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+.sub-content .panel-group .panel-heading + .panel-collapse > .panel-body {
+  border-top: none;
+}
+.sub-content .panel-body {
+  line-height: 160%;
 }
 /* d3 */
 .pos-middle {

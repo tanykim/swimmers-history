@@ -28,7 +28,7 @@
         <span class="wrapper" ng-repeat="kind in ['meets', 'events']">
             <span ng-repeat="(key, val) in sel[kind]">
                 <span class="kind" ng-if="selParent[kind][key]">
-                    <span class="meets-title" ng-if="kind == 'meets'">{{ key.slice(1) }}</span>
+                    <span class="meets-title" ng-if="kind == 'meets'">{{ key.slice(1) }} - </span>
                     <span ng-repeat="(k, v) in val" ng-class="sel[kind][key][k] ? 'valid' : 'none'" >
                         <span ng-if="sel[kind][key][k] && kind == 'meets'" >{{ k.slice(1) }}</span>
                         <span ng-if="sel[kind][key][k] && kind == 'events'" >{{ k }}</span>
@@ -42,7 +42,7 @@
         with
         <span class="wrapper" ng-repeat="a in searchedAthletes track by $index">
             <span class="kind"><span class="valid">{{ a.name }}</span></span>
-            <span ng-hide="$index == searchedAthletes.length - 1"> OR&nbsp;</span>
+            <span ng-if="$index !== searchedAthletes.length - 1"> OR&nbsp;</span>
         </span>
     </span>
 </div>
@@ -88,8 +88,8 @@
                         </a>
                     </div>
                     <ul>
-                        <li ng-repeat="child in val.children" ng-class="child[0]=='800Fr' && genders[selectedGenderId]=='men' || child[0]=='1500Fr' && genders[selectedGenderId]=='women' ? 'list-item-disabled': 'list-item'">
-                            <input type="checkbox" ng-model="sel[kind][key][child[0]]" ng-change="updateParentStatus(kind, key, child[0])" ng-hide="child[0]=='800Fr' && genders[selectedGenderId]=='men' || child[0]=='1500Fr' && genders[selectedGenderId]=='women'">
+                        <li ng-repeat="child in val.children" ng-class="child[0]=='800Fr' && $parent.isLoaded.men || child[0]=='1500Fr' && !$parent.isLoaded.men ? 'list-item-disabled': 'list-item'">
+                            <input type="checkbox" ng-model="sel[kind][key][child[0]]" ng-change="updateParentStatus(kind, key, child[0])" ng-hide="child[0]=='800Fr' && $parent.isLoaded.men || child[0]=='1500Fr' && !$parent.isLoaded.men">
                             {{ child[1] }}
                         </li>
                     </ul>

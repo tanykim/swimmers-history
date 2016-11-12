@@ -45,7 +45,7 @@ angular.module('swimmerApp').service('processor', ['_', 'storage', function (_, 
         var allTotalPoints = [];
 
         //check records are included in the selected meets and events
-        _.each(angular.copy(storage.allAthletes), function (athlete) {
+        _.each(_.shuffle(angular.copy(storage.allAthletes)), function (athlete) {
             var totalPoint = 0;
             var validRecords = [];
             _.each(athlete.records, function (r) {
@@ -63,11 +63,14 @@ angular.module('swimmerApp').service('processor', ['_', 'storage', function (_, 
         });
 
         self.selectedAthletes = athletes;
-        self.pointRange = [_.min(allTotalPoints), _.max(allTotalPoints)];
+        self.pointRange = [Math.max(_.min(allTotalPoints), 700), _.max(allTotalPoints)];
     }
 
     this.getVisDataBySel = function (sel) {
         self.selectedRaces = getSelectedRaces(sel);
+        if (_.isEmpty(self.selectedRaces)) {
+            return false;
+        }
         getAthletesData();
         self.topAthletes = _.sortBy(angular.copy(self.selectedAthletes), function (a) {
             return a.totalPoint;

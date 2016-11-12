@@ -36,9 +36,7 @@ angular.module('swimmerApp').service('storage', ['$http', '_', function ($http, 
     /* when gender is selected on Intro, start main */
 
     this.setAthletes = function (gender) {
-        self.allAthletes = _.sortBy(allGenderAthletes[gender], function (a) {
-            return a.records.length;
-        }).reverse();
+        self.allAthletes = allGenderAthletes[gender];
         self.allLinks = allGenderLinks[gender];
         console.log('2.storage, save original objects');
     };

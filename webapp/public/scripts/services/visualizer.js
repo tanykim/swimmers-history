@@ -259,9 +259,9 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
             });
 
         //node as circles
-        //set radius size (min: 3), point range min is roughly 700
+        //set radius size (min: square root 9 = 3), point range min is 700
         var radius = d3.scaleLinear()
-            .range([9, graph.nodes.length * 1.8])
+            .range([9, graph.nodes.length * 1.9])
             .domain(pointRange);
 
         nodeG = svg.append('g').attr('id', 'nodes');
@@ -276,7 +276,7 @@ angular.module('swimmerApp').factory('visualizer', ['_', 'd3', function (_, d3) 
                 var total = _.reduce(points, function (memo, num) {
                     return memo + num;
                 }, 0);
-                return Math.sqrt(radius(total));
+                return total <= 700 ? 3 : Math.sqrt(radius(total));
             })
             .attr('clicked', 'false')
             .attr('class', 'node-normal')

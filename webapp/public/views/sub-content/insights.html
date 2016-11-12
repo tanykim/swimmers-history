@@ -1,21 +1,42 @@
 <div ng-include="'views/sub-content/close.html'"></div>
 
-<h1> What You Can Discover with this? </h1>
+<h1> What You Can Discover? </h1>
 <p>
-    Even if you are not interested in swimming, you may have heard some world-class swimmers such as Michael Phelps or the infamous Ryan Lochte. If you follow swimming, you may be curious about these two swimmers' rivery history. This is one question that you can answer with this swimmer's network visualization. Here I list several ways of finding insights.
+    Even if you are not interested in swimming, you may have heard some world-class swimmers such as Michael Phelps or the infamous Ryan Lochte. If you follow swimming, you may be curious about these two swimmers' rivery history. This is one question that you can answer with this swimmer's network visualization. Here are only several examples of insights.
 </p>
 
-<h1> How can I generate networks of swimmers? </h1>
+<!-- <h2> Dominent Swimmers </h2>
 <p>
-    Swimmer's Network provides two ways to filter the results of competitions.
-</p>
-<h2> Meets &amp; Events </h2>
-<p>
-    One is through the combination of 17 swim meets and 16 events. For example, selecting all the Olympic games (2008, 2012, 2016) and men's all free style events (50m, 100m, 200m, 400m, 800/1500m, 4 X 100m relay, and 4 X 200 relay) returns the results of total 21 races (3 X 7) and 166 swimmers.
-</p>
-<h2> Name Search </h2>
-<p>
-    Another way to find swimmers is starting with one swimmer. One of the dominant swimmers at the Rio Olympics was Kate (Kathleen) Ledecky. Let's see who competed with her at the major international competitions.
+    As the size of circles (nodes) represents the points swimmers have earned, you can identify better-performing swimmers just by identifying relatively bigger circles. Create a network of swimmers who competed with Michael Phelps; Total 369 swimmers are retrieved and you'll find the circle of Phelps is dominently bigger. The second largest one is Ryan Lochte.
 </p>
 
+<h2> History of Rivery </h2>
+<p>
+    In name search, enter Michael Phelps and Laszlo Cseh from Hungary. Both have been competely for the past 10 years in butterfly and individual medley events. Investigate the results of races both finished. Cseh competed at total 8 races in the olympics; in 2008 and 2012, he won 2 silvers and 2 bronze medals and all the missed golds went to Phelps. Then they both tied earning a silver medal in 2016.
+</p>
+
+<h2> Swimmer Distribuion in Styles </h2>
+<p>
+    Do swimmers compete in events of multiple styles? Go to Women, in the Meets &amp; Events, select  100m and 200m Freestyle, Backstroke, Breaststroke, Butterfly individual events. Interestingly enough, you see discover not a single swimmer competed in multiple styles.
+</p>
+
+<h2> Swimmer Distribution in Distance </h2>
+<p>
+    Similar in the distribution in styles, see all the swimmers competed in all free style events. For example, looking into women's Olympics freestyle, players tend to compete in both 400m and 200m together rather than 200m and 100m.
+</p>
+ -->
+<uib-accordion close-others="true">
+    <div uib-accordion-group class="panel-default" heading="Dominent Swimmers" is-open="true">
+        As the size of circles (nodes) represents the points swimmers have earned, you can identify better-performing swimmers just by identifying relatively bigger circles. Create a network of swimmers who competed with Michael Phelps; Total 369 swimmers are retrieved and you'll find the circle of Phelps is dominently bigger. The second largest one is Ryan Lochte.
+    </div>
+    <div uib-accordion-group class="panel-default" heading="History of Rivery">
+        In the name search of men swimmers, enter Michael Phelps and Laszlo Cseh from Hungary. Both have been competely for the past 10 years in butterfly and individual medley events. Investigate the results of races both finished. Cseh competed at total 8 races in the olympics; in 2008 and 2012, he won 2 silvers and 2 bronze medals and all the missed golds went to Phelps. Then they both tied earning a silver medal in 2016.
+    </div>
+    <div uib-accordion-group class="panel-default" heading="Swimmer Distribuion in Styles">
+        Do swimmers compete in events of multiple styles? Go to Women, in the Meets &amp; Events, select  100m and 200m Freestyle, Backstroke, Breaststroke, Butterfly individual events. Interestingly enough, you see discover not a single swimmer competed in multiple styles.
+    </div>
+    <div uib-accordion-group class="panel-default" heading="Swimmer Distribution in Distance">
+        Similar in the distribution in styles, see all the swimmers competed in all free style events. For example, looking into women's Olympics freestyle, players tend to compete in both 400m and 200m together rather than 200m and 100m.
+    </div>
+</uib-accordion>
 
