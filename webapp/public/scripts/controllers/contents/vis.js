@@ -1,8 +1,14 @@
 'use strict';
 
 angular.module('swimmerApp')
-    .controller('VisCtrl', ['$scope', '$anchorScroll', '_', 'visualizer', 'processor', 'storage',
-    function ($scope, $anchorScroll, _, visualizer, processor, storage) {
+    .controller('VisCtrl', [
+        '$scope', '$anchorScroll',
+        '_',
+        'visualizer', 'processor', 'storage',
+    function (
+        $scope, $anchorScroll,
+        _,
+        visualizer, processor, storage) {
 
     $scope.isLinkedVisible = 0;
 
@@ -25,6 +31,9 @@ angular.module('swimmerApp')
 
     function completeMainInit() {
         console.log('7.vis, vis animation done');
+
+        $scope.$emit('updatedClicked', false);
+
         $scope.$apply(function () {
             $scope.$parent.openTab = '';
             $scope.$parent.optionChanged = false;

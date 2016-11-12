@@ -1,8 +1,14 @@
 'use strict';
 
 angular.module('swimmerApp')
-    .controller('MainCtrl', ['$scope', '$anchorScroll', '_', 'visualizer', 'processor', 'storage',
-    function ($scope, $anchorScroll, _, visualizer, processor, storage) {
+    .controller('MainCtrl', [
+        '$scope', '$timeout', '$anchorScroll',
+        '_',
+        'visualizer', 'processor', 'storage',
+    function (
+        $scope, $timeout, $anchorScroll,
+        _,
+        visualizer, processor, storage) {
 
     /* initial setting */
 
@@ -19,6 +25,7 @@ angular.module('swimmerApp')
     /* left menu */
 
     $scope.goToIntro = function () {
+        $scope.buttonClicked = false;
         $scope.isLoadingStarted.content = false;
         $scope.isLoaded.content = false;
     };
@@ -46,8 +53,9 @@ angular.module('swimmerApp')
 
     //intro visualize button clicked
     $scope.startMainLoading = function () {
-        // console.log($scope.selectedGenderId);
-        // $scope.selectedGenderId = genderId;
-        $scope.isLoadingStarted.content = true;
+        $scope.buttonClicked = true;
+        $timeout(function () {
+            $scope.isLoadingStarted.content = true;
+        }, 100);
     };
 }]);

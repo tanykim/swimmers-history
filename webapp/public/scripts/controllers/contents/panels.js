@@ -1,8 +1,14 @@
 'use strict';
 
 angular.module('swimmerApp')
-    .controller('PanelsCtrl', ['$scope', '$anchorScroll', '_', 'visualizer', 'processor', 'storage',
-    function ($scope, $anchorScroll, _, visualizer, processor, storage) {
+    .controller('PanelsCtrl', [
+        '$scope', '$timeout', '$anchorScroll',
+        '_',
+        'visualizer', 'processor', 'storage',
+    function (
+        $scope, $timeout, $anchorScroll,
+        _,
+        visualizer, processor, storage) {
 
     //for meets & events menu
     $scope.selParent = {};
@@ -92,24 +98,26 @@ angular.module('swimmerApp')
             return false;
         }
 
+        $scope.$emit('updatedClicked', true);
+
         //data is already updated througn inputs on panel
         //swap scope and storage data
-
-        storage.setPanelDefault();
-
-        if ($scope.$parent.openTab === 'event') {
-            storage.sel = angular.copy($scope.sel);
-            storage.selParent = angular.copy($scope.selParent);
-            $scope.searchedAthletes = [];
-            $scope.$parent.selectedTab = 'event';
-        } else {
-            $scope.sel = angular.copy(storage.sel);
-            $scope.selParent = angular.copy(storage.selParent);
-            storage.setSearched($scope.searchedAthletes);
-            $scope.$parent.selectedTab = 'name';
-        }
-        $scope.athletesCount = processor.selectedAthletes.length;
-        $scope.$parent.isLoadingStarted.vis = true; //chnage the innerHTML of the update button
+        $timeout(function () {
+            storage.setPanelDefault();
+            if ($scope.$parent.openTab === 'event') {
+                storage.sel = angular.copy($scope.sel);
+                storage.selParent = angular.copy($scope.selParent);
+                $scope.searchedAthletes = [];
+                $scope.$parent.selectedTab = 'event';
+            } else {
+                $scope.sel = angular.copy(storage.sel);
+                $scope.selParent = angular.copy(storage.selParent);
+                storage.setSearched($scope.searchedAthletes);
+                $scope.$parent.selectedTab = 'name';
+            }
+            $scope.athletesCount = processor.selectedAthletes.length;
+            $scope.$parent.isLoadingStarted.vis = true; //chnage the innerHTML of the update button
+        }, 100);
     };
 
     //vis generation from the intro

@@ -1,8 +1,14 @@
 'use strict';
 
 angular.module('swimmerApp')
-    .controller('ContentCtrl', ['$scope', '$anchorScroll', '_', 'visualizer', 'processor', 'storage',
-    function ($scope, $anchorScroll, _, visualizer, processor, storage) {
+    .controller('ContentCtrl', [
+        '$scope', '$timeout', '$anchorScroll',
+        '_',
+        'visualizer', 'processor', 'storage',
+    function (
+        $scope, $timeout, $anchorScroll,
+        _,
+        visualizer, processor, storage) {
 
     //used for children scopes
     $scope.isLoadingStarted = {
@@ -53,8 +59,11 @@ angular.module('swimmerApp')
     /* swtich view by gender */
 
     $scope.switchGender = function () {
-        $scope.$parent.isLoaded.men = !$scope.$parent.isLoaded.men;
-        setDefaultContent();
+        $scope.isUpdating = true;
+        $timeout(function () {
+            $scope.$parent.isLoaded.men = !$scope.$parent.isLoaded.men;
+            setDefaultContent();
+        }, 100);
     };
 
     /* check vis loading started -> generate data first - */
@@ -63,5 +72,9 @@ angular.module('swimmerApp')
         if (val) {
             setDefaultContent();
         }
+    });
+
+    $scope.$on('updatedClicked', function (evt, data) {
+        $scope.isUpdating = data;
     });
 }]);

@@ -13,8 +13,10 @@
         <div class="button-wrapper">
             <div class="visualize" ng-click="startMainLoading()">
                 <span class="typcn typcn-link"></span>
-                <span ng-hide="isLoadingStarted.content">Explore the Network</span>
-                <span ng-show="isLoadingStarted.content" class="animate-flicker">Generating Visualization...</span>
+                <span ng-switch on="buttonClicked">
+                    <span class="animate-flicker" ng-switch-when="true">Generating Visualization...</span>
+                    <span ng-switch-default>Explore the Network</span>
+                </span>
             </div>
         </div>
     </div>

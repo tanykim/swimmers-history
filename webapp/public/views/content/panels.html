@@ -1,5 +1,4 @@
 <!-- tabs -->
-<!-- ng-hide="$parent.isLoadingStarted.vis && $parent.openTab == ''" -->
 <div class="menu">
     <div class="col-xs-12 col-md-4 col-md-push-8 gender-switch">
         <a ng-click="$parent.switchGender()">
@@ -68,10 +67,9 @@
         </div>
         <div class="col-xs-12 col-sm-6 total">
             <span ng-show="optionChanged"><span class="number">{{ selectedAthletes.length }}</span> swimmers found</span>
-            <div class="lable" ng-class="optionChanged && selectedAthletes.length > 0 ? 'link-enabled' : 'link-disabled'" ng-click="updateAthletes()">
+            <div class="lable" ng-class="optionChanged && selectedAthletes.length > 0 ? 'link-enabled' : 'link-disabled'" ng-click="$parent.updateAthletes()">
                 <span class="typcn typcn-refresh"></span>
-                <span ng-hide="isLoadingStarted.vis">Update</span>
-                <span ng-show="isLoadingStarted.vis" class="animate-flicker">Updating Now...</span>
+                Update
             </div>
         </div>
     </div>

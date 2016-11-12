@@ -1,10 +1,13 @@
 <!-- vis loading status -->
-<div class="during-loading" ng-show="isLoadingStarted.panels && $parent.isLoaded.content">
+<div class="during-loading" ng-show="isUpdating">
     <span class="animate-flicker">Generating Visualization...</span>
 </div>
 
-<!-- panel -->
-<div ng-include="'views/content/panels.html'" ng-controller="PanelsCtrl" ng-hide="isLoadingStarted.panels && $parent.isLoaded.content"></div>
+<duv ng-hide="isUpdating">
 
-<!-- vis: summary, graph, results-->
-<div ng-show="!isLoadingStarted.vis && openTab == ''" ng-include="'views/content/vis.html'" ng-controller="VisCtrl"></div>
+    <!-- panel -->
+    <div ng-include="'views/content/panels.html'" ng-controller="PanelsCtrl"></div>
+
+    <!-- vis: summary, graph, results-->
+    <div ng-include="'views/content/vis.html'" ng-controller="VisCtrl"></div>
+</div>
