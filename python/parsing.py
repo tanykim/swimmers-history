@@ -71,7 +71,7 @@ all_athletes = {'men': {}, 'women': {}}
 node_edges = {'men': [], 'women': []}
 
 # add race at each html read
-#race = {'men': {}, 'women': {}}
+race = {'men': {}, 'women': {}}
 
 # collect athletes from all html files
 all_athletes = {'men': {}, 'women': {}}
@@ -283,14 +283,14 @@ for meet in meets:
             athlete_ids = get_athletes_by_html(race_id, results, genders[gender]['name'])
             # update race object with race date
             race_date = result_html.find('tr').find_all('th')[1].string.split('-')[0].strip()
-            # race[genders[gender]['name']][race_id] = race_date
-            race = {
+            race[genders[gender]['name']][race_id] = race_date
+            race_info = {
                 'date': race_date,
                 'gender': genders[gender]['name'],
                 'competition': competition_id,
                 'athletes': athlete_ids
             }
-            get_competition_info(race);
+            get_competition_info(race_info);
 
 
 
@@ -355,8 +355,12 @@ jsondata = simplejson.dumps({
         'meets': meets_list,
         'events': events_list,
         'athletes': athletes_list,
-        'competitions': competition_list
+        'competitions': competition_list,
+        'race': race
     }, separators=(',',':'), sort_keys=True)
 fd = open('../webapp/public/data/data.json', 'w')
+fd2 = open('../ng-app/src/app/services/data.json', 'w')
 fd.write(jsondata)
 fd.close()
+fd2.write(jsondata)
+fd2.close()
