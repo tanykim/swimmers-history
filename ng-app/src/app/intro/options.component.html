@@ -1,0 +1,13 @@
+<md-radio-group [ngModel]="gender" (ngModelChange)="onChangeFunc($event)" [disabled]="isLoading">
+  <md-radio-button *ngFor="let g of genders" [value]="g">
+    {{ g }}
+  </md-radio-button>
+</md-radio-group>
+
+<div class="example-selected-value">Your favorite gender is: {{gender}}</div>
+
+<!-- start buttons -->
+<button md-raised-button class="button is-large is-outlined is-info" (click)="onStart()" [disabled]="!gender">
+  <span *ngIf="!isLoading">start</span>
+  <span *ngIf="isLoading">Generating Visualization</span>
+</button>
