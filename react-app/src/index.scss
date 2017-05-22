@@ -1,7 +1,206 @@
 @import '../node_modules/bulma/bulma.sass';
+@import '../node_modules/open-color/open-color.scss';
 
 body {
   margin: 0;
   padding: 0;
   font-family: Avenir, 'Helvetica Neue', Helvetica, Arial, san-serif;
+}
+
+/* grey scale */
+/* from open-color https://yeun.github.io/open-color */
+$white: #ffffff;
+
+/* content colors */
+$main: #2bc0e4;
+$main-light: #91f0f9;
+$sub: #21d7c4;
+$highlight: #f5625a;
+$highlight-light: #ffebea;
+
+/* vis */
+$node: $oc-gray-8;
+$over: $main;
+$clicked: $highlight;
+$linked: $main-light;
+
+/* result */
+$gold: #fbcd15;
+$silver: #dadada;
+$bronze: #d88133;
+$white-trans: fade($white, 70%);
+
+/* font-size */
+$huge: 42px;
+$xlarge: 28px;
+$large: 18px;
+$normal: 16px;
+$small: 14px;
+$xsmall: 12px;
+$tiny: 9px;
+
+/* letter spacing */
+$ls-sm: 0.04em;
+$ls-md: 0.08em;
+$ls-lg: 0.2em;
+
+/* word spacing */
+$ws-sm: 8px;
+$ws-md: 14px;
+
+/* line height */
+$lh-md: 160%;
+
+/* paragraph spacing or padding*/
+$pg-xxs: 4px;
+$pg-xs: 6px;
+$pg-sm: 15px;
+$pg-md: 18px;
+$pg-lg: 28px;
+
+/* other sizing */
+$title-height: 120px;
+
+/* borders */
+$bd-thin-xlg: 1px solid $oc-gray-3;
+$bd-md-xlg: 2px solid $oc-gray-3;
+$bd-think-xlg: 4px solid $oc-gray-3;
+$bd-thin-lg: 1px solid $oc-gray-4;
+$bd-thin-g: 1px solid $oc-gray-6;
+$bd-thin-w: 1px solid $white;
+$bd-thin-main: 1px solid $main;
+$bd-thin-hl: 1px solid $highlight;
+$bd-thin-dg: 1px solid $oc-gray-7;
+$bd-md-dg: 2px solid $oc-gray-7;
+$bd-radius: 4px;
+/* d3 */
+.pos-middle {
+    text-anchor: middle;
+}
+.pos-end {
+    text-anchor: end;
+}
+.v-central {
+    alignment-baseline: central;
+}
+.v-top {
+    alignment-baseline: hanging;
+}
+.size-tiny {
+    font-size:$tiny;
+}
+.size-small {
+    font-size:$small;
+}
+.size-normal {
+    font-size:$normal;
+}
+.size-large {
+    font-size:$large;
+}
+.unselectable {
+    pointer-events: none;
+}
+.stroke-black {
+    stroke: black;
+}
+.stroke-lightGrey {
+    stroke:$oc-gray-5;
+}
+.stroke-lightestGrey {
+    stroke:$oc-gray-3;
+}
+.fill-darkGrey {
+    fill:$oc-gray-7;
+}
+.fill-grey {
+    fill:$oc-gray-6;
+}
+.fill-lightGrey {
+    fill:$oc-gray-5;
+}
+
+/* d3 project specific */
+.link-normal {
+    stroke:$oc-gray-8;
+    stroke-opacity: 0.1;
+}
+.link-all-linked {
+    stroke:$highlight;
+    stroke-opacity: 1;
+}
+.link-over {
+    stroke:$over;
+    stroke-opacity: 1;
+}
+.node-common {
+    stroke-width: 1;
+    stroke:$white;
+    stroke-opacity: 0.5;
+}
+.node-normal {
+    @extend .node-common;
+    fill:$node;
+}
+.node-all-linked {
+    stroke:$highlight;
+    stroke-opacity: 1;
+    fill:$white;
+}
+.node-over {
+    @extend .node-common;
+    fill:$over;
+    cursor: pointer;
+}
+.node-clicked {
+    @extend .node-common;
+    fill: $clicked;
+    cursor: pointer;
+}
+.node-linked {
+    @extend .node-common;
+    fill:$linked;
+}
+
+
+.graph {
+    margin-top: $pg-sm;
+    position: relative;
+    svg {
+        border: $bd-thin-xlg;
+        border-radius: $bd-radius;
+    }
+/*    .show-links {
+        width: 100%;
+        margin-bottom: $pg-sm;
+        text-align: center;
+        font-size: $small;
+        .select-network {
+            display: inline-block;
+            input {
+                margin-right: $pg-xxs;
+            }
+        }
+        .select-network {
+            margin-left: $pg-sm;
+            margin-right: $pg-sm;
+        }
+    }*/
+    .hovered-swimmer {
+        /*@extend .unselectable;*/
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: $small;
+        background-color: $white-trans;
+        padding-right: $pg-xs;
+        padding-left: $pg-xs;
+        display: inline-table;
+        i {
+            font-style: normal;
+            color: $highlight;
+        }
+    }
 }

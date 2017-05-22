@@ -47,23 +47,23 @@ meet_year_letter = {
     '2007': 'j'
 }
 events_name = {
-    '1': ['50m Freestyle', '50Fr', '0IND'],
-    '2': ['100m Freestyle', '100Fr', '0IND'],
-    '3': ['200m Freestyle', '200Fr', '0IND'],
-    '5': ['400m Freestyle', '400Fr', '0IND'],
-    '6': ['800m Freestyle', '800Fr', '0IND'],
-    '8': ['1500m Freestyle', '1500Fr', '0IND'],
-    '10': ['100m Backstroke', '100Bk', '0IND'],
-    '11': ['200m Backstroke', '200Bk', '0IND'],
-    '13': ['100m Breaststroke', '100Br', '0IND'],
-    '14': ['200m Breaststroke', '200Br', '0IND'],
-    '16': ['100m Butterfly', '100Fly', '0IND'],
-    '17': ['200m Butterfly', '200Fly', '0IND'],
-    '18': ['200m Medley', '200IM', '0IND'],
-    '19': ['400m Medley', '400IM', '0IND'],
-    '27': ['4 X 100m Freestyle', '4X100Fr', '1TEAM'],
-    '29': ['4 X 200m Freestyle', '4X200Fr', '1TEAM'],
-    '40': ['4 X 100m Medley', '4X100M', '1TEAM']
+    '1': ['50m Freestyle', 'a50Fr', '0IND'],
+    '2': ['100m Freestyle', 'b100Fr', '0IND'],
+    '3': ['200m Freestyle', 'c200Fr', '0IND'],
+    '5': ['400m Freestyle', 'd400Fr', '0IND'],
+    '6': ['800m Freestyle', 'e800Fr', '0IND'],
+    '8': ['1500m Freestyle', 'f1500Fr', '0IND'],
+    '10': ['100m Backstroke', 'g100Bk', '0IND'],
+    '11': ['200m Backstroke', 'h200Bk', '0IND'],
+    '13': ['100m Breaststroke', 'i100Br', '0IND'],
+    '14': ['200m Breaststroke', 'j200Br', '0IND'],
+    '16': ['100m Butterfly', 'k100Fly', '0IND'],
+    '17': ['200m Butterfly', 'l200Fly', '0IND'],
+    '18': ['200m Medley', 'm200IM', '0IND'],
+    '19': ['400m Medley', 'n400IM', '0IND'],
+    '27': ['4 X 100m Freestyle', 'o4X100Fr', '1TEAM'],
+    '29': ['4 X 200m Freestyle', 'p4X200Fr', '1TEAM'],
+    '40': ['4 X 100m Medley', 'q4X100M', '1TEAM']
 }
 
 # collect athletes from all html files
@@ -346,10 +346,9 @@ for gender, athletes_by_id in all_athletes.iteritems():
         info.append(val)
     athletes_list[gender] = info
 
-
-print competition_list
 # save files
 simplejson = json
+print events_list
 jsondata = simplejson.dumps({
         'graph': node_edges,
         'meets': meets_list,
@@ -358,9 +357,13 @@ jsondata = simplejson.dumps({
         'competitions': competition_list,
         'race': race
     }, separators=(',',':'), sort_keys=True)
-fd = open('../webapp/public/data/data.json', 'w')
-fd2 = open('../ng-app/src/app/services/data.json', 'w')
-fd.write(jsondata)
-fd.close()
-fd2.write(jsondata)
-fd2.close()
+# fd = open('../webapp/public/data/data.json', 'w')
+# fd2 = open('../ng-app/src/app/services/data.json', 'w')
+fd3 = open('../react-app/src/data/data.json', 'w')
+# fd.write(jsondata)
+# fd.close()
+# fd2.write(jsondata)
+# fd2.close()
+fd3.write(jsondata)
+fd3.close()
+
