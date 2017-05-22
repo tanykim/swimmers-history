@@ -1,0 +1,23 @@
+/* grey scale */
+@import '../../node_modules/open-color/open-color.scss';
+
+$white: #ffffff;
+
+/* content colors */
+$main: #2bc0e4;
+$main-light: #91f0f9;
+$sub: #21d7c4;
+$highlight: #f5625a;
+$highlight-light: #ffebea;
+
+/* vis */
+$node: $oc-gray-8;
+$over: $main;
+$clicked: $highlight;
+$linked: $main-light;
+
+/* result */
+$gold: #fbcd15;
+$silver: #dadada;
+$bronze: #d88133;
+$white-trans: fade($white, 70%);

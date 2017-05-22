@@ -1,0 +1,44 @@
+@import './colors.scss';
+@import './size.scss';
+
+.graph {
+    margin-top: $pg-sm;
+    position: relative;
+    svg {
+        border: $bd-thin-xlg;
+        border-radius: $bd-radius;
+    }
+/*    .show-links {
+        width: 100%;
+        margin-bottom: $pg-sm;
+        text-align: center;
+        font-size: $small;
+        .select-network {
+            display: inline-block;
+            input {
+                margin-right: $pg-xxs;
+            }
+        }
+        .select-network {
+            margin-left: $pg-sm;
+            margin-right: $pg-sm;
+        }
+    }*/
+    .hovered-swimmer {
+        /*@extend .unselectable;*/
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: $small;
+        background-color: $white-trans;
+        padding-right: $pg-xs;
+        padding-left: $pg-xs;
+        display: inline-table;
+        i {
+            font-style: normal;
+            color: $highlight;
+        }
+    }
+}

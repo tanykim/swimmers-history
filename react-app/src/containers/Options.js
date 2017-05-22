@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import OptionsComponent from '../components/Options';
 import { getOptionsArray } from '../helpers/processor';
 

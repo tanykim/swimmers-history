@@ -1,0 +1,45 @@
+@import './colors.scss';
+
+/* font-size */
+$huge: 42px;
+$xlarge: 28px;
+$large: 18px;
+$normal: 16px;
+$small: 14px;
+$xsmall: 12px;
+$tiny: 9px;
+
+/* letter spacing */
+$ls-sm: 0.04em;
+$ls-md: 0.08em;
+$ls-lg: 0.2em;
+
+/* word spacing */
+$ws-sm: 8px;
+$ws-md: 14px;
+
+/* line height */
+$lh-md: 160%;
+
+/* paragraph spacing or padding*/
+$pg-xxs: 4px;
+$pg-xs: 6px;
+$pg-sm: 15px;
+$pg-md: 18px;
+$pg-lg: 28px;
+
+/* other sizing */
+$title-height: 120px;
+
+/* borders */
+$bd-thin-xlg: 1px solid $oc-gray-3;
+$bd-md-xlg: 2px solid $oc-gray-3;
+$bd-think-xlg: 4px solid $oc-gray-3;
+$bd-thin-lg: 1px solid $oc-gray-4;
+$bd-thin-g: 1px solid $oc-gray-6;
+$bd-thin-w: 1px solid $white;
+$bd-thin-main: 1px solid $main;
+$bd-thin-hl: 1px solid $highlight;
+$bd-thin-dg: 1px solid $oc-gray-7;
+$bd-md-dg: 2px solid $oc-gray-7;
+$bd-radius: 4px;
