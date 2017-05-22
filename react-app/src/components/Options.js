@@ -2,12 +2,6 @@ import React, { Component } from 'react';
 
 class OptionsComponent extends Component {
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.sel !== nextProps.sel) {
-      console.log('---------');
-    }
-  }
-
   render() {
     return (
       <div className="columns is-multiline options">

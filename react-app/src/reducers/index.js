@@ -11,40 +11,24 @@ import { setOptions,
 } from '../helpers/processor';
 
 /* unchanged data */
-
 const allAthletes = Data.athletes;
 const allLinks = Data.graph;
-// const allRaces = Data.race;
 const { meets, events, competitions } = Data;
 const category = { meets, events };
 
 /* views */
-const currentView = (state = 'intro', action) => {
+const currentView = (state = { view: 'intro'}, action) => {
   switch (action.type) {
     case 'SET_CURRENT_VIEW':
-      return action.value;
-    default:
-      return state;
-  }
-};
-
-/* loading default data, visualization generation */
-
-const isLoading = (state = {}, action) => {
-  switch (action.type) {
-    case 'INITIALIZE':
-      return Object.assign({}, state, { data: false, intro: false, vis: false });
-    case 'SET_DEFAULT_DATA':
-      return Object.assign({}, state, { intro: true });
-    // case 'SET_VIEW_CHANGE':
-    //   return Object.assign({}, state, { [action.from]: false, [action.to]: true });
+      return Object.assign({}, state, { view: action.value, isLoading: false });
+    case 'SET_DEFAULT_OPTIONS':
+      return Object.assign({}, state, { isLoading: true });
     default:
       return state;
   }
 };
 
 /* select by gender */
-
 const gender = (state = 'men', action) => {
   switch (action.type) {
     case 'SET_GENDER':
@@ -55,7 +39,6 @@ const gender = (state = 'men', action) => {
 };
 
 /* option data data */
-
 const options = (state = {}, action) => {
   switch (action.type) {
     case 'INITIALIZE':
@@ -72,7 +55,15 @@ const options = (state = {}, action) => {
         }));
         sel[kind] = vals;
       });
-      return { category, sel, selParent, searchedAthletes, isOpen: false, tempSelection: [], originalNames: [] };
+      return {
+        category,
+        sel,
+        selParent,
+        searchedAthletes,
+        isOpen: false,
+        tempSelection: [],
+        originalNames: []
+      };
     case 'SET_DEFAULT_OPTIONS':
       let defaultEvents;
       let defaultNames;
@@ -82,6 +73,7 @@ const options = (state = {}, action) => {
           events: ['0IND-a50Fr', '0IND-b100Fr', '0IND-c200Fr', '0IND-d400Fr', '0IND-f1500Fr']
         };
         defaultNames = [];
+        // defaultNames = ['Michael Phelps', 'Ryan Lochte'];
       } else {
         defaultEvents = {
           meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008'],
@@ -94,26 +86,40 @@ const options = (state = {}, action) => {
         setOptions(state, defaultEvents, defaultNames, allAthletes[action.gender])
       );
     case 'TOGGLE_OPTIONS':
-      return Object.assign({}, state, { isOpen: action.value });
+      return Object.assign({}, state, {
+        isOpen: action.value
+      });
     case 'SET_SELECTION':
       let ts = state.tempSelection;
       ts.push(action.value);
       const arr = action.value.split(',');
       let updatedSel = state.sel;
       updatedSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? true : false;
-      return Object.assign({}, state, { sel: updatedSel, tempSelection: ts });
+      return Object.assign({}, state, {
+        sel: updatedSel,
+        tempSelection: ts
+      });
     case 'SET_NAME_OPTION':
-      return Object.assign({}, state, { nameOption: action.value });
+      return Object.assign({}, state, {
+        nameOption: action.value
+      });
     case 'SET_VIS_DATA':
       //reset temprary selection & temporary names
-      return Object.assign({}, state, { tempSelection: [], originalNames: state.searchedAthletes });
+      return Object.assign({}, state, {
+        tempSelection: [],
+        originalNames: state.searchedAthletes
+      });
     case 'CANCEL':
       let canceledSel = state.sel;
       _.each(state.tempSelection, (d) => {
         const arr = d.split(',');
         canceledSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? false : true;
       });
-      return Object.assign({}, state, { sel: canceledSel, searchedAthletes: state.originalNames, nameOption: state.originalNames.length > 0 ? 'search' : 'all'});
+      return Object.assign({}, state, {
+        sel: canceledSel,
+        searchedAthletes: state.originalNames,
+        nameOption: state.originalNames.length > 0 ? 'search' : 'all'}
+      );
     default:
       return state;
   }
@@ -123,7 +129,7 @@ const data = (state = {}, action) => {
   const { gender, options } = action;
   switch (action.type) {
     case 'INITIALIZE':
-      return Object.assign({}, state, { competitions: competitions })
+      return Object.assign({}, state, { competitions })
     case 'SET_VIS_DATA':
       //races filtered by meets/event, for HTML
       const racesInfo = getRaces(options.sel);
@@ -136,7 +142,13 @@ const data = (state = {}, action) => {
       const links = getAthletesLinks(athletes, allLinks[gender], racesInfo.races);
       //graph data
       const graph = { nodes: athletes, links };
-      return Object.assign({}, state, { racesInfo, athletes, pointRange, topAthletes, graph });
+      return Object.assign({}, state, {
+        racesInfo,
+        athletes,
+        pointRange,
+        topAthletes,
+        graph
+      });
     default:
       return state;
   }
@@ -205,7 +217,7 @@ const graph = (state = { clickedIds: [], isLinksShown: false }, action) => {
 
 export default combineReducers({
   currentView,
-  isLoading,
+  //isLoading,
   gender,
   options,
   data,

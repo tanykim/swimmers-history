@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 
 class IntroComponent extends Component {
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.isLoading && nextProps.isLoading) {
+      nextProps.startVis();
+    }
+  }
+
   render() {
     return (
       <div className="section">

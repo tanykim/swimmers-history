@@ -1,5 +1,6 @@
 import _ from 'lodash';
 
+//get the cetegory data
 export const getRaces = (sel) => {
   const races = []; //all races
   const meets = {};
@@ -34,19 +35,23 @@ export const getRaces = (sel) => {
   };
 }
 
+//get athletes data from options
 export const getAthletesData = (allAthletes, races, searchedAthletes) => {
   let athletes = [];
   let allTotalPoints = [];
-
-  //ides of searched athletes
-  let filteredAthletes = allAthletes;
+  //filter atheltes by the races of searched atheltes
   if (searchedAthletes.length > 0) {
-    const ids = searchedAthletes.map((d) => d.id);
-    filteredAthletes = _.filter(allAthletes, (d) => ids.indexOf(d.id) > -1);
+    const racesByAthletes = _.chain(searchedAthletes)
+      .map((a) => a.records)
+      .map((arr) => (arr.map((r) => r.race_id)))
+      .flatten()
+      .uniq()
+      .value();
+    races = _.intersection(races, racesByAthletes);
   }
 
   //check records are included in the selected meets and events
-  _.each(_.shuffle(filteredAthletes), (athlete) => {
+  _.each(_.shuffle(allAthletes), (athlete) => {
       let totalPoint = 0;
       let validRecords = [];
       _.each(athlete.records, (r) => {
@@ -68,12 +73,14 @@ export const getAthletesData = (allAthletes, races, searchedAthletes) => {
   return { athletes, pointRange };
 }
 
+//top athletes for selection dropdown
 export const getTopAthletes = (allAthletes) => {
   return _.sortBy(allAthletes, (a) => { return a.totalPoint; })
-  .reverse()
-  .slice(0, Math.min(30, Math.round(allAthletes.length / 10)));
+    .reverse()
+    .slice(0, Math.min(30, Math.round(allAthletes.length / 10)));
 }
 
+//create links data of Graph
 export const getAthletesLinks = (athletes, allLinks, races) => {
   let links = [];
   const aIds = _.map(athletes, 'id');
@@ -99,6 +106,7 @@ export const getAthletesLinks = (athletes, allLinks, races) => {
   return links;
 }
 
+//get ids of connected nodes for mouseover effect
 export const getConnectedNodes = (id, links) => {
   return _.chain(links)
     .filter((l) => {
@@ -107,10 +115,10 @@ export const getConnectedNodes = (id, links) => {
     .map((l) => id === l.source.id ? l.target.id : l.source.id)
     .value();
 }
-//athletes who competed with ALL of the focused athletes
+
+//athletes who competed with ALL of the focused athletes - view option
 export const getMutualLinkedNodes = (focusedAIds, links) => {
 
-  // var focusedAIds = _.pluck(self.athletesOnFocus, 'id');
   let linksByFIds = []; //links by focused ID
 
   _.each(links, (l) => {
@@ -146,6 +154,7 @@ export const getMutualLinkedNodes = (focusedAIds, links) => {
   return _.flatten(linkedToAll);
 };
 
+//set options
 export const setOptions = (state, selected, names, allAthletes) => {
 
   let { sel, selParent } = state;
@@ -157,7 +166,6 @@ export const setOptions = (state, selected, names, allAthletes) => {
       sel[kind][sep[0]][sep[1]] = true;
     });
   });
-
   const searchedAthletes = _.filter(allAthletes, (d) => names.indexOf(d.name) > -1);
   const originalNames = searchedAthletes;
   const nameOption = searchedAthletes.length > 0 ? 'search' : 'all';
@@ -165,6 +173,7 @@ export const setOptions = (state, selected, names, allAthletes) => {
   return { sel, selParent, searchedAthletes, originalNames, nameOption };
 }
 
+//conver option as object to array for React rendering
 export const getOptionsArray = (category) => {
   return _.map(category, (obj, kind) => {
     const lists = _.map(obj, (val, key) => ({

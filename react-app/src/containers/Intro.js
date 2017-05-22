@@ -5,7 +5,7 @@ import IntroComponent from '../components/Intro'
 const mapStateToProps = (state, ownProps) => (
   {
     gender: state.gender,
-    isLoading: state.isLoading,
+    isLoading: state.currentView.isLoading,
     options: state.options,
     competition: state.data.competition
   }
@@ -24,8 +24,7 @@ const mapDispatchToProps = (dispatch) => (
       //show loading sign
       setTimeout(() => {
         dispatch({ type: 'SET_CURRENT_VIEW', value: 'vis' })
-        // dispatch({ type: 'SET_VIEW_CHANGE', from: 'intro', to: 'vis' })
-      }, 500);
+      }, 1000);
     }
   }
 )
@@ -33,16 +32,17 @@ const mapDispatchToProps = (dispatch) => (
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { gender, isLoading, options } = stateProps;
   return Object.assign({}, {
-    isLoading: isLoading.intro,
-    isVisReady: isLoading.vis,
+    isLoading,
     gender,
     selectGender: (e) => {
       dispatchProps.selectGender(e.currentTarget.value);
     },
     sendGenderSelection: () => {
       dispatchProps.setDefaultOptions(gender);
-      dispatchProps.setDefaultData(options, gender);
     },
+    startVis: () => {
+      dispatchProps.setDefaultData(options, gender);
+    }
   })
 }
 

@@ -4,7 +4,7 @@ import AppComponent from '../components/App'
 
 const mapStateToProps = (state, ownProps) => (
   {
-    currentView: state.currentView
+    currentView: state.currentView.view
   }
 )
 
