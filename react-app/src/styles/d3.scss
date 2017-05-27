@@ -58,7 +58,7 @@
     stroke-opacity: 1;
 }
 .link-over {
-    stroke:$over;
+    stroke: black;
     stroke-opacity: 1;
 }
 .node-common {
@@ -88,4 +88,5 @@
 .node-linked {
     @extend .node-common;
     fill:$linked;
+
 }

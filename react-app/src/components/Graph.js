@@ -25,13 +25,15 @@ class GraphComponent extends Component {
     d.fy = null;
 
     //check simluation status
-    if (isClicked === 'true') {
+    // if (isClicked === 'true') {
+    //TODO: check text of all
       this.checkSimulationStatus(d.id, simulation);
-    }
+    // }
   }
 
   moveAthleteName(id) {
     const draggedNode = d3.select(`circle[id="${id}"]`);
+    console.log(id);
     d3.select(`.vis-athlete-name[id="${id}"]`)
         .transition()
         .attr('x', draggedNode.attr('cx'))
@@ -60,38 +62,6 @@ class GraphComponent extends Component {
       .attr('cy', (d) => d.y );
   }
 
-  showMouseout(obj, d) {
-    //return only if it's not unclicked
-    // if (obj.attr('clicked') === 'false') {
-    //     obj.attr('class', 'node-normal');
-    // }
-    if (obj.attr('linked') === 'true') {
-        obj.attr('class', 'node-all-linked');
-    }
-    //revert all highlighted (linked) links and nodes
-    d3.selectAll('.link-over').attr('class', function () {
-        return d3.select(this).attr('linked') === 'true' ? 'link-all-linked' : 'link-normal';
-    });
-    d3.selectAll('.node-linked').attr('class', function () {
-        return d3.select(this).attr('clicked') === 'true' ?
-            'node-clicked' : //if previously clicked
-            (d3.select(this).attr('linked') === 'true' ? 'node-all-linked' : 'node-normal');
-    });
-    // document.getElementById('swimmer').innerHTML = '';
-  }
-
-  showClick(obj, d) {
-      if (obj.attr('clicked') === 'false') { //show
-          //clickedIds.push(d.id);
-          obj.attr('clicked', 'true').attr('class', 'node-clicked');
-          // showAthleteName(obj, d);
-          // showAthleteCb(d); //call back to main.js
-      } else { //hide
-          // var clickedIndex = clickedIds.indexOf(d.id);
-          // self.revertFocusedAthlete(clickedIndex, d.id, obj);
-          // hideAthleteCb(clickedIndex); //call back to main.js
-      }
-  }
   componentDidMount() {
     this.drawGraph(this.props);
   }
@@ -144,7 +114,6 @@ class GraphComponent extends Component {
         }, 0);
         return total <= 700 ? 3 : Math.sqrt(radius(total));
       })
-      .attr('clicked', 'false')
       .attr('class', 'node-normal')
       .call(d3.drag()
         .on('start', (d) => this.dragstarted(d, simulation))
@@ -213,6 +182,17 @@ class GraphComponent extends Component {
       if (this.props.isLinksShown) {
         this.highlightElements(this.props, false);
         this.highlightElements(nextProps, true);
+      }
+      if (this.props.clickedObj !== nextProps.clickedObj) {
+        const d = nextProps.clickedObj;
+        d3.select('#nodes')
+          .append('text')
+          .text(d.name)
+          .attr('x', d.x)
+          .attr('y', d.y)
+          // .attr('dy', -1 * parseInt(obj.attr('r')) - 6)
+          .attr('class', 'size-tiny unselectable pos-middle fill-darkGrey vis-athlete-name')
+          .attr('id', d.id);
       }
     }
     //links View

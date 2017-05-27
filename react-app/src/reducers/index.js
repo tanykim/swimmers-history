@@ -1,7 +1,12 @@
 import { combineReducers } from 'redux';
 import _ from 'lodash';
-import Data from '../data/data.json';
-import { setOptions,
+import {
+  setInitialSelections,
+  setSelections,
+  getSearchedAthletes,
+  updateSelection,
+  cancelSelections,
+  getCompetition,
   getRaces,
   getTopAthletes,
   getAthletesData,
@@ -9,12 +14,6 @@ import { setOptions,
   getMutualLinkedNodes,
   getConnectedNodes,
 } from '../helpers/processor';
-
-/* unchanged data */
-const allAthletes = Data.athletes;
-const allLinks = Data.graph;
-const { meets, events, competitions } = Data;
-const category = { meets, events };
 
 /* views */
 const currentView = (state = { view: 'intro'}, action) => {
@@ -42,27 +41,13 @@ const gender = (state = 'men', action) => {
 const options = (state = {}, action) => {
   switch (action.type) {
     case 'INITIALIZE':
-      const sel = {};
-      const selParent = {};
-      const searchedAthletes = [];
-      //set default sel and sellParent as all false;
-      _.each(category, (val, kind) => {
-        selParent[kind] = {};
-        const vals = _.fromPairs(_.map(val, (d, typeId) => {
-          const children = _.fromPairs(_.map(d.children, (d) => [d[0], false]));
-          selParent[kind][typeId] = false;
-          return [typeId, children];
-        }));
-        sel[kind] = vals;
-      });
+      const initSels = setInitialSelections();
       return {
-        category,
-        sel,
-        selParent,
-        searchedAthletes,
-        isOpen: false,
+        ...initSels,
+        searchedAthletes: [],
         tempSelection: [],
-        originalNames: []
+        originalNames: [], //show in the option name
+        isOpen: false,
       };
     case 'SET_DEFAULT_OPTIONS':
       let defaultEvents;
@@ -72,8 +57,8 @@ const options = (state = {}, action) => {
           meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008'],
           events: ['0IND-a50Fr', '0IND-b100Fr', '0IND-c200Fr', '0IND-d400Fr', '0IND-f1500Fr']
         };
-        defaultNames = [];
-        // defaultNames = ['Michael Phelps', 'Ryan Lochte'];
+        // defaultNames = [];
+        defaultNames = ['Michael Phelps', 'Ryan Lochte'];
       } else {
         defaultEvents = {
           meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008'],
@@ -81,10 +66,16 @@ const options = (state = {}, action) => {
         };
         defaultNames = ['Kathleen Ledecky'];
       }
-      //set sel, selParent, searchedAthletes, originalNames, nameOption
-      return Object.assign({}, state,
-        setOptions(state, defaultEvents, defaultNames, allAthletes[action.gender])
-      );
+      const selections = setSelections(state.sel, state.selParent, defaultEvents);
+      const { sel, selParent } = selections;
+      const searchedAthletes = getSearchedAthletes(defaultNames, action.gender);
+      const originalNames = searchedAthletes;
+      const nameOption = searchedAthletes.length > 0 ? 'search' : 'all';
+      return Object.assign({}, state, {
+        sel, selParent,
+        searchedAthletes, originalNames,
+        nameOption
+      });
     case 'TOGGLE_OPTIONS':
       return Object.assign({}, state, {
         isOpen: action.value
@@ -92,12 +83,10 @@ const options = (state = {}, action) => {
     case 'SET_SELECTION':
       let ts = state.tempSelection;
       ts.push(action.value);
-      const arr = action.value.split(',');
-      let updatedSel = state.sel;
-      updatedSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? true : false;
+      const updatedSel = updateSelection(action.value, state.sel, false);
       return Object.assign({}, state, {
+        tempSelection: ts,
         sel: updatedSel,
-        tempSelection: ts
       });
     case 'SET_NAME_OPTION':
       return Object.assign({}, state, {
@@ -110,11 +99,8 @@ const options = (state = {}, action) => {
         originalNames: state.searchedAthletes
       });
     case 'CANCEL':
-      let canceledSel = state.sel;
-      _.each(state.tempSelection, (d) => {
-        const arr = d.split(',');
-        canceledSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? false : true;
-      });
+      //revert selections to the pverious selection
+      const canceledSel = cancelSelections(state.tempSelection, state.sel);
       return Object.assign({}, state, {
         sel: canceledSel,
         searchedAthletes: state.originalNames,
@@ -129,17 +115,18 @@ const data = (state = {}, action) => {
   const { gender, options } = action;
   switch (action.type) {
     case 'INITIALIZE':
+      const competitions = getCompetition();
       return Object.assign({}, state, { competitions })
     case 'SET_VIS_DATA':
       //races filtered by meets/event, for HTML
       const racesInfo = getRaces(options.sel);
-      const athletesData = getAthletesData(allAthletes[gender], racesInfo.races, options.searchedAthletes);
+      const athletesData = getAthletesData(gender, racesInfo.races, options.searchedAthletes);
       //athletes filtered by meet/event or name search - used in panel (athlete count)
       //for vis node size
       const { athletes, pointRange } = athletesData;
       //top athletes by meets/event, for HTML
       const topAthletes = getTopAthletes(athletes);
-      const links = getAthletesLinks(athletes, allLinks[gender], racesInfo.races);
+      const links = getAthletesLinks(gender, athletes, racesInfo.races);
       //graph data
       const graph = { nodes: athletes, links };
       return Object.assign({}, state, {
@@ -164,6 +151,7 @@ const graph = (state = { clickedIds: [], isLinksShown: false }, action) => {
         hoveredId: null,
         clicked: false,
         clickedId: null,
+        clickedObj: null,
         mutualLinkedNodes: [],
         clickedIds: [],
         isLinksShown: false,
@@ -201,6 +189,7 @@ const graph = (state = { clickedIds: [], isLinksShown: false }, action) => {
       return Object.assign({}, state, {
         clicked,
         clickedId,
+        clickedObj: action.value,
         mutualLinkedNodes: nodes,
         clickedIds: prevIds,
       })
@@ -217,7 +206,6 @@ const graph = (state = { clickedIds: [], isLinksShown: false }, action) => {
 
 export default combineReducers({
   currentView,
-  //isLoading,
   gender,
   options,
   data,
