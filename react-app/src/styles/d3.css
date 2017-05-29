@@ -2,10 +2,12 @@
 /* content colors */
 /* vis */
 /* result */
+/* grey */
 /* grey scale */
 /* content colors */
 /* vis */
 /* result */
+/* grey */
 /* font-size */
 /* letter spacing */
 /* word spacing */
@@ -69,7 +71,7 @@
   stroke-opacity: 1; }
 
 .link-over {
-  stroke: #2bc0e4;
+  stroke: black;
   stroke-opacity: 1; }
 
 .node-common, .node-normal, .node-over, .node-clicked, .node-linked {
@@ -95,3 +97,18 @@
 
 .node-linked {
   fill: #91f0f9; }
+
+.athlete {
+  fill: #495057; }
+
+.axis path {
+  stroke: none; }
+
+.axis line {
+  stroke-dasharray: 1, 3;
+  stroke: #adb5bd; }
+
+.axis text {
+  font-family: avenir;
+  text-anchor: start;
+  font-size: 12px; }

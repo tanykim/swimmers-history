@@ -21,6 +21,15 @@ export const setInitialSelections = () => {
   return { sel, selParent, category }
 };
 
+export const getAthletesList = (gender) => {
+  return _.cloneDeep(allAthletes[gender]).map((a) => (
+    {
+      value: a,
+      label: `${a.name} (${a.country})`,
+    }
+  ));
+};
+
 //set options
 export const setSelections = (sel, selParent, selected) => {
   _.each(selected, (vals, kind) => {
@@ -34,8 +43,8 @@ export const setSelections = (sel, selParent, selected) => {
   return { sel, selParent };
 };
 
-export const getSearchedAthletes = (names, gender) => {
-  return _.filter(_.cloneDeep(allAthletes[gender]), (d) => names.indexOf(d.name) > -1);
+export const getSearchedAthletes = (ids, gender) => {
+  return _.filter(_.cloneDeep(allAthletes[gender]), (d) => ids.indexOf(d.id) > -1);
 };
 
 export const updateSelection = (selection, sel, isCancel) => {
@@ -119,14 +128,27 @@ export const getAthletesData = (gender, races, searchedAthletes) => {
       });
       if (validRecords.length > 0) {
         allTotalPoints.push(totalPoint);
-        athlete.records = validRecords;
+        athlete.records = _.sortBy(validRecords, (r) => r.race_id);
         athlete.totalPoint = totalPoint;
         athletes.push(athlete);
       }
   });
-
   const pointRange = [Math.max(_.min(allTotalPoints), 700), _.max(allTotalPoints)];
   return { athletes, pointRange };
+};
+
+export const getAthletesByCountry = (athletes) => {
+  const byCountry = _.groupBy(athletes, (a) => a.country);
+  //maximum number of athletes in one country
+  const maxCount = _.chain(byCountry)
+    .map((v) => v.length)
+    .max()
+    .value();
+  return {
+    byCountry,
+    maxCount,
+    countries: _.sortBy(_.keys(byCountry), (c) => c),
+  };
 };
 
 //top athletes for selection dropdown
@@ -223,4 +245,10 @@ export const getMutualLinkedNodes = (focusedAIds, links) => {
   });
 
   return _.flatten(linkedToAll);
+};
+
+export const getRaceHoverText = (value) => {
+  const { raceId, aName } = value;
+  const elms = raceId.split('-').map((elm) => elm.slice(1, elm.length));
+  return `${aName}, ${elms[0]} ${elms[1]} ${elms[4]}`;
 };

@@ -4,10 +4,12 @@ import { getOptionsArray } from '../helpers/processor';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    options: state.options,
-    gender: state.gender,
+    list: state.options.list,
+    searchedAthletes: state.options.searchedAthletes,
+    nameOption: state.options.nameOption,
+    sel: state.options.sel,
     optionList: getOptionsArray(state.options.category, state.options.sel),
-    sel: state.options.sel
+    gender: state.gender,
   }
 }
 
@@ -19,23 +21,25 @@ const mapDispatchToProps = (dispatch) => (
     updateNameOption: (value) => {
       dispatch({ type: 'SET_NAME_OPTION', value })
     },
-    update: (gender, options) => {
+    update: (value) => {
       dispatch({ type: 'RESET_GRAPH'})
-      dispatch({ type: 'SET_VIS_DATA', gender, options })
+      dispatch({ type: 'SET_VIS_DATA', value })
     },
     cancel: (gender, options) => {
       dispatch({ type: 'CANCEL' })
+    },
+    addName: (value) => {
+      dispatch({ type: 'ADD_ATHLETE', value })
+    },
+    removeName: (value) => {
+      dispatch({ type: 'REMOVE_AHLETE', value })
     },
   }
 )
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { options, optionList, sel, gender } = stateProps;
   return Object.assign({}, {
-    searchedAthletes: options.searchedAthletes,
-    nameOption: options.nameOption,
-    optionList,
-    sel,
+    ...stateProps,
     updateSelection: (e) => {
       return dispatchProps.updateSelection(e.currentTarget.value);
     },
@@ -43,10 +47,16 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       return dispatchProps.updateNameOption(e.currentTarget.value);
     },
     update: () => {
-      return dispatchProps.update(gender, options);
+      return dispatchProps.update({ ...stateProps });
     },
     cancel: () => {
       return dispatchProps.cancel();
+    },
+    addName: (e) => {
+      return dispatchProps.addName(e.value);
+    },
+    removeName: (id) => {
+      return dispatchProps.removeName(id);
     },
   })
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Options from '../containers/Options';
 import Summary from './Summary';
 import Graph from '../containers/Graph';
+import Country from '../containers/Country';
 
 class VisComponent extends Component {
   render() {
@@ -25,7 +26,8 @@ class VisComponent extends Component {
                 names={this.props.searchedAthletes}
               />
             }
-            <Graph/>
+            { this.props.visType === 'network' && <Graph/> }
+            { this.props.visType === 'country' && <Country/> }
           </div>
         </div>
       </div>

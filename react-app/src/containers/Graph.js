@@ -3,7 +3,7 @@ import GraphComponent from '../components/Graph';
 
 const mapStateToProps = (state, ownProps) => (
   {
-    data: state.data,
+    data: state.data.graph,
     graphInfo: state.graph,
   }
 );
@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch) => (
     mouseOverFunc: (value, data) => {
       dispatch({ type: 'HOVER_NODE', value, data })
     },
-    mouseOutFunc: (value, data) => {
+    mouseOutFunc: () => {
       dispatch({ type: 'UNHOVER_NODE' })
     },
     clickFunc: (value, links) => {

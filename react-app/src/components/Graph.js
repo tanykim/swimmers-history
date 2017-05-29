@@ -33,7 +33,6 @@ class GraphComponent extends Component {
 
   moveAthleteName(id) {
     const draggedNode = d3.select(`circle[id="${id}"]`);
-    console.log(id);
     d3.select(`.vis-athlete-name[id="${id}"]`)
         .transition()
         .attr('x', draggedNode.attr('cx'))
@@ -68,6 +67,7 @@ class GraphComponent extends Component {
 
   drawGraph(props) {
     const { graph, pointRange } = props;
+    //pointRange = [Math.max(_.min(allTotalPoints), 700), _.max(allTotalPoints)];
 
     //set the size
     const w = document.getElementById('vis-width').clientWidth;
@@ -176,6 +176,7 @@ class GraphComponent extends Component {
         d3.select(`circle[id="${c}"]`).classed('node-linked', nextProps.hovered);
       });
     }
+
     //click
     if (nextProps.clicked || this.props !== nextProps.clicked) {
       d3.select(`circle[id="${nextProps.clickedId}"]`).classed('node-clicked', nextProps.clicked);

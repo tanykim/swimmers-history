@@ -2,10 +2,12 @@
 /* content colors */
 /* vis */
 /* result */
+/* grey */
 /* grey scale */
 /* content colors */
 /* vis */
 /* result */
+/* grey */
 /* font-size */
 /* letter spacing */
 /* word spacing */
@@ -13,40 +15,170 @@
 /* paragraph spacing or padding*/
 /* other sizing */
 /* borders */
+.container {
+  position: inherit; }
+
+.graph svg, .country svg {
+  border: 1px solid #dee2e6;
+  border-radius: 4px; }
+
 .graph {
   margin-top: 15px;
+  position: relative; }
+
+.graph .hovered-swimmer {
+  /*@extend .unselectable;*/
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  background-color: fade(#ffffff, 70%);
+  padding-right: 6px;
+  padding-left: 6px;
+  display: inline-table; }
+
+.graph .hovered-swimmer i {
+  font-style: normal;
+  color: #f5625a; }
+
+.Select {
+  font-size: 14px !important; }
+
+.Select-control {
+  border: 1px solid #adb5bd; }
+
+.Select-control .Select-placeholder {
+  color: #adb5bd; }
+
+.Select-control .Select-input {
+  color: #868e96; }
+
+.Select-control .Select-menu-outer {
+  height: 26px;
+  padding-right: 10px;
+  padding-left: 10px;
+  border: 1px solid #adb5bd;
+  border-top-color: #e9ecef; }
+
+.Select-control .is-open > .Select-control {
+  border-color: #adb5bd; }
+
+.Select-control .is-open > .Select-control .Select-arrow {
+  border-color: transparent transparent #868e96;
+  border-width: 0 5px 5px; }
+
+.Select-control .Select-option.is-focused, .Select-control .Select-option.is-selected {
+  background-color: #f5625a !important;
+  color: #212529; }
+
+.Select-control .Select-option:last-child {
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px; }
+
+.options .list-normal {
+  margin-left: 6px; }
+
+.options .list-disabled {
+  text-decoration: line-through; }
+
+.country .country-linear {
+  display: flex;
+  flex-wrap: wrap; }
+
+.country .athlete-element, .country .athlete-country, .country .r-general {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  height: 40px; }
+
+.country .athlete-country {
+  font-size: 14px;
+  margin-top: 4px;
+  margin-right: 4px; }
+
+.country .athlete-group {
+  display: inherit; }
+
+.country .r-general {
+  background-color: #adb5bd;
+  width: 18px;
+  height: 18px;
+  cursor: pointer; }
+
+.country .r-1 {
+  background-color: #fbcd15;
+  border: 1px solid #495057; }
+
+.country .r-2 {
+  background-color: #dadada;
+  border: 1px solid #495057; }
+
+.country .r-3 {
+  background-color: #d88133;
+  border: 1px solid #495057; }
+
+.country .r-single {
+  margin-right: 2px;
+  margin-left: 2px; }
+
+.country .r-first {
+  margin-left: 2px; }
+
+.country .r-last {
+  margin-right: 2px; }
+
+.country .r-neighbor {
+  margin-left: -1px; }
+
+.country .r-a-last {
+  margin-right: 16px; }
+
+.country .a-clicked.r-1, .country .a-clicked.r-2, .country .a-clicked.r-3 {
+  border: none; }
+
+.country .a-clicked.r-first {
+  border-top: 3px solid #f5625a;
+  border-bottom: 3px solid #f5625a;
+  border-left: 3px solid #f5625a; }
+
+.country .a-clicked.r-btw {
+  border-top: 3px solid #f5625a;
+  border-bottom: 3px solid #f5625a; }
+
+.country .a-clicked.r-single {
+  border: 3px solid #f5625a; }
+
+.country .a-clicked.r-last {
+  border-top: 3px solid #f5625a;
+  border-right: 3px solid #f5625a;
+  border-bottom: 3px solid #f5625a; }
+
+.country .a-clicked.r-hover, .country .r-hover {
+  border: 3px solid #495057; }
+
+.country .country-hover {
+  position: absolute;
+  text-align: center;
+  font-size: 12px;
+  color: #ffffff;
+  pointer-events: none;
+  margin-top: -38px;
+  display: none;
+  overflow: visible; }
+
+.country .country-hover .hover-content {
+  white-space: pre;
   position: relative;
-  /*    .show-links {
-        width: 100%;
-        margin-bottom: $pg-sm;
-        text-align: center;
-        font-size: $small;
-        .select-network {
-            display: inline-block;
-            input {
-                margin-right: $pg-xxs;
-            }
-        }
-        .select-network {
-            margin-left: $pg-sm;
-            margin-right: $pg-sm;
-        }
-    }*/ }
-  .graph svg {
-    border: 1px solid #dee2e6;
-    border-radius: 4px; }
-  .graph .hovered-swimmer {
-    /*@extend .unselectable;*/
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 14px;
-    background-color: fade(#ffffff, 70%);
-    padding-right: 6px;
-    padding-left: 6px;
-    display: inline-table; }
-    .graph .hovered-swimmer i {
-      font-style: normal;
-      color: #f5625a; }
+  left: -50%;
+  background: #212529;
+  padding: 4px 8px; }
+
+.country .country-hover .arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #212529;
+  position: relative;
+  left: -8px; }

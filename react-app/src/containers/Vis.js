@@ -3,6 +3,7 @@ import VisComponent from '../components/Vis'
 
 const mapStateToProps = (state, ownProps) => (
   {
+    visType: state.currentView.vis,
     racesInfo: state.data.racesInfo,
     searchedAthletes: state.options.searchedAthletes,
     isOptionOpen: state.options.isOpen,
@@ -18,13 +19,10 @@ const mapDispatchToProps = (dispatch) => (
 )
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { racesInfo, searchedAthletes, isOptionOpen } = stateProps;
   return Object.assign({}, {
-    racesInfo,
-    searchedAthletes,
-    isOptionOpen,
+    ...stateProps,
     toggle: () => {
-      dispatchProps.toggle(isOptionOpen);
+      dispatchProps.toggle(stateProps.isOptionOpen);
     }
   })
 }

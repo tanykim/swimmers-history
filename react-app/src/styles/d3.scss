@@ -63,21 +63,21 @@
 }
 .node-common {
     stroke-width: 1;
-    stroke:$white;
+    stroke: $white;
     stroke-opacity: 0.5;
 }
 .node-normal {
     @extend .node-common;
-    fill:$node;
+    fill: $node;
 }
 .node-all-linked {
-    stroke:$highlight;
+    stroke: $highlight;
     stroke-opacity: 1;
-    fill:$white;
+    fill: $white;
 }
 .node-over {
     @extend .node-common;
-    fill:$over;
+    fill: $over;
     cursor: pointer;
 }
 .node-clicked {
@@ -87,6 +87,24 @@
 }
 .node-linked {
     @extend .node-common;
-    fill:$linked;
+    fill: $linked;
+}
 
+.athlete {
+    fill: $grey-dark;
+}
+
+.axis {
+    path {
+        stroke: none;
+    }
+    line {
+        stroke-dasharray: 1, 3;
+        stroke: $grey-light;
+    }
+    text {
+        font-family: avenir;
+        text-anchor: start;
+        font-size: $xsmall;
+    }
 }

@@ -3,10 +3,12 @@ import IntroComponent from '../components/Intro'
 
 const mapStateToProps = (state, ownProps) => (
   {
+    searchedAthletes: state.options.searchedAthletes,
+    nameOption: state.options.nameOption,
+    sel: state.options.sel,
     gender: state.gender,
     isLoading: state.currentView.isLoading,
-    options: state.options,
-    competition: state.data.competition
+    competition: state.data.competition,
   }
 )
 
@@ -18,8 +20,8 @@ const mapDispatchToProps = (dispatch) => (
     setDefaultOptions: (gender) => {
       dispatch({ type: 'SET_DEFAULT_OPTIONS', gender });
     },
-    setDefaultData: (options, gender) => {
-      dispatch({ type: 'SET_VIS_DATA', options, gender });
+    setDefaultData: (value) => {
+      dispatch({ type: 'SET_VIS_DATA', value });
       //show loading sign
       setTimeout(() => {
         dispatch({ type: 'SET_CURRENT_VIEW', value: 'vis' })
@@ -29,18 +31,16 @@ const mapDispatchToProps = (dispatch) => (
 )
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { gender, isLoading, options } = stateProps;
   return Object.assign({}, {
-    isLoading,
-    gender,
+    ...stateProps,
     selectGender: (e) => {
       dispatchProps.selectGender(e.currentTarget.value);
     },
     sendGenderSelection: () => {
-      dispatchProps.setDefaultOptions(gender);
+      dispatchProps.setDefaultOptions(stateProps.gender);
     },
     startVis: () => {
-      dispatchProps.setDefaultData(options, gender);
+      dispatchProps.setDefaultData(stateProps);
     }
   })
 }
