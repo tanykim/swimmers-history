@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import GraphComponent from '../components/Graph';
+import NetworkComponent from '../components/Network';
 
 const mapStateToProps = (state, ownProps) => (
   {
-    data: state.data.graph,
+    graphData: state.data,
     graphInfo: state.graph,
   }
 );
@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch) => (
 );
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { graph, pointRange } = stateProps.data;
+  const { graph, pointRange } = stateProps.graphData;
   return Object.assign({}, {
     graph,
     pointRange,
@@ -49,4 +49,4 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 
 export default connect(mapStateToProps,
   mapDispatchToProps,
-  mergeProps)(GraphComponent);
+  mergeProps)(NetworkComponent);

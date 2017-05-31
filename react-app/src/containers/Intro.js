@@ -23,9 +23,9 @@ const mapDispatchToProps = (dispatch) => (
     setDefaultData: (value) => {
       dispatch({ type: 'SET_VIS_DATA', value });
       //show loading sign
-      setTimeout(() => {
+      // setTimeout(() => {
         dispatch({ type: 'SET_CURRENT_VIEW', value: 'vis' })
-      }, 1000);
+      // }, 1000);
     }
   }
 )

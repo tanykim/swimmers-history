@@ -1,0 +1,134 @@
+@import './colors.scss';
+@import './size.scss';
+
+.results {
+    .typcn {
+        font-size: $large;
+    }
+    .remove-all {
+        margin-bottom: $pg-sm * -1;
+        padding-top: $pg-sm;
+        font-size: $small;
+        a {
+            cursor: pointer;
+            color: $oc-gray-8;
+        }
+    }
+    .no-races {
+        padding-top: $pg-sm;
+        padding-bottom: $pg-sm;
+        color: $main;
+    }
+    .table-wrapper {
+        border-top: 2px solid $oc-gray-1;
+        border-bottom: 2px solid $oc-gray-1;
+        font-size: $small;
+        overflow: auto;
+        margin-top: $pg-lg;
+    }
+    .race-athlete-table {
+        position: relative;
+        background-color: $white;
+        width: initial;
+    }
+    thead {
+        .result-summary, .record {
+            border-bottom: 2px solid $oc-gray-3;
+            font-weight: normal;
+        }
+        th{
+            text-align: center;
+            vertical-align: middle;
+        }
+    }
+    tbody {
+        .close-icon, .athlete, .record {
+            border-top: 1px solid $oc-gray-3;
+            text-align: center;
+        }
+        td {
+            vertical-align: middle;
+        }
+    }
+    .close-icon {
+        padding-left: $pg-xs;
+        a {
+            cursor: pointer;
+            color: $oc-gray-8;
+        }
+    }
+    .result-summary {
+        padding: $pg-sm;
+        color: $oc-gray-6;
+        .result-number {
+            color: $main;
+        }
+    }
+    .athlete {
+        padding: $pg-xs $pg-sm $pg-xs 0;
+        min-width: 162px;
+        box-sizing: border-box;
+        .fl-icon {
+            background-size: 1.2em;
+            background-repeat: no-repeat;
+            background-position-y: 45%;
+            padding-left: 1.4em;
+            margin-right: 2px;
+        }
+        .country {
+            color: $oc-gray-6;
+        }
+    }
+    .winner {
+        background-color: $main;
+    }
+    .record {
+        min-width: 145px;
+        border-left: 1px solid $oc-gray-3;
+        padding-top: $pg-xxs;
+        padding-bottom: $pg-xxs;
+        .place-wrapper, .swimtime {
+            display: inline-block;
+            box-sizing: border-box;
+        }
+        .place-wrapper {
+            text-align: right;
+            width: 28px;
+        }
+        .swimtime {
+            text-align: left;
+            width: 48px;
+        }
+        .dash {
+            margin-right: $pg-xxs;
+            margin-left: $pg-xxs;
+        }
+        .place {
+            text-align: center;
+            box-sizing: border-box;
+            width: 24px;
+            height: 24px;
+            display: block;
+            padding-top: $pg-xxs;
+            letter-spacing: -1px;
+            font-weight: bold;
+        }
+        .place-border {
+            border: 2px solid $oc-gray-8;
+            border-radius: 12px;
+            padding-top: 0;
+        }
+        .place1 {
+            @extend .place-border;
+            background-color: $gold;
+        }
+        .place2 {
+            @extend .place-border;
+            background-color: $silver;
+        }
+        .place3 {
+            @extend .place-border;
+            background-color: $bronze;
+        }
+    }
+}

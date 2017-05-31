@@ -251,7 +251,52 @@ export const getMutualLinkedNodes = (focusedAIds, links) => {
 };
 
 export const getRaceHoverText = (value) => {
-  const { raceId, aName } = value;
+  const { raceId, aName, place } = value;
   const elms = raceId.split('-').map((elm) => elm.slice(1, elm.length));
-  return `${aName}, ${elms[0]} ${elms[1]} ${elms[4]}`;
+  return `${aName} was placed #${place} at ${elms[1]} ${elms[0]} ${elms[4]}`;
+};
+
+export const getRacesObjByA = (obj) => {
+  const { id, name, country } = obj;
+  let records = {};
+  _.each(obj.records, (r) => {
+    records[r.race_id] = _.pick(r, ['swimtime', 'place']);
+  });
+  return {
+    id,
+    name,
+    country,
+    records,
+  }
+};
+
+export const getSharedRaces = (athletes) => {
+  const raceIdsByA = athletes.map((a) => _.keys(a.records))
+  let shared = raceIdsByA[0];
+  for (let i = 1; i < raceIdsByA.length; i++) {
+    shared = _.intersection(shared, raceIdsByA[i]);
+  }
+  return shared;
+};
+
+export const getSharedRacesWinner = (sharedRaces, clickedObjs) => {
+  return sharedRaces.map((raceId) => {
+      const athletesOfRace = clickedObjs.map((a, i) => {
+          if (a.records[raceId]) {
+            //i: index of column
+            return [a.records[raceId].place, i];
+          } else {
+            return null;
+          }
+      });
+      //sort by place
+      const sorted = _.sortBy(_.compact(athletesOfRace), (a) => a[0]);
+
+      //highest place among all swimmers
+      const highestPlace = sorted[0][0];
+
+      //return top athlete's index
+      //there may be multiple swimmers with the top place, thus return array
+      return _.filter(sorted, (s) => s[0] === highestPlace).map((f) => f[1]);
+  });
 };

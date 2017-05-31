@@ -4,12 +4,24 @@ import Panel from './Options-panel';
 import Names from './Options-names';
 
 class OptionsComponent extends Component {
+
+  componentWillReceiveProps(nextProps) {
+    let s = document.getElementById('options-panels').style;
+    if (nextProps.isOptionOpen) {
+      s.top = `${document.getElementById('options-summary').offsetHeight}px`;
+      s.display = 'block';
+    } else {
+      s.display = 'none';
+    }
+  }
+
   render() {
     return (<div className="columns is-multiline options-wrapper">
-      <div className="column is-two-thirds summary">
+      <div className="column is-two-thirds summary" id="options-summary">
         <Summary
           {...this.props.racesInfo}
           names={this.props.originalNames}
+          gender={this.props.gender}
         />
       </div>
       <div className="column is-one-third buttons">
@@ -26,12 +38,12 @@ class OptionsComponent extends Component {
             </a>
           </span> }
       </div>
-      { this.props.isOptionOpen && <div className="column is-12 panels">
-        <div className="columns">
+      <div className="column is-12 panels" id="options-panels" style={{ display: 'none' }}>
+        { this.props.isOptionOpen && <div className="columns">
           { this.props.optionList.map((kind, i) => <Panel {...this.props} kind={kind} key={i}/>)}
           <Names {...this.props}/>
-        </div>
-      </div> }
+        </div> }
+      </div>
     </div>);
   }
 }

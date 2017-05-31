@@ -4,7 +4,18 @@ import VisComponent from '../components/Vis';
 const mapStateToProps = (state, ownProps) => (
   {
     visType: state.currentView.vis,
+    clickedIds: state.graph.clickedIds,
   }
 );
 
-export default connect(mapStateToProps)(VisComponent);
+const mapDispatchToProps = (dispatch) => (
+  {
+    switchVis: (value) => {
+      dispatch({ type: 'SET_VIS_VIEW', value });
+    }
+  }
+);
+
+export default connect(mapStateToProps,
+  mapDispatchToProps,
+)(VisComponent);

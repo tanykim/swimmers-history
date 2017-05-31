@@ -20,16 +20,16 @@
         cursor: pointer;
         display: flex;
         align-items: center;
-        .swimmer, .network {
+        .text-swimmer, .text-network {
             display: flex;
             flex-direction: row;
             justify-content: space-around;
         }
-        .swimmer {
+        .text-swimmer {
             font-weight: bold;
             width: 40%;
         }
-        .network {
+        .text-network {
             width: 48%;
             margin-left: 2%;
         }
@@ -38,5 +38,6 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        cursor: pointer;
     }
 }

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Header from '../containers/Header';
 import Options from '../containers/Options';
-import Graph from '../containers/Graph';
+import Network from '../containers/Network';
 import Country from '../containers/Country';
+import Results from '../containers/Results';
 
 class VisComponent extends Component {
   render() {
@@ -13,7 +14,12 @@ class VisComponent extends Component {
           <div className="columns is-multiline">
             <div className="column is-3 vis-types">
               {['network', 'country', 'race'].map((view) => (
-                <div key={view} className={this.props.visType === view ? 'view-selected': 'view-normal'}>{ view }</div>
+                <div key={view}
+                  className={this.props.visType === view ? 'view-selected': 'view-normal'}
+                  onClick={() => this.props.switchVis(view)}
+                >
+                  { view }
+                </div>
               ))}
             </div>
             <div className="column is-9">
@@ -29,10 +35,13 @@ class VisComponent extends Component {
           </div>
           <div className="column is-9">
             <div className="vis-wrapper">
-              { this.props.visType === 'network' && <Graph/> }
+              { this.props.visType === 'network' && <Network/> }
               { this.props.visType === 'country' && <Country/> }
             </div>
           </div>
+          { this.props.clickedIds.length > 0 && <div className="column is-12">
+              <Results />
+            </div> }
         </div>
       </div>
     </div>);

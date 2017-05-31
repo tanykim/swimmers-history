@@ -16,10 +16,13 @@ import {
   getMutualLinkedNodes,
   getConnectedNodes,
   getRaceHoverText,
+  getSharedRaces,
+  getSharedRacesWinner,
+  getRacesObjByA,
 } from '../helpers/processor';
 
 /* views */
-const currentView = (state = { view: 'intro', vis: 'country' }, action) => {
+const currentView = (state = { view: 'intro', vis: 'network' }, action) => {
   switch (action.type) {
     case 'SET_CURRENT_VIEW':
       return Object.assign({}, state, { view: action.value, isLoading: false });
@@ -43,7 +46,7 @@ const gender = (state = 'men', action) => {
 };
 
 /* option data data */
-const options = (state = {}, action) => {
+const options = (state = { isOpen: false }, action) => {
   switch (action.type) {
     case 'INITIALIZE':
       const initSels = setInitialSelections();
@@ -52,7 +55,6 @@ const options = (state = {}, action) => {
         searchedAthletes: [],
         tempSelection: [],
         originalNames: [], //show in the option name
-        isOpen: false,
       };
     case 'SET_GENDER':
       const list = getAthletesList(action.value);
@@ -69,7 +71,7 @@ const options = (state = {}, action) => {
         // defaultIds = ['4038916', '4038679']; //phelps and lochte
       } else {
         defaultEvents = {
-          meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008'],
+          meets: ['0OG-a2016', '0OG-e2012'],
           events: ['0IND-d400Fr', '0IND-e800Fr']
         };
         defaultIds = ['4772552']; //ledecky
@@ -165,7 +167,6 @@ const data = (state = {}, action) => {
       const athletesByCounty = getAthletesByCountry(athletes);
       return Object.assign({}, state, {
         racesInfo,
-        // athletes,
         athletesByCounty,
         pointRange,
         topAthletes,
@@ -176,7 +177,8 @@ const data = (state = {}, action) => {
   }
 };
 
-const graph = (state = { clickedIds: [], isLinksShown: false }, action) => {
+const graph = (state = { clickedIds: [], clickedObjs: [], isLinksShown: false }, action) => {
+  //clicked & clickedIds are used for all vis types
   switch(action.type) {
     case 'RESET_GRAPH':
       return Object.assign({}, state, {
@@ -186,14 +188,16 @@ const graph = (state = { clickedIds: [], isLinksShown: false }, action) => {
         hoveredId: null,
         clicked: false,
         clickedId: null,
-        clickedObj: null,
         mutualLinkedNodes: [],
         clickedIds: [],
+        clickedObjs: [],
         isLinksShown: false,
+        sharedRaces: [],
+        sharedRacesWinner: [],
       })
     case 'HOVER_NODE':
       const connected = getConnectedNodes(action.value.id, action.data.links);
-      const hoverText = `<i>${action.value.name}</i> swam with <i>${connected.length}</i> swimmer${(connected.length > 1 ? 's' : '')} at <i>${action.value.records.length}</i> races`;
+      const hoverText = `${action.value.name} swam with ${connected.length} swimmer${(connected.length > 1 ? 's' : '')} at ${action.value.records.length} race${action.value.records.length > 1 ? 's' : ''}`;
       const hoveredId = action.value.id;
       return Object.assign({}, state, {
         hoverText,
@@ -209,24 +213,35 @@ const graph = (state = { clickedIds: [], isLinksShown: false }, action) => {
     case 'CLICK_NODE':
       const clickedId = action.value.id;
       let prevIds = _.cloneDeep(state.clickedIds);
+      let prevObjs = _.cloneDeep(state.clickedObjs);
       let clicked = false;
       if (state.clickedIds.indexOf(clickedId) === -1) {
         clicked = true;
         prevIds.push(clickedId);
+        prevObjs.push(getRacesObjByA(action.value));
       } else {
         _.remove(prevIds, (id) => id === clickedId);
+        prevObjs = _.reject(prevObjs, (obj) => obj.id === clickedId);
       }
       //nodes will be highlighted
       let nodes = state.mutualLinkedNodes;
       if (state.isLinksShown) {
         nodes = getMutualLinkedNodes(prevIds, action.links);
       }
+      const sharedRaces = prevIds.length > 0 ?
+        getSharedRaces(prevObjs) :
+        [];
+      const sharedRacesWinner = sharedRaces.length > 0 ?
+        getSharedRacesWinner(sharedRaces, prevObjs) :
+        [];
       return Object.assign({}, state, {
         clicked,
         clickedId,
-        clickedObj: action.value,
+        sharedRaces,
+        sharedRacesWinner,
         mutualLinkedNodes: nodes,
         clickedIds: prevIds,
+        clickedObjs: prevObjs,
       })
     case 'TOGGLE_VIEW':
       const mutualLinkedNodes = getMutualLinkedNodes(state.clickedIds, action.links);

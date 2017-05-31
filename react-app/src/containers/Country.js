@@ -3,7 +3,7 @@ import CountryComponent from '../components/Country';
 
 const mapStateToProps = (state, ownProps) => {
   const { athletesByCounty, pointRange, graph } = state.data;
-  const { clickedId, clicked } = state.graph;
+  const { clickedId, clicked, clickedIds } = state.graph;
   return {
     ...athletesByCounty,
     pointRange,
@@ -11,13 +11,14 @@ const mapStateToProps = (state, ownProps) => {
     ...state.country,
     clickedId,
     clicked,
+    clickedIds,
   }
 };
 
 const mapDispatchToProps = (dispatch) => (
   {
-    mouseOverFunc: (raceId, aName) => {
-      dispatch({ type: 'HOVER_RACE', value: { raceId, aName } })
+    mouseOverFunc: (raceId, aName, place) => {
+      dispatch({ type: 'HOVER_RACE', value: { raceId, aName, place } })
     },
     mouseOutFunc: (value) => {
       dispatch({ type: 'UNHOVER_RACE' })
@@ -31,8 +32,8 @@ const mapDispatchToProps = (dispatch) => (
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return Object.assign({}, {
     ...stateProps,
-    mouseOverFunc: (raceId, aName) => {
-      return dispatchProps.mouseOverFunc(raceId, aName);
+    mouseOverFunc: (raceId, aName, place) => {
+      return dispatchProps.mouseOverFunc(raceId, aName, place);
     },
     mouseOutFunc: () => {
       return dispatchProps.mouseOutFunc();

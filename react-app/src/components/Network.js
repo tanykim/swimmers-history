@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import _ from 'lodash';
 
-class GraphComponent extends Component {
+class NetworkComponent extends Component {
 
   dragstarted(d, simulation) {
     if (!d3.event.active) {
@@ -23,33 +23,6 @@ class GraphComponent extends Component {
     }
     d.fx = null;
     d.fy = null;
-
-    //check simluation status
-    // if (isClicked === 'true') {
-    //TODO: check text of all
-      this.checkSimulationStatus(d.id, simulation);
-    // }
-  }
-
-  moveAthleteName(id) {
-    const draggedNode = d3.select(`circle[id="${id}"]`);
-    d3.select(`.vis-athlete-name[id="${id}"]`)
-        .transition()
-        .attr('x', draggedNode.attr('cx'))
-        .attr('y', draggedNode.attr('cy'));
-  }
-
-  checkSimulationStatus(id, simulation) {
-    const selectedNodeId = id;
-    //check if simulation stopped every 0.2 second
-    const isStopped = () => {
-      if (simulation.alpha() < 0.02) {
-        this.moveAthleteName(selectedNodeId);
-      } else {
-        setTimeout(isStopped, 200);
-      }
-    }
-    isStopped();
   }
 
   ticked(link, node) {
@@ -61,21 +34,13 @@ class GraphComponent extends Component {
       .attr('cy', (d) => d.y );
   }
 
-  componentDidMount() {
-    this.drawGraph(this.props);
-  }
-
   drawGraph(props) {
     const { graph, pointRange } = props;
-    //pointRange = [Math.max(_.min(allTotalPoints), 700), _.max(allTotalPoints)];
-
     //set the size
     const w = document.getElementById('vis-width').clientWidth;
     const dim = w * 0.6;
     d3.select('#svg').attr('height', Math.round(w * 0.8));
     let svg = d3.select('#vis-g');
-
-    //1: no animation at first, 0: move more, dispersed
     const decayRange = d3.scaleLinear().range([0.5, 1]).domain([1, 800]);
     const simulation = d3.forceSimulation()
       .force('link', d3.forceLink().id((d) => d.id)
@@ -83,7 +48,7 @@ class GraphComponent extends Component {
       .velocityDecay(Math.max(Math.min(decayRange(graph.nodes.length), 1), 0.2))
       .force('charge', d3.forceManyBody()
         .strength( -1 * dim / 5)
-        .distanceMax(dim / 2)
+        .distanceMax(dim / 3)
       )
       .force('center', d3.forceCenter(w / 2, w * 0.8 / 2));
 
@@ -94,7 +59,7 @@ class GraphComponent extends Component {
         .enter().append('line')
         .attr('stroke-width', (d) => d.value )
         .attr('class', 'link-normal')
-        .attr('id', (d) => `${Math.min(+d.source, +d.target)}-${Math.max(+d.source, +d.target)}`);
+        .attr('id', (d) => `${_.min([d.source.id || d.source, d.target.id || d.target])}-${_.max([d.source.id || d.source, d.target.id || d.target])}`);
 
     //node as circles
     //set radius size (min: square root 9 = 3), point range min is 700
@@ -129,12 +94,8 @@ class GraphComponent extends Component {
       })
       .on('mouseout', (d) => this.props.mouseOutFunc())
       .on('click', (d) => this.props.clickFunc(d));
-
     simulation.nodes(graph.nodes).on('tick', () => this.ticked(link, node));
     simulation.force('link').links(graph.links);
-
-    //check the simulation status-->then set loading done
-    // checkInitDone(completeLoadingCb);
   }
 
   updateGraph(nextProps) {
@@ -160,13 +121,11 @@ class GraphComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
     //option change
     if (this.props.graph !== nextProps.graph) {
       this.updateGraph(nextProps);
       return false;
     }
-
     //mouse over/out
     if (this.props.hovered !== nextProps.hovered) {
       _.each(nextProps.connected, (c) => {
@@ -175,8 +134,12 @@ class GraphComponent extends Component {
         d3.select(`line[id="${combination}"]`).classed('link-over', nextProps.hovered);
         d3.select(`circle[id="${c}"]`).classed('node-linked', nextProps.hovered);
       });
+      d3.select('.js-network-hover')
+        .style('display', `${nextProps.hovered ? 'inline-block' : 'none'}`)
+        .style('left', `${d3.event.pageX}px`)
+        .style('top', `${d3.event.pageY}px`);
+      d3.select('.js-network-content').html(nextProps.hoverText);
     }
-
     //click
     if (nextProps.clicked || this.props !== nextProps.clicked) {
       d3.select(`circle[id="${nextProps.clickedId}"]`).classed('node-clicked', nextProps.clicked);
@@ -184,17 +147,17 @@ class GraphComponent extends Component {
         this.highlightElements(this.props, false);
         this.highlightElements(nextProps, true);
       }
-      if (this.props.clickedObj !== nextProps.clickedObj) {
-        const d = nextProps.clickedObj;
-        d3.select('#nodes')
-          .append('text')
-          .text(d.name)
-          .attr('x', d.x)
-          .attr('y', d.y)
-          // .attr('dy', -1 * parseInt(obj.attr('r')) - 6)
-          .attr('class', 'size-tiny unselectable pos-middle fill-darkGrey vis-athlete-name')
-          .attr('id', d.id);
-      }
+    }
+    //removed from the results table
+    if (this.props.clickedIds !== nextProps.clickedIds) {
+      const removed = _.filter(this.props.clickedIds, (id) => nextProps.clickedIds.indexOf(id) === -1);
+      _.each(removed, (id) => {
+        d3.select(`circle[id="${id}"]`).classed('node-clicked', false);
+        if (this.props.isLinksShown) {
+          this.highlightElements(this.props, false);
+          this.highlightElements(nextProps, true);
+        }
+      });
     }
     //links View
     if (this.props.isLinksShown !== nextProps.isLinksShown) {
@@ -202,36 +165,52 @@ class GraphComponent extends Component {
     }
   }
 
+  componentDidMount() {
+    this.drawGraph(this.props);
+    if (this.props.clickedIds.length > 0) {
+      //highlight clicked circle
+      _.each(this.props.clickedIds, (d) => {
+        d3.select(`circle[id="${d}"]`).classed('node-clicked', true);
+      })
+      //highlight link connection
+      if (this.props.isLinksShown) {
+        this.highlightElements(this.props, true);
+      }
+    }
+  }
+
   render() {
-    return (
-      <div>
-        { this.props.clickedIds.length > 1 && <p className="control">
-          <label className="radio">
-            <input
-              type="radio"
-              name="highlightElms"
-              value="network"
-              checked={this.props.isLinksShown}
-              onChange={this.props.toggleLinkedNodes} /> Both nodes &amp; edges (network)
-          </label>
-          <label className="radio">
-            <input
-              type="radio"
-              name="highlightElms"
-              value="nodes"
-              checked={!this.props.isLinksShown}
-              onChange={this.props.toggleLinkedNodes} /> Only nodes (selected swimmers)
-          </label>
-        </p> }
-        <div className="graph" id="vis-width">
-          <svg id="svg" style={{width: '100%'}}>
-            <g id="vis-g"></g>
-          </svg>
-          <div className="hovered-swimmer" dangerouslySetInnerHTML={{ __html: this.props.hoverText }} />
+    return (<div>
+      { this.props.clickedIds.length > 1 && <div className="network-options">
+        <label className="radio">
+          <input
+            type="radio"
+            name="highlightElms"
+            value="network"
+            checked={this.props.isLinksShown}
+            onChange={this.props.toggleLinkedNodes} /> Both nodes &amp; edges (network)
+        </label>
+        <label className="radio">
+          <input
+            type="radio"
+            name="highlightElms"
+            value="nodes"
+            checked={!this.props.isLinksShown}
+            onChange={this.props.toggleLinkedNodes} /> Only nodes (selected swimmers)
+        </label>
+      </div> }
+      <div className="network" id="vis-width">
+        <svg id="svg" style={{width: '100%'}}>
+          <g id="vis-g"></g>
+        </svg>
+        <div className="vis-hover js-network-hover">
+          <div className="hover-content js-network-content"/>
+          <div className="arrow-down"/>
         </div>
       </div>
-    );
+    </div>);
   }
 }
 
-export default GraphComponent;
+export default NetworkComponent;
+        // <div className="hovered-swimmer" dangerouslySetInnerHTML={{ __html: this.props.hoverText }} />

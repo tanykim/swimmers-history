@@ -15,6 +15,7 @@
         border-radius: 4px;
         text-transform: capitalize;
         display: inline-block;
+        cursor: pointer;
     }
 }
 .options-wrapper {
@@ -29,6 +30,7 @@
 }
 .panels {
     position: absolute;
+    /* TODO: programically change the top */;
     top: 50px;
     background-color: $white;
     border-right: 1px solid $grey-lighter;
@@ -38,6 +40,7 @@
     border-bottom-left-radius: 4px;
     margin-bottom: $pg-lg;
     padding-bottom: $pg-xs * 3;
+    z-index: 100;
     .kind-wrapper-meets {
         padding-left: $pg-xs * 3;
         padding-right: $pg-xs;
@@ -117,8 +120,11 @@
         border-top-color: $grey-lighter;
     }
     .selected-list {
-        font-size: $normal;
-        margin-top: $pg-sm;
+        font-size: $small;
+        padding: $pg-xs $pg-sm;
+        background-color: $oc-gray-1;
+        border-radius: 4px;
+        margin-top: $pg-xs;
     }
     .items-title, .selected-list {
         .typcn {

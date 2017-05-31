@@ -8,6 +8,8 @@
         padding-left: $pg-md;
         display: flex;
         flex-wrap: wrap;
+        background-image: url('styles/country-bg.svg');
+        background-size: 94px;
     }
     .fl-icon {
         background-size: 1.2em;
@@ -16,20 +18,21 @@
         padding-left: 1.4em;
     }
     .athlete-element {
-        margin-top: 12px;
-        margin-bottom: 12px;
+        margin-top: 15px;
+        margin-bottom: 13px;
     }
     .athlete-country {
         @extend .athlete-element;
         font-size: $small;
-        margin-top: 10px;
-        margin-right: 4px;
+        margin-top: 13px;
+        margin-right: 3px;
     }
     .athlete-group {
         display: inherit;
     }
     .r-general {
-        @extend .athlete-element;
+        margin-top: 15px;
+        margin-bottom: 14px;
         background-color: $main-light;
         width: 18px;
         height: 18px;
@@ -85,31 +88,5 @@
     }
     .a-clicked.r-hover, .r-hover {
         border: 3px solid $grey-dark;
-    }
-    .country-hover {
-        position: absolute;
-        text-align: center;
-        font-size: $xsmall;
-        color: $white;
-        pointer-events: none;
-        margin-top: -38px;
-        display: none;
-        overflow: visible;
-        .hover-content {
-            white-space: pre;
-            position: relative;
-            left: -50%;
-            background: $grey-darker;
-            padding: 4px 8px;
-        }
-        .arrow-down {
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 10px solid $grey-darker;
-            position: relative;
-            left: -8px;
-        }
     }
 }

@@ -71,7 +71,7 @@
   stroke-opacity: 1; }
 
 .link-over {
-  stroke: black;
+  stroke: #2bc0e4;
   stroke-opacity: 1; }
 
 .node-common, .node-normal, .node-over, .node-clicked, .node-linked {

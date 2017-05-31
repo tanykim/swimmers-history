@@ -27,22 +27,28 @@ body {
   border-radius: 4px;
   background-color: #ffffff; }
 
-.graph {
-  margin-top: 15px;
-  position: relative; }
-
-.graph .hovered-swimmer {
+.vis-hover {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
   text-align: center;
-  font-size: 14px;
-  background-color: fade(#ffffff, 70%);
-  padding-right: 6px;
-  padding-left: 6px;
-  display: inline-table; }
+  font-size: 12px;
+  color: #ffffff;
+  pointer-events: none;
+  margin-top: -38px;
+  display: none;
+  overflow: visible; }
 
-.graph .hovered-swimmer i {
-  font-style: normal;
-  color: #f5625a; }
+.vis-hover .hover-content {
+  white-space: pre;
+  position: relative;
+  left: -50%;
+  background: #212529;
+  padding: 4px 8px; }
+
+.vis-hover .arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #212529;
+  position: relative;
+  left: -8px; }

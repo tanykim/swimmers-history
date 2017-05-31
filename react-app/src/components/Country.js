@@ -34,7 +34,7 @@ class CountryComponent extends Component {
             .append('span')
             .attr('class', `js-a-${a.id} r-general js-r-${r.race_id} r-${r.place} r-${styles[j]}${neighbor ? ' r-neighbor': ''}${lastA ? ' r-a-last' : ''}`)
             .on('mouseover', () => {
-              this.props.mouseOverFunc(r.race_id, a.name);
+              this.props.mouseOverFunc(r.race_id, a.name, r.place);
             })
             .on('mouseout', () => {
               this.props.mouseOutFunc();
@@ -54,6 +54,12 @@ class CountryComponent extends Component {
 
   componentDidMount() {
     this.drawLinear(this.props);
+    if (this.props.clickedIds.length > 0) {
+      _.each(this.props.clickedIds, (d) => {
+        d3.selectAll(`.js-a-${d}`).classed('a-clicked', true);
+      })
+    }
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,12 +75,20 @@ class CountryComponent extends Component {
         .style('display', `${nextProps.hovered ? 'inline-block' : 'none'}`)
         .style('left', `${d3.event.pageX}px`)
         .style('top', `${d3.event.pageY}px`);
-      d3.select('.js-hover-content').html(nextProps.hoverText);
+      d3.select('.js-country-content').html(nextProps.hoverText);
     }
     //click
     if (nextProps.clicked || this.props !== nextProps.clicked) {
       d3.selectAll(`.js-a-${nextProps.clickedId}`)
         .classed('a-clicked', nextProps.clicked);
+    }
+    //removed from the results table
+    if (this.props.clickedIds !== nextProps.clickedIds) {
+      const removed = _.filter(this.props.clickedIds, (id) => nextProps.clickedIds.indexOf(id) === -1);
+      _.each(removed, (id) => {
+        console.log(id);
+        d3.selectAll(`.js-a-${id}`).classed('a-clicked', false);
+      });
     }
   }
 
@@ -83,8 +97,8 @@ class CountryComponent extends Component {
       <div className="country" id="vis-country-width">
         <div id="div-country" className="country-linear">
         </div>
-        <div className="country-hover js-country-hover">
-          <div className="hover-content js-hover-content"/>
+        <div className="vis-hover js-country-hover">
+          <div className="hover-content js-country-content"/>
           <div className="arrow-down"/>
         </div>
       </div>

@@ -29,12 +29,12 @@ class NamesComponent extends Component {
             options={this.props.list}
             onChange={this.props.addName}
           />
-          <div className="selected-list">
-            { this.props.searchedAthletes.map((a, i) => (<div key={i}>
+          { this.props.searchedAthletes.map((a, i) => (<div className="selected-list">
+            <div key={i}>
               { a.name } ({ a.country })
               <span onClick={() => this.props.removeName(a.id)} className="typcn typcn-minus"/>
-            </div>)) }
-          </div>
+            </div>
+          </div>)) }
         </div> }
       </div>
     </div>);

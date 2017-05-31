@@ -5176,7 +5176,7 @@ body {
   stroke-opacity: 1; }
 
 .link-over {
-  stroke: black;
+  stroke: #2bc0e4;
   stroke-opacity: 1; }
 
 .node-common, .node-normal, .node-over, .node-clicked, .node-linked {
@@ -5256,23 +5256,24 @@ body {
   display: flex;
   align-items: center; }
 
-.header .logo-title .swimmer, .header .logo-title .network {
+.header .logo-title .text-swimmer, .header .logo-title .text-network {
   display: flex;
   flex-direction: row;
   justify-content: space-around; }
 
-.header .logo-title .swimmer {
+.header .logo-title .text-swimmer {
   font-weight: bold;
   width: 40%; }
 
-.header .logo-title .network {
+.header .logo-title .text-network {
   width: 48%;
   margin-left: 2%; }
 
 .header .header-gender {
   display: flex;
   align-items: center;
-  justify-content: flex-end; }
+  justify-content: flex-end;
+  cursor: pointer; }
 
 /* grey scale */
 /* content colors */
@@ -5297,6 +5298,11 @@ body {
 
 .summary .summary-list {
   line-height: 140%; }
+
+.summary .summary-gender {
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 4px; }
 
 .summary .kind {
   background-color: #91f0f9;
@@ -5376,7 +5382,8 @@ body {
   padding: 2px 8px;
   border-radius: 4px;
   text-transform: capitalize;
-  display: inline-block; }
+  display: inline-block;
+  cursor: pointer; }
 
 .options-wrapper {
   position: relative;
@@ -5390,6 +5397,7 @@ body {
 
 .panels {
   position: absolute;
+  /* TODO: programically change the top */
   top: 50px;
   background-color: #ffffff;
   border-right: 1px solid #e9ecef;
@@ -5399,6 +5407,7 @@ body {
   border-bottom-left-radius: 4px;
   margin-bottom: 28px;
   padding-bottom: 18px;
+  z-index: 100;
   /* override react-select design */ }
 
 .panels .kind-wrapper-meets {
@@ -5477,12 +5486,59 @@ body {
   border-top-color: #e9ecef; }
 
 .panels .selected-list {
-  font-size: 16px;
-  margin-top: 15px; }
+  font-size: 14px;
+  padding: 6px 15px;
+  background-color: #f1f3f5;
+  border-radius: 4px;
+  margin-top: 6px; }
 
 .panels .items-title .typcn, .panels .selected-list .typcn {
   margin-left: 6px;
   cursor: pointer; }
+
+/* grey scale */
+/* content colors */
+/* vis */
+/* result */
+/* grey */
+/* grey scale */
+/* content colors */
+/* vis */
+/* result */
+/* grey */
+/* font-size */
+/* letter spacing */
+/* word spacing */
+/* line height */
+/* paragraph spacing or padding*/
+/* other sizing */
+/* borders */
+.network-options {
+  text-align: center;
+  margin-top: 6px;
+  font-size: 14px; }
+
+.network-options .radio:first-child {
+  margin-right: 6px; }
+
+.network {
+  margin-top: 15px; }
+
+.network .hovered-swimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  background-color: fade(#ffffff, 70%);
+  padding-right: 6px;
+  padding-left: 6px;
+  display: inline-table; }
+
+.network .hovered-swimmer i {
+  font-style: normal;
+  color: #f5625a; }
 
 /* grey scale */
 /* content colors */
@@ -5508,7 +5564,9 @@ body {
   padding-right: 18px;
   padding-left: 18px;
   display: flex;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+  background-image: url("styles/country-bg.svg");
+  background-size: 94px; }
 
 .country .fl-icon {
   background-size: 1.2em;
@@ -5516,19 +5574,21 @@ body {
   background-position-y: 45%;
   padding-left: 1.4em; }
 
-.country .athlete-element, .country .athlete-country, .country .r-general {
-  margin-top: 12px;
-  margin-bottom: 12px; }
+.country .athlete-element, .country .athlete-country {
+  margin-top: 15px;
+  margin-bottom: 13px; }
 
 .country .athlete-country {
   font-size: 14px;
-  margin-top: 10px;
-  margin-right: 4px; }
+  margin-top: 13px;
+  margin-right: 3px; }
 
 .country .athlete-group {
   display: inherit; }
 
 .country .r-general {
+  margin-top: 15px;
+  margin-bottom: 14px;
   background-color: #91f0f9;
   width: 18px;
   height: 18px;
@@ -5585,31 +5645,206 @@ body {
 .country .a-clicked.r-hover, .country .r-hover {
   border: 3px solid #495057; }
 
-.country .country-hover {
-  position: absolute;
+/* grey scale */
+/* content colors */
+/* vis */
+/* result */
+/* grey */
+/* grey scale */
+/* content colors */
+/* vis */
+/* result */
+/* grey */
+/* font-size */
+/* letter spacing */
+/* word spacing */
+/* line height */
+/* paragraph spacing or padding*/
+/* other sizing */
+/* borders */
+.results .typcn {
+  font-size: 18px; }
+
+.results .remove-all {
+  margin-bottom: -15px;
+  padding-top: 15px;
+  font-size: 14px; }
+
+.results .remove-all a {
+  cursor: pointer;
+  color: #343a40; }
+
+.results .no-races {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: #2bc0e4; }
+
+.results .table-wrapper {
+  border-top: 2px solid #f1f3f5;
+  border-bottom: 2px solid #f1f3f5;
+  font-size: 14px;
+  overflow: auto;
+  margin-top: 28px; }
+
+.results .race-athlete-table {
+  position: relative;
+  background-color: #ffffff;
+  width: initial; }
+
+.results thead .result-summary, .results thead .record {
+  border-bottom: 2px solid #dee2e6;
+  font-weight: normal; }
+
+.results thead th {
   text-align: center;
+  vertical-align: middle; }
+
+.results tbody .close-icon, .results tbody .athlete, .results tbody .record {
+  border-top: 1px solid #dee2e6;
+  text-align: center; }
+
+.results tbody td {
+  vertical-align: middle; }
+
+.results .close-icon {
+  padding-left: 6px; }
+
+.results .close-icon a {
+  cursor: pointer;
+  color: #343a40; }
+
+.results .result-summary {
+  padding: 15px;
+  color: #868e96; }
+
+.results .result-summary .result-number {
+  color: #2bc0e4; }
+
+.results .athlete {
+  padding: 6px 15px 6px 0;
+  min-width: 162px;
+  box-sizing: border-box; }
+
+.results .athlete .fl-icon {
+  background-size: 1.2em;
+  background-repeat: no-repeat;
+  background-position-y: 45%;
+  padding-left: 1.4em;
+  margin-right: 2px; }
+
+.results .athlete .country {
+  color: #868e96; }
+
+.results .winner {
+  background-color: #2bc0e4; }
+
+.results .record {
+  min-width: 145px;
+  border-left: 1px solid #dee2e6;
+  padding-top: 4px;
+  padding-bottom: 4px; }
+
+.results .record .place-wrapper, .results .record .swimtime {
+  display: inline-block;
+  box-sizing: border-box; }
+
+.results .record .place-wrapper {
+  text-align: right;
+  width: 28px; }
+
+.results .record .swimtime {
+  text-align: left;
+  width: 48px; }
+
+.results .record .dash {
+  margin-right: 4px;
+  margin-left: 4px; }
+
+.results .record .place {
+  text-align: center;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  display: block;
+  padding-top: 4px;
+  letter-spacing: -1px;
+  font-weight: bold; }
+
+.results .record .place-border, .results .record .place1, .results .record .place2, .results .record .place3 {
+  border: 2px solid #343a40;
+  border-radius: 12px;
+  padding-top: 0; }
+
+.results .record .place1 {
+  background-color: #fbcd15; }
+
+.results .record .place2 {
+  background-color: #dadada; }
+
+.results .record .place3 {
+  background-color: #d88133; }
+
+/* grey scale */
+/* content colors */
+/* vis */
+/* result */
+/* grey */
+/* grey scale */
+/* content colors */
+/* vis */
+/* result */
+/* grey */
+/* font-size */
+/* letter spacing */
+/* word spacing */
+/* line height */
+/* paragraph spacing or padding*/
+/* other sizing */
+/* borders */
+.instructions .info-title {
+  color: #f5625a;
+  font-size: 14px;
+  letter-spacing: 0.08em; }
+
+.instructions .info-options {
+  padding-left: 0;
+  margin-top: 15px; }
+
+.instructions .info-options .option {
+  color: #2bc0e4;
   font-size: 12px;
-  color: #ffffff;
-  pointer-events: none;
-  margin-top: -38px;
-  display: none;
-  overflow: visible; }
+  padding-right: 6px;
+  letter-spacing: 0.08em; }
 
-.country .country-hover .hover-content {
-  white-space: pre;
-  position: relative;
-  left: -50%;
-  background: #212529;
-  padding: 4px 8px; }
+.instructions .info-options .option-li {
+  list-style: none;
+  margin-bottom: 15px; }
 
-.country .country-hover .arrow-down {
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 10px solid #212529;
-  position: relative;
-  left: -8px; }
+.instructions .info-options .option-li .dropdown {
+  display: inline-block; }
+
+.instructions .option-click, .instructions .option-dd-click {
+  color: #2bc0e4; }
+
+.instructions .option-click {
+  cursor: pointer; }
+
+.instructions .dropdown-menu {
+  margin-top: 6px;
+  margin-bottom: 28px;
+  -webkit-box-shadow: 0 0 0 transparent;
+  box-shadow: 0 0 0 transparent;
+  border: 1px solid #dee2e6; }
+
+.instructions .dropdown-menu > li > a {
+  cursor: pointer;
+  color: #495057; }
+
+.instructions .dropdown-menu > li > a:hover {
+  background-color: #f1f3f5; }
+
+.instructions .sub {
+  color: #868e96; }
 
 /* grey scale */
 /* content colors */
@@ -5640,22 +5875,28 @@ body {
   border-radius: 4px;
   background-color: #ffffff; }
 
-.graph {
-  margin-top: 15px;
-  position: relative; }
-
-.graph .hovered-swimmer {
+.vis-hover {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
   text-align: center;
-  font-size: 14px;
-  background-color: fade(#ffffff, 70%);
-  padding-right: 6px;
-  padding-left: 6px;
-  display: inline-table; }
+  font-size: 12px;
+  color: #ffffff;
+  pointer-events: none;
+  margin-top: -38px;
+  display: none;
+  overflow: visible; }
 
-.graph .hovered-swimmer i {
-  font-style: normal;
-  color: #f5625a; }
+.vis-hover .hover-content {
+  white-space: pre;
+  position: relative;
+  left: -50%;
+  background: #212529;
+  padding: 4px 8px; }
+
+.vis-hover .arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #212529;
+  position: relative;
+  left: -8px; }

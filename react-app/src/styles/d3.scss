@@ -49,6 +49,7 @@
 }
 
 /* d3 project specific */
+
 .link-normal {
     stroke:$oc-gray-8;
     stroke-opacity: 0.1;
@@ -58,7 +59,7 @@
     stroke-opacity: 1;
 }
 .link-over {
-    stroke: black;
+    stroke: $over;
     stroke-opacity: 1;
 }
 .node-common {

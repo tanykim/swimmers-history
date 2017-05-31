@@ -7,6 +7,11 @@
     .summary-list {
         line-height: 140%;
     }
+    .summary-gender {
+        font-size: $small;
+        font-weight: bold;
+        margin-right: $pg-xxs;
+    }
     .kind {
         background-color: $main-light;
         color: $grey-darker;
