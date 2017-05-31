@@ -11,8 +11,6 @@ const mapStateToProps = (state, ownProps) => {
     ...state.country,
     clickedId,
     clicked,
-    // athletes,
-    // graphInfo: state.graph,
   }
 };
 
@@ -27,9 +25,6 @@ const mapDispatchToProps = (dispatch) => (
     clickFunc: (value, links) => {
       dispatch({ type: 'CLICK_NODE', value, links })
     },
-    // toggleLinkedNodes: (value, links) => {
-    //   dispatch({ type: 'TOGGLE_VIEW', value: value === 'network' ? true : false, links })
-    // },
   }
 );
 
@@ -45,9 +40,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     clickFunc: (d) => {
       return dispatchProps.clickFunc(d, stateProps.links);
     },
-    // toggleLinkedNodes: (e) => {
-    //   return dispatchProps.toggleLinkedNodes(e.currentTarget.value, graph.links);
-    // },
   })
 };
 

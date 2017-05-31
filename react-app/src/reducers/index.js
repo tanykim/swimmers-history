@@ -115,15 +115,29 @@ const options = (state = {}, action) => {
       //reset temprary selection & temporary names
       return Object.assign({}, state, {
         tempSelection: [],
-        originalNames: state.searchedAthletes
+        originalNames: state.searchedAthletes,
+        isOpen: false,
       });
     case 'CANCEL':
       //revert selections to the pverious selection
       return Object.assign({}, state, {
+        isOpen: false,
         sel: cancelSelections(state.tempSelection, state.sel),
         searchedAthletes: state.originalNames,
         nameOption: state.originalNames.length > 0 ? 'search' : 'all'}
       );
+    case 'TOGGLE_SEL_PARENT':
+      const { kind, type } = action.value;
+      const prevVal = state.selParent[kind][type];
+      state.selParent[kind][type] = !prevVal;
+      const childrenList = state.category[kind][type].children.map((d) => d[0]);
+      _.each(childrenList, (d) => {
+        state.sel[kind][type][d] = !prevVal;
+      });
+      return Object.assign({}, state, {
+        selParent: state.selParent,
+        sel: state.sel,
+      });
     default:
       return state;
   }

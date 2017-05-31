@@ -6,6 +6,7 @@ $white: #ffffff;
 /* content colors */
 $main: #2bc0e4;
 $main-light: #91f0f9;
+$main-dark : darken($main, 5%);
 $sub: #21d7c4;
 $highlight: #f5625a;
 $highlight-light: #ffebea;

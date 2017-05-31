@@ -8,10 +8,14 @@ const mapStateToProps = (state, ownProps) => {
     searchedAthletes: state.options.searchedAthletes,
     nameOption: state.options.nameOption,
     sel: state.options.sel,
+    selParent: state.options.selParent,
     optionList: getOptionsArray(state.options.category, state.options.sel),
     gender: state.gender,
+    racesInfo: state.data.racesInfo,
+    originalNames: state.options.originalNames,
+    isOptionOpen: state.options.isOpen,
   }
-}
+};
 
 const mapDispatchToProps = (dispatch) => (
   {
@@ -34,8 +38,14 @@ const mapDispatchToProps = (dispatch) => (
     removeName: (value) => {
       dispatch({ type: 'REMOVE_AHLETE', value })
     },
+    toggleSelParent: (kind, type) => {
+      dispatch( { type: 'TOGGLE_SEL_PARENT', value: { kind, type } })
+    },
+    toggle: (isOptionOpen) => {
+      dispatch({ type: 'TOGGLE_OPTIONS', value: !isOptionOpen });
+    },
   }
-)
+);
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return Object.assign({}, {
@@ -58,8 +68,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     removeName: (id) => {
       return dispatchProps.removeName(id);
     },
+    toggleSelParent: (kind, type) => {
+      return dispatchProps.toggleSelParent(kind, type);
+    },
+    toggle: () => {
+      dispatchProps.toggle(stateProps.isOptionOpen);
+    },
   })
-}
+};
 
 
 export default connect(mapStateToProps,

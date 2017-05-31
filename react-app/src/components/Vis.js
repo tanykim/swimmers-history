@@ -1,37 +1,41 @@
 import React, { Component } from 'react';
+import Header from '../containers/Header';
 import Options from '../containers/Options';
-import Summary from './Summary';
 import Graph from '../containers/Graph';
 import Country from '../containers/Country';
 
 class VisComponent extends Component {
   render() {
-    return (
-      <div className="container">
-        <div className="columns">
-          <div className="column is-3">
-            Swimmers' Network
-          </div>
-          <div className="column is-9">
-            <a className="button is-small"
-              onClick={this.props.toggle}>
-              {this.props.isOptionOpen ? 'Hide' : 'Show'} Filtering Options
-            </a>
-            { this.props.isOptionOpen &&
+    return (<div>
+      <div className="header-wrapper">
+        <Header/>
+        <div className="container">
+          <div className="columns is-multiline">
+            <div className="column is-3 vis-types">
+              {['network', 'country', 'race'].map((view) => (
+                <div key={view} className={this.props.visType === view ? 'view-selected': 'view-normal'}>{ view }</div>
+              ))}
+            </div>
+            <div className="column is-9">
               <Options />
-            }
-            { !this.props.isOptionOpen &&
-              <Summary
-                {...this.props.racesInfo}
-                names={this.props.searchedAthletes}
-              />
-            }
-            { this.props.visType === 'network' && <Graph/> }
-            { this.props.visType === 'country' && <Country/> }
+            </div>
           </div>
         </div>
       </div>
-    );
+      <div className="container contents">
+        <div className="columns is-multiline">
+          <div className="column is-3">
+            instructions
+          </div>
+          <div className="column is-9">
+            <div className="vis-wrapper">
+              { this.props.visType === 'network' && <Graph/> }
+              { this.props.visType === 'country' && <Country/> }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>);
   }
 }
 

@@ -4,12 +4,14 @@
   "private": true,
   "devDependencies": {
     "bulma": "^0.4.1",
-    "jest-enzyme": "^3.1.0",
-    "open-color": "^1.5.1",
     "deep-freeze": "0.0.1",
     "enzyme": "^2.8.2",
+    "flag-icon-css": "^2.8.0",
+    "jest-enzyme": "^3.1.0",
     "node-sass": "^4.5.2",
-    "react-test-renderer": "^15.5.4"
+    "open-color": "^1.5.1",
+    "react-test-renderer": "^15.5.4",
+    "typicons.font": "^2.0.9"
   },
   "dependencies": {
     "d3": "^4.9.1",

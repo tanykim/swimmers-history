@@ -1,0 +1,42 @@
+@import './colors.scss';
+@import './size.scss';
+
+.header-wrapper {
+    border-bottom: 1px solid $grey-lighter;
+    background-color: $white;
+}
+.header {
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+    width: 100%;
+    padding-top: $pg-xs;
+    padding-bottom: $pg-xs;
+    .logo {
+        text-align: center;
+    }
+    .logo-title {
+        color: $main;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        .swimmer, .network {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+        .swimmer {
+            font-weight: bold;
+            width: 40%;
+        }
+        .network {
+            width: 48%;
+            margin-left: 2%;
+        }
+    }
+    .header-gender {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+}

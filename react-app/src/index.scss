@@ -1,5 +1,17 @@
 @import '../node_modules/bulma/bulma.sass';
 @import '../node_modules/react-select/dist/react-select.css';
+@import '../node_modules/typicons.font/src/font/typicons.css';
+@font-face {
+  font-family: 'typicons';
+  src: url("../node_modules/typicons.font/src/font/typicons.eot");
+  src: url("../node_modules/typicons.font/src/font/typicons.eot?#iefix") format('embedded-opentype'),
+       url("../node_modules/typicons.font/src/font/typicons.woff") format('woff'),
+       url("../node_modules/typicons.font/src/font/typicons.ttf") format('truetype'),
+       url("../node_modules/typicons.font/src/font/typicons.svg#typicons") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@import '../node_modules/flag-icon-css/css/flag-icon.min.css';
 
 body {
   margin: 0;
@@ -8,4 +20,9 @@ body {
 }
 
 @import './styles/d3.scss';
+@import './styles/header.scss';
+@import './styles/summary.scss';
+@import './styles/options.scss';
+@import './styles/country.scss';
+
 @import './styles/components.scss';

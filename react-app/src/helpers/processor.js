@@ -5,6 +5,7 @@ const allLinks = Data.graph;
 const { meets, events, competitions } = Data;
 const category = { meets, events };
 
+
 //get the cetegory data
 export const setInitialSelections = () => {
   const selParent = {};
@@ -22,12 +23,14 @@ export const setInitialSelections = () => {
 };
 
 export const getAthletesList = (gender) => {
-  return _.cloneDeep(allAthletes[gender]).map((a) => (
-    {
-      value: a,
-      label: `${a.name} (${a.country})`,
-    }
-  ));
+  const all = _.cloneDeep(allAthletes[gender]);
+  return _.sortBy(all, (a) => -a.records.length)
+    .map((a) => (
+      {
+        value: a,
+        label: `${a.name} (${a.country})`,
+      }
+    ));
 };
 
 //set options

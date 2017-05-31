@@ -1,0 +1,115 @@
+@import './colors.scss';
+@import './size.scss';
+
+.country {
+    /* where vis comes */
+    .country-linear {
+        padding-right: $pg-md;
+        padding-left: $pg-md;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .fl-icon {
+        background-size: 1.2em;
+        background-repeat: no-repeat;
+        background-position-y: 45%;
+        padding-left: 1.4em;
+    }
+    .athlete-element {
+        margin-top: 12px;
+        margin-bottom: 12px;
+    }
+    .athlete-country {
+        @extend .athlete-element;
+        font-size: $small;
+        margin-top: 10px;
+        margin-right: 4px;
+    }
+    .athlete-group {
+        display: inherit;
+    }
+    .r-general {
+        @extend .athlete-element;
+        background-color: $main-light;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+    .r-1 {
+        background-color: $gold;
+        border: 1px solid $grey-dark;
+    }
+    .r-2 {
+        background-color: $silver;
+        border: 1px solid $grey-dark;
+    }
+    .r-3 {
+        background-color: $bronze;
+        border: 1px solid $grey-dark;
+    }
+    .r-single {
+        margin-right: 2px;
+        margin-left: 2px;
+    }
+    .r-first {
+        margin-left: 2px;
+    }
+    .r-last {
+        margin-right: 2px;
+    }
+    .r-neighbor {
+        margin-left: -1px;
+    }
+    .r-a-last {
+        margin-right: 16px;
+    }
+    .a-clicked.r-1, .a-clicked.r-2, .a-clicked.r-3 {
+        border: none;
+    }
+    .a-clicked.r-first {
+        border-top: $bd-race-clicked;
+        border-bottom: $bd-race-clicked;
+        border-left: $bd-race-clicked;
+    }
+    .a-clicked.r-btw {
+        border-top: $bd-race-clicked;
+        border-bottom: $bd-race-clicked;
+    }
+    .a-clicked.r-single {
+        border: $bd-race-clicked;
+    }
+    .a-clicked.r-last {
+        border-top: $bd-race-clicked;
+        border-right: $bd-race-clicked;
+        border-bottom: $bd-race-clicked;
+    }
+    .a-clicked.r-hover, .r-hover {
+        border: 3px solid $grey-dark;
+    }
+    .country-hover {
+        position: absolute;
+        text-align: center;
+        font-size: $xsmall;
+        color: $white;
+        pointer-events: none;
+        margin-top: -38px;
+        display: none;
+        overflow: visible;
+        .hover-content {
+            white-space: pre;
+            position: relative;
+            left: -50%;
+            background: $grey-darker;
+            padding: 4px 8px;
+        }
+        .arrow-down {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 10px solid $grey-darker;
+            position: relative;
+            left: -8px;
+        }
+    }
+}
