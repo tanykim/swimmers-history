@@ -19,7 +19,7 @@ class NamesComponent extends Component {
             value="search"
             checked={this.props.nameOption === 'search'}
             onChange={this.props.updateNameOption}
-          /> Athletes who competed with following athletes
+          /> Athletes who competed with at least one of the following athletes
         </div>
         { this.props.nameOption === 'search' && <div className="select-wrapper">
           <Select
@@ -29,8 +29,8 @@ class NamesComponent extends Component {
             options={this.props.list}
             onChange={this.props.addName}
           />
-          { this.props.searchedAthletes.map((a, i) => (<div className="selected-list">
-            <div key={i}>
+          { this.props.searchedAthletes.map((a, i) => (<div className="selected-list" key={i}>
+            <div>
               { a.name } ({ a.country })
               <span onClick={() => this.props.removeName(a.id)} className="typcn typcn-minus"/>
             </div>

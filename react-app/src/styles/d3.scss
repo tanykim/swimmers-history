@@ -5,6 +5,9 @@
 .pos-middle {
     text-anchor: middle;
 }
+.pos-start {
+    text-anchor: start;
+}
 .pos-end {
     text-anchor: end;
 }
@@ -91,11 +94,11 @@
     fill: $linked;
 }
 
-.athlete {
+/*.athlete {
     fill: $grey-dark;
-}
+}*/
 
-.axis {
+/*.axis {
     path {
         stroke: none;
     }
@@ -108,4 +111,70 @@
         text-anchor: start;
         font-size: $xsmall;
     }
+}
+*/
+
+/* race: radial */
+.radial-arc {
+    stroke-width: 1px;
+    fill: none;
+}
+.arc-place-1 {
+    @extend .radial-arc;
+    stroke: $gold;
+}
+.arc-place-2 {
+    @extend .radial-arc;
+    stroke: $silver;
+}
+.arc-place-3 {
+    @extend .radial-arc;
+    stroke: $bronze;
+}
+.arc-place-others {
+    @extend .radial-arc;
+    stroke: $main-light;
+}
+.race-bg {
+    fill: none;
+}
+.race-bg-hover {
+    fill: $main;
+    opacity: 0.3;
+}
+.race-label {
+    @extend .pos-end;
+    @extend .size-small;
+    fill: $grey-darker;
+}
+.meets-bg {
+    fill: $grey-lighter;
+    stroke: $white;
+    stroke-width: 4px;
+}
+.years-bg {
+    fill: $grey-light;
+    stroke: $white;
+    stroke-width: 4px;
+}
+.fill-place-1 {
+    fill: $gold;
+    stroke: $grey-dark;
+    stroke-width: 2px;
+}
+.fill-place-2 {
+    fill: $silver;
+    stroke: $grey-dark;
+    stroke-width: 2px;
+}
+.fill-place-3 {
+    fill: $bronze;
+    stroke: $grey-dark;
+    stroke-width: 2px;
+}
+.radial-place {
+    @extend .v-top;
+    @extend .pos-middle;
+    @extend .size-small;
+    fill: $grey-darker;
 }

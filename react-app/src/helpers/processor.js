@@ -69,8 +69,9 @@ export const getCompetition = () => {
 }
 
 //get races from the selection in option
-export const getRaces = (sel) => {
+export const getRaces = (sel, gender) => {
   const races = []; //all races
+  //meets and events are used for Summary in Option
   const meets = {};
   const events = [];
   //meets
@@ -86,7 +87,9 @@ export const getRaces = (sel) => {
         //events
         for (let style in sel.events) {
           for (let race in sel.events[style]) {
-            if (sel.events[style][race]) {
+            if (((gender === 'women' && race !== 'f1500Fr') ||
+              (gender === 'men' && race !== 'e800Fr')) &&
+              sel.events[style][race]) {
               //add events info
               events.push(race);
               races.push(`${meet}-${year}--${style}-${race}`);
@@ -98,8 +101,8 @@ export const getRaces = (sel) => {
   }
   return {
     meets: _.toPairs(meets),
-    events: _.uniq(events),
-    races
+    events: _.sortBy(_.uniq(events), (e) => e),
+    races: _.sortBy(races, (r) => r),
   };
 };
 
@@ -152,6 +155,51 @@ export const getAthletesByCountry = (athletes) => {
     maxCount,
     countries: _.sortBy(_.keys(byCountry), (c) => c),
   };
+};
+
+export const getAthletesByRace = (athletes, races) => {
+  const byRace = _.fromPairs(races.map((r) => [r, {}]));
+  const getAObj = (a, place) => {
+    return { place, id: a.id, country: a.country, name: a.name, raceCount: a.records.length };
+  }
+  _.each(athletes, (a) => {
+    _.each(a.records, (r) => {
+      if (!byRace[r.race_id][r.place]) {
+        byRace[r.race_id][r.place] = [getAObj(a, r.place)];
+      } else {
+        byRace[r.race_id][r.place].push(getAObj(a, r.place));
+      }
+    });
+  });
+  //when filtered with athletes names, all the selected events in the options may not be included.
+  //exclude those races that do not have athletes
+  const validRaces = _.chain(byRace)
+    .map((r, key) => [_.isEqual(r, {}), key])
+    .reject((d) => d[0])
+    .map((d) => d[1])
+    .sortBy((d) => d)
+    .value();
+
+  //index of meets/events that change in the valid race array
+  let meetsIndex = [0];
+  let yearsIndex = [0];
+  for (let i = 1; i < validRaces.length; i++) {
+    const curr = validRaces[i].split('-');
+    const prev = validRaces[i - 1].split('-');
+    //0 is meet, year is event
+    if (curr[0] !== prev[0]) {
+      meetsIndex.push(i);
+    }
+    //year can be same with the previous one if the meet is different
+    if (curr[0] !== prev[0] || curr[1] !== prev[1]) {
+      yearsIndex.push(i);
+    }
+    if (i === validRaces.length - 1) {
+      meetsIndex.push(i);
+      yearsIndex.push(i);
+    }
+  }
+  return { byRace, validRaces, meetsIndex, yearsIndex };
 };
 
 //top athletes for selection dropdown

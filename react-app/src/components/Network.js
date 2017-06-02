@@ -37,10 +37,10 @@ class NetworkComponent extends Component {
   drawGraph(props) {
     const { graph, pointRange } = props;
     //set the size
-    const w = document.getElementById('vis-width').clientWidth;
+    const w = document.getElementById('vis-network-width').clientWidth;
     const dim = w * 0.6;
-    d3.select('#svg').attr('height', Math.round(w * 0.8));
-    let svg = d3.select('#vis-g');
+    d3.select('#svg-network').attr('height', Math.round(w * 0.8));
+    let svg = d3.select('#network-g');
     const decayRange = d3.scaleLinear().range([0.5, 1]).domain([1, 800]);
     const simulation = d3.forceSimulation()
       .force('link', d3.forceLink().id((d) => d.id)
@@ -199,9 +199,9 @@ class NetworkComponent extends Component {
             onChange={this.props.toggleLinkedNodes} /> Only nodes (selected swimmers)
         </label>
       </div> }
-      <div className="network" id="vis-width">
-        <svg id="svg" style={{width: '100%'}}>
-          <g id="vis-g"></g>
+      <div className="network" id="vis-network-width">
+        <svg id="svg-network" style={{width: '100%'}}>
+          <g id="network-g"></g>
         </svg>
         <div className="vis-hover js-network-hover">
           <div className="hover-content js-network-content"/>
@@ -213,4 +213,3 @@ class NetworkComponent extends Component {
 }
 
 export default NetworkComponent;
-        // <div className="hovered-swimmer" dangerouslySetInnerHTML={{ __html: this.props.hoverText }} />

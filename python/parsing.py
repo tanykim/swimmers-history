@@ -172,7 +172,7 @@ def get_athletes_by_html (race_id, results, gender):
                 place_no += 1
         else:
             #strip <img> tag for 1, 2, 3.
-            place_w_dot = re.findall('[0-9][.]', str(place))[0]
+            place_w_dot = re.findall('[0-9]+[.]', str(place))[0]
             place = re.sub('[.]', '', place_w_dot).strip()
             point = int(places[1].string)
 

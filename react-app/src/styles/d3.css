@@ -16,22 +16,25 @@
 /* other sizing */
 /* borders */
 /* d3 */
-.pos-middle {
+.pos-middle, .radial-place {
   text-anchor: middle; }
 
-.pos-end {
+.pos-start {
+  text-anchor: start; }
+
+.pos-end, .race-label {
   text-anchor: end; }
 
 .v-central {
   alignment-baseline: central; }
 
-.v-top {
+.v-top, .radial-place {
   alignment-baseline: hanging; }
 
 .size-tiny {
   font-size: 9px; }
 
-.size-small {
+.size-small, .race-label, .radial-place {
   font-size: 14px; }
 
 .size-normal {
@@ -98,17 +101,75 @@
 .node-linked {
   fill: #91f0f9; }
 
-.athlete {
-  fill: #495057; }
+/*.athlete {
+    fill: $grey-dark;
+}*/
+/*.axis {
+    path {
+        stroke: none;
+    }
+    line {
+        stroke-dasharray: 1, 3;
+        stroke: $grey-light;
+    }
+    text {
+        font-family: avenir;
+        text-anchor: start;
+        font-size: $xsmall;
+    }
+}
+*/
+/* race: radial */
+.radial-arc, .arc-place-1, .arc-place-2, .arc-place-3, .arc-place-others {
+  stroke-width: 1px;
+  fill: none; }
 
-.axis path {
-  stroke: none; }
+.arc-place-1 {
+  stroke: #fbcd15; }
 
-.axis line {
-  stroke-dasharray: 1, 3;
-  stroke: #adb5bd; }
+.arc-place-2 {
+  stroke: #dadada; }
 
-.axis text {
-  font-family: avenir;
-  text-anchor: start;
-  font-size: 12px; }
+.arc-place-3 {
+  stroke: #d88133; }
+
+.arc-place-others {
+  stroke: #91f0f9; }
+
+.race-bg {
+  fill: none; }
+
+.race-bg-hover {
+  fill: #2bc0e4;
+  opacity: 0.3; }
+
+.race-label {
+  fill: #212529; }
+
+.meets-bg {
+  fill: #e9ecef;
+  stroke: #ffffff;
+  stroke-width: 4px; }
+
+.years-bg {
+  fill: #adb5bd;
+  stroke: #ffffff;
+  stroke-width: 4px; }
+
+.fill-place-1 {
+  fill: #fbcd15;
+  stroke: #495057;
+  stroke-width: 2px; }
+
+.fill-place-2 {
+  fill: #dadada;
+  stroke: #495057;
+  stroke-width: 2px; }
+
+.fill-place-3 {
+  fill: #d88133;
+  stroke: #495057;
+  stroke-width: 2px; }
+
+.radial-place {
+  fill: #212529; }

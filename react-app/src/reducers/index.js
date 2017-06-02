@@ -12,6 +12,7 @@ import {
   getTopAthletes,
   getAthletesData,
   getAthletesByCountry,
+  getAthletesByRace,
   getAthletesLinks,
   getMutualLinkedNodes,
   getConnectedNodes,
@@ -22,7 +23,7 @@ import {
 } from '../helpers/processor';
 
 /* views */
-const currentView = (state = { view: 'intro', vis: 'network' }, action) => {
+const currentView = (state = { view: 'intro', vis: 'race' }, action) => {
   switch (action.type) {
     case 'SET_CURRENT_VIEW':
       return Object.assign({}, state, { view: action.value, isLoading: false });
@@ -153,7 +154,7 @@ const data = (state = {}, action) => {
     case 'SET_VIS_DATA':
       const { gender, sel, searchedAthletes } = action.value;
       //races filtered by meets/event, for HTML
-      const racesInfo = getRaces(sel);
+      const racesInfo = getRaces(sel, gender);
       const athletesData = getAthletesData(gender, racesInfo.races, searchedAthletes);
       //athletes filtered by meet/event or name search - used in panel (athlete count)
       //for vis node size
@@ -165,12 +166,16 @@ const data = (state = {}, action) => {
       const graph = { nodes: athletes, links };
       //country data
       const athletesByCounty = getAthletesByCountry(athletes);
+      //race data
+      const athletesByRace = getAthletesByRace(athletes, racesInfo.races);
+      //athletes
       return Object.assign({}, state, {
         racesInfo,
-        athletesByCounty,
         pointRange,
         topAthletes,
-        graph
+        graph,
+        athletesByCounty,
+        athletesByRace,
       });
     default:
       return state;
@@ -272,6 +277,13 @@ const country = (state = {}, action) => {
   }
 };
 
+const race = (state = {}, action) => {
+  switch(action.type) {
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   currentView,
   gender,
@@ -279,4 +291,5 @@ export default combineReducers({
   data,
   graph,
   country,
+  race,
 });

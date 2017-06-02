@@ -26,6 +26,18 @@
         font-size: $small;
         margin-top: 13px;
         margin-right: 3px;
+        i {
+            font-size: $xsmall;
+            font-style: normal;
+            background-color: $grey;
+            color: $white;
+            width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            display: inline-block;
+            text-align: center;
+            line-height: 140%;
+        }
     }
     .athlete-group {
         display: inherit;

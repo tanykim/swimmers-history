@@ -3,6 +3,7 @@ import Header from '../containers/Header';
 import Options from '../containers/Options';
 import Network from '../containers/Network';
 import Country from '../containers/Country';
+import Race from '../containers/Race';
 import Results from '../containers/Results';
 
 class VisComponent extends Component {
@@ -37,6 +38,7 @@ class VisComponent extends Component {
             <div className="vis-wrapper">
               { this.props.visType === 'network' && <Network/> }
               { this.props.visType === 'country' && <Country/> }
+              { this.props.visType === 'race' && <Race/> }
             </div>
           </div>
           { this.props.clickedIds.length > 0 && <div className="column is-12">

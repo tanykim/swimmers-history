@@ -13,8 +13,9 @@ class CountryComponent extends Component {
       const code = Countries[country];
       d3.select('#div-country')
         .append('span')
-        .text(`${country} (${byCountry[country].length})`)
+        .html(`${country} <i>${byCountry[country].length}</i>`)
         .attr('class', `${code ? `fl-icon flag-icon-${code.toLowerCase()} ` : ' '} athlete-country`);
+
       _.each(byCountry[country], (a, i) => {
         const styles = a.records.map((r, j) => {
           let s = 'btw';
