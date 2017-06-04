@@ -4,206 +4,216 @@ import _ from 'lodash';
 
 class RaceComponent extends Component {
 
-  //get point on radius
-  getPoints(radius, deg) {
-    const radian = deg * Math.PI / 180;
-    return {
-      x: radius * Math.sin(radian),
-      y: -1 * radius * Math.cos(radian)
-    };
+  drawAthlete(g, a, x, y, halfL, strokeW, isOutside, props, raceId) {
+    g.append('line')
+      .attr('x1', x)
+      .attr('x2', x)
+      .attr('y1', y - halfL)
+      .attr('y2', y + halfL)
+      .attr('class', `js-race-a-${a.id} race-athlete${isOutside ? '-out' : ''}`)
+      .style('stroke-width', strokeW)
+      .on('mouseover', () => {
+        props.mouseOverFunc(raceId, a.name, a.place, a.id, a.records.length);
+      })
+      .on('mouseout', () => {
+        props.mouseOutFunc();
+      })
+      .on('click', () => {
+        props.clickFunc(a);
+      });
   }
 
-  drawArcLines(svg, maxA, oR, dist) {
-    const dy = 5;
-    _.each(_.range(10), (i) => {
-      const r = oR - dist * i;
-      const start = this.getPoints(r, 270); //angle start from 270degree
-      const end = this.getPoints(r, maxA - 90);
-      const flag = maxA >= 180 ? 1 : 0;
-      svg.append('path')
-        .attr('d', () => {
-          return `M ${start.x} ${start.y} A ${r} ${r} 1 ${flag} 1 ${end.x} ${end.y}`;
-        })
-        .attr('class', `arc-place-${i < 3 ? i + 1 : 'others'}`);
-      //place circle
-      if (i < 3) {
-        svg.append('circle')
-          .attr('cx', start.x)
-          .attr('cy', start.y + dy + 6)
-          .attr('r', 10)
-          .attr('class', `fill-place-${i + 1}`);
-      }
-      //text
-      let text;
-      if (i < 8) {
-        text = i + 1;
-      } else if (i === 9) {
-        text = 'DSQ'
-      }
-      if (text) {
-        svg.append('text')
-          .attr('x', start.x)
-          .attr('y', start.y)
-          .attr('dy', dy)
-          .text(text)
-          .attr('class', 'radial-place');
+  drawAthletes(g, x, pDiff, halfL, strokeW, race, raceId, props) {
+    _.each(race, (athletes, key) => {
+      //show only athletes upto place 8
+      const place = +key;
+      if (place <= 8) {
+        let aY = pDiff * (place - 1)
+        //draw athletes in a place; mostly only one, but some are ties
+        const gap = 2;
+        _.each(athletes, (a, j) => {
+          //starting from 270, therfore -90
+          const points = { x: x + (strokeW + gap) * j, y: aY}
+          this.drawAthlete(g, a, points.x, points.y, halfL, strokeW, false, props, raceId);
+        });
       }
     });
   }
 
-  drawEvents(svg, oR, aDiff, meetsIndex, yearsIndex) {
-    for (let i = 0; i < meetsIndex.length - 1; i++) {
-      const mArc = d3.arc()
-        .innerRadius(oR + 60)
-        .outerRadius(oR + 80)
-        .startAngle((aDiff * meetsIndex[i] - 90)* Math.PI / 180)
-        .endAngle((aDiff * meetsIndex[i + 1] - 90) * Math.PI / 180);
-      svg.append('path')
-        .attr('d', mArc)
-        .attr('class', `meets-bg`);
+  drawRaceLabels(g, aWidth, x, raceId, isFirstMeet, isFirstYear, initialTop, labelDist, h) {
+    let y = initialTop;
+    let line = g.append('line')
+      .attr('x1', x - aWidth / 2)
+      .attr('x2', x - aWidth / 2)
+      .attr('y1', h)
+      .attr('y2', -y)
+      .attr('class', 'race-line-race');
+    //draw race
+    const elms = raceId.split('-');
+    g.append('text')
+      .attr('x', x)
+      .attr('y', -y)
+      .text(elms[elms.length - 1].slice(1))
+      .attr('class', 'race-label-race');
+    //draw year
+    if (isFirstYear) {
+      y += labelDist;
+      g.append('text')
+        .attr('x', x)
+        .attr('y', -y)
+        .text(elms[1].slice(1))
+        .attr('class', 'race-label-year');
+      line.attr('y2', -y)
+        .attr('class', 'race-line-year');
     }
-    for (let i = 0; i < yearsIndex.length - 1; i++) {
-      const yArc = d3.arc()
-        .innerRadius(oR + 30)
-        .outerRadius(oR + 50)
-        .startAngle((aDiff * yearsIndex[i] - 90)* Math.PI / 180)
-        .endAngle((aDiff * yearsIndex[i + 1] - 90) * Math.PI / 180);
-      svg.append('path')
-        .attr('d', yArc)
-        .attr('class', `years-bg`);
+    //draw meet
+    if (isFirstMeet) {
+      y += labelDist;
+      g.append('text')
+        .attr('x', x)
+        .attr('y', -y)
+        .text(elms[0].slice(1))
+        .attr('class', 'race-label-meet');
+      line.attr('y2', -y)
+        .attr('class', 'race-line-meet');
     }
+  }
+
+  drawRaceLines(g, left, w, pDiff, isFirst) {
+    _.each(_.range(8), (i) => {
+      const y = pDiff * i;
+      g.append('line')
+        .attr('x1', -40)
+        .attr('x2', w)
+        .attr('y1', y)
+        .attr('y2', y)
+        .attr('class', `race-place-${i < 3 ? i + 1 : 'others'}`);
+      //place circle
+      if (isFirst) {
+        const r = 10;
+        const x = -left + r + 2;
+        if (i < 3) {
+          g.append('circle')
+            .attr('cx', x)
+            .attr('cy', y)
+            .attr('r', r)
+            .attr('class', `fill-place-${i + 1}`);
+        }
+        //text
+        let text = i + 1;
+        g.append('text')
+          .attr('x', x)
+          .attr('y', y)
+          .text(text)
+          .attr('class', 'race-place');
+      }
+    })
   }
 
   drawGraph(props) {
+
     const { byRace, validRaces, meetsIndex, yearsIndex } = props;
     //set the size
-    const w = document.getElementById('vis-race-width').clientWidth;
-    const dim = Math.round(w * 0.9);
-    d3.select('#svg-race').attr('height', dim);
-    let svg = d3.select('#race-g').attr('transform', `translate(${w / 2}, ${dim / 2})`);
+    const containerW = document.getElementById('vis-race-width').clientWidth;
+    const initialTop = 40;
+    let margin = { veryTop: 50, top: initialTop, right: 0, bottom: 50, left: 70, extended: 0 };
+    let dim = { w: containerW - 100 - margin.left - margin.right };
+    let rDiff = 76; //minimum distance between races
+    const aWidth = 8; //width of line representing an athlete
+    let gId = 0; //row <g> index
+    let accWidth = 0; //accumulated width of row after each race
+    let accHeight = 0; //accumulated height of rows
+    const pDiff = 28; //distance between places
+    dim.h = pDiff * 7; //up to place 8
 
-    //settings
-    const iR = 40;
-    const oR = dim / 2 - 100;
-    //max angle diff in degree
-    let aDiff = 20;
-    let maxA = aDiff * validRaces.length;
-    if (maxA > 340) {
-      maxA = 340;
-      aDiff = maxA / validRaces.length;
-    }
-    //max line length = distance between radial lines
-    const dist = (oR - iR) / 9;
-    //half of length of line as athlete;
-    const halfL = dist / 2 - 2;
+    _.each(validRaces, (r, i) => {
 
-    //10 arc lines
-    this.drawArcLines(svg, maxA, oR, dist)
+      //draw g of row if not yet drawn
+      let g = d3.select(`#race-g-${gId}`);
+      if (_.isNull(document.getElementById(`race-g-${gId}`))) {
+        g = d3.select('#race-g')
+          .append('g')
+          .attr('id', `race-g-${gId}`)
+          .attr('class', 'race-g-elm');
+        //draw race lines
+        this.drawRaceLines(g, margin.left, dim.w, pDiff, gId === 0);
+      }
 
-    //meets arc
-    this.drawEvents(svg, oR, aDiff, meetsIndex, yearsIndex);
+      //draw athletes per race
+      const race = byRace[r];
+      //max number of atheletes in a place, and set a race width
+      const maxA = _.max(_.values(race).map((v) => v.length));
+      //put a little more distance between races
+      const rW = Math.max(maxA * (aWidth + 2) + aWidth, rDiff);
+      const halfL = pDiff / 2 - 2; //half of the height of an athlete
+      this.drawAthletes(g, accWidth, pDiff, halfL, aWidth, race, r, props);
 
-    //draw swimmers by race
-    _.each(validRaces, (race, i) => {
+      //check more than 8 places or DSQ, set extended bottom margin
+      let xLineCount = 0;
+      //start to display after one place-length distance
+      const xGap = pDiff;
+      if (_.size(race) > 8 || _.keys(race).indexOf('DSQ') > -1) {
+        //get athletes count out of place 8
+        const aOutside = _.chain(race)
+          .filter((a, p) => +p > 8 || p === 'DSQ')
+          .map((a) => a)
+          .flatten()
+          .sortBy((a) => +a.place)
+          .value();
+        let addedW = 0;
+        _.each(aOutside, (a, i) => {
+          const xPos = accWidth + addedW;
+          const yPos = (8 + xLineCount) * pDiff + xGap;
+          this.drawAthlete(g, a, xPos, yPos, halfL, aWidth, true, props, r);
+          addedW += (aWidth + 2);
+          //if wider than the race width, move to the next line
+          if (addedW + (aWidth + 2) >= rW || i === aOutside.length - 1) {
+            xLineCount += 1;
+            addedW = 0;
+          }
+        })
+        //extend the margin as the height of the places outside of 8
+        margin.extended = xLineCount * pDiff + xGap;
+      }
 
-      let angle = aDiff * i;
+      //check if the race is the first in meets or years
+      let isFirstYear = yearsIndex.indexOf(i) > -1 ? true : false;
+      let isFirstMeet = meetsIndex.indexOf(i) > -1 ? true : false;
+      const labelDist = 20;
+      if (isFirstYear) {
+        margin.top = Math.max(margin.top, initialTop + labelDist);
+      }
+      if (isFirstMeet) {
+        margin.top = Math.max(margin.top, initialTop + labelDist * 2);
+      }
 
-      //draw race background
-      const arc = d3.arc()
-        .innerRadius(iR - halfL * 1.2)
-        .outerRadius(oR + halfL * 1.2)
-        .startAngle((aDiff * i - 90)* Math.PI / 180)
-        .endAngle((aDiff * (i + 1) - 90) * Math.PI / 180)
-        .cornerRadius(8);
-      svg.append('path')
-        .attr('d', arc)
-        .attr('class', `race-bg js-race-${race}`);
-      const rPoints = this.getPoints(oR, angle - 90);
-      const raceText = race.split('-')[race.split('-').length - 1].slice(1);
-      svg.append('text')
-        .attr('x', rPoints.x)
-        .attr('y', rPoints.y)
-        .text(raceText)
-        .attr('transform', `rotate(${angle}, ${rPoints.x}, ${rPoints.y})`)
-        .attr('class', 'race-label');
+      //draw labels of meet, year, and event
+      this.drawRaceLabels(
+        g, aWidth, accWidth,
+        r, isFirstMeet, isFirstYear,
+        initialTop, labelDist, dim.h + halfL + (xLineCount ? xGap + xLineCount * pDiff : 0));
 
-      //put athletes elements in the center of the race bg
-      angle += aDiff / 2;
-      //race is an object key by place
-      _.each(byRace[race], (athletes, key) => {
-        //get radius of the place
-        const place = +key;
-        let r;
-        if (place <= 10) {
-          r = oR - dist * (place - 1)
-        } else if (place >= 10 || _.isNaN(place)) {
-          r = oR - dist * 9;
-        }
-        //draw athletes in a place; mostly only one, but some are ties
-        //gap between tied players, max 5;
-        const gap = Math.min(aDiff / (athletes.length + 1), 1.8);
-        _.each(athletes, (a, j) => {
-          //starting from 270, therfore -90
-          const points = this.getPoints(r, angle + j * gap - 90);
-          svg.append('line')
-            .attr('x1', points.x - halfL)
-            .attr('x2', points.x + halfL)
-            .attr('y1', points.y)
-            .attr('y2', points.y)
-            .style('stroke', 'black')
-            .style('stroke-width', 8)
-            .style('opacity', 0.2)
-            .attr('transform', `rotate(${angle}, ${points.x}, ${points.y})`)
-            .on('click', () => {
-              console.log(a);
-            });
-          // svg.append('circle')
-          //   .attr('cx', points.x)
-          //   .attr('cy', points.y)
-          //   .attr('r', 6)
-          //   .style('opacity', 0.2);
-        });
-      });
+      //translate each row
+      d3.select(`#race-g-${gId}`)
+        .attr('transform', `translate(${margin.left}, ${margin.top + accHeight})`);
+
+      //accumulated width in one row
+      accWidth += rW;
+      //check if the width is hit the limit
+      if (accWidth > dim.w - rW || i === validRaces.length - 1) {
+        accWidth = 0;
+        gId += 1;
+        accHeight += (dim.h + margin.top + margin.bottom + margin.extended)
+        margin.top = initialTop;
+      }
     });
 
-    //byRace
-
-    // _.each(athletes, (a) => {
-
-    //   const placeByRace = _.fromPairs(a.records.map((r) => [r.race_id, +r.place]));
-    //   const placeByAllvalidRaces = validRaces.map((r) => [r, placeByRace[r]]);
-
-    //   //draw validRaces of each swimmer, if there's no race, make that
-    //   _.each(placeByAllvalidRaces, (race, i) => {
-    //     const raceName = race[0];
-    //     const place = race[1];
-    //     //1st place is the largest art
-    //     //if it's disqualified or bigger than 8, position at inner radius
-    //     let r;
-    //     if (place <= 10) {
-    //       r = oR - (oR - iR) / 9 * (place - 1)
-    //     } else if (place >= 10 || _.isNaN(place)) {
-    //       r = oR - (oR - iR) / 9 * 9;
-    //     }
-
-    //     //path to connect all validRaces, used for clicked events
-    //     let pathPoints = [];
-    //     if (r) {
-    //       const points = this.getPoints(r, aDiff * i + aDiff / 2 - 90); //-90 due to start at 270deg
-    //       if (a.records.length > 1) {
-    //         pathPoints.push(points);
-    //       }
-    //       //draw swimmer only the race exists
-    //       if (!_.isUndefined(place)) {
-    //         svg.append('circle')
-    //           .attr('cx', points.x)
-    //           .attr('cy', points.y)
-    //           .attr('r', 4)
-    //           .style('opacity', 0.2);
-    //       }
-    //     }
-    //   });
-    // });
+    //set the wrappers sizing
+    d3.select('#svg-race')
+      .attr('width', dim.w + margin.left + margin.right)
+      .attr('height', margin.veryTop + accHeight);
+    d3.select('#race-g')
+      .attr('transform', `translate(0, ${margin.veryTop})`);
   }
 
   updateGraph(nextProps) {
@@ -217,67 +227,45 @@ class RaceComponent extends Component {
       this.updateGraph(nextProps);
       return false;
     }
-    // //mouse over/out
-    // if (this.props.hovered !== nextProps.hovered) {
-    //   _.each(nextProps.connected, (c) => {
-    //     const combination = `${Math.min(+c, +nextProps.hoveredId)}-${Math.max(+c, +nextProps.hoveredId)}`;
-    //     d3.select(`circle[id="${nextProps.hoveredId}"]`).classed('node-over', nextProps.hovered);
-    //     d3.select(`line[id="${combination}"]`).classed('link-over', nextProps.hovered);
-    //     d3.select(`circle[id="${c}"]`).classed('node-linked', nextProps.hovered);
-    //   });
-    //   d3.select('.js-network-hover')
-    //     .style('display', `${nextProps.hovered ? 'inline-block' : 'none'}`)
-    //     .style('left', `${d3.event.pageX}px`)
-    //     .style('top', `${d3.event.pageY}px`);
-    //   d3.select('.js-network-content').html(nextProps.hoverText);
-    // }
-    // //click
-    // if (nextProps.clicked || this.props !== nextProps.clicked) {
-    //   d3.select(`circle[id="${nextProps.clickedId}"]`).classed('node-clicked', nextProps.clicked);
-    //   if (this.props.isLinksShown) {
-    //     this.highlightElements(this.props, false);
-    //     this.highlightElements(nextProps, true);
-    //   }
-    // }
-    // //removed from the results table
-    // if (this.props.clickedIds !== nextProps.clickedIds) {
-    //   const removed = _.filter(this.props.clickedIds, (id) => nextProps.clickedIds.indexOf(id) === -1);
-    //   _.each(removed, (id) => {
-    //     d3.select(`circle[id="${id}"]`).classed('node-clicked', false);
-    //     if (this.props.isLinksShown) {
-    //       this.highlightElements(this.props, false);
-    //       this.highlightElements(nextProps, true);
-    //     }
-    //   });
-    // }
-    // //links View
-    // if (this.props.isLinksShown !== nextProps.isLinksShown) {
-    //   this.highlightElements(nextProps, nextProps.isLinksShown);
-    // }
+    //mouse over/out
+    if (this.props.hovered !== nextProps.hovered) {
+      d3.selectAll(`.js-race-a-${nextProps.athleteId}`).classed('race-athlete-over', nextProps.hovered);
+      d3.select('.js-race-hover')
+        .style('display', `${nextProps.hovered ? 'inline-block' : 'none'}`)
+        .style('left', `${d3.event.pageX}px`)
+        .style('top', `${d3.event.pageY}px`);
+      d3.select('.js-race-content').html(nextProps.hoverText);
+      d3.select('.js-race-content-count').html(nextProps.hoverTextCount);
+    }
+    //click
+    if (nextProps.clicked || this.props !== nextProps.clicked) {
+      d3.selectAll(`.js-race-a-${nextProps.clickedId}`).classed('race-athlete-clicked', nextProps.clicked);
+      if (this.props.isLinksShown) {
+        this.highlightElements(this.props, false);
+        this.highlightElements(nextProps, true);
+      }
+    }
   }
 
   componentDidMount() {
     this.drawGraph(this.props);
-    // if (this.props.clickedIds.length > 0) {
-    //   //highlight clicked circle
-    //   _.each(this.props.clickedIds, (d) => {
-    //     d3.select(`circle[id="${d}"]`).classed('node-clicked', true);
-    //   })
-    //   //highlight link connection
-    //   if (this.props.isLinksShown) {
-    //     this.highlightElements(this.props, true);
-    //   }
-    // }
+    if (this.props.clickedIds.length > 0) {
+      //highlight clicked athletes
+      _.each(this.props.clickedIds, (d) => {
+        d3.selectAll(`.js-race-a-${d}`).classed('race-athlete-clicked', true);
+      })
+    }
   }
 
   render() {
     return (<div>
       <div className="race" id="vis-race-width">
-        <svg id="svg-race" style={{width: '100%'}}>
+        <svg id="svg-race">
           <g id="race-g"></g>
         </svg>
-        <div className="vis-hover js-race-hover">
+        <div className="vis-hover-double js-race-hover">
           <div className="hover-content js-race-content"/>
+          <div className="hover-content second-line js-race-content-count"/>
           <div className="arrow-down"/>
         </div>
       </div>

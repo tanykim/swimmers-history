@@ -20,6 +20,9 @@
 .size-tiny {
     font-size:$tiny;
 }
+.size-xsmall {
+    font-size:$xsmall;
+}
 .size-small {
     font-size:$small;
 }
@@ -94,45 +97,21 @@
     fill: $linked;
 }
 
-/*.athlete {
-    fill: $grey-dark;
-}*/
-
-/*.axis {
-    path {
-        stroke: none;
-    }
-    line {
-        stroke-dasharray: 1, 3;
-        stroke: $grey-light;
-    }
-    text {
-        font-family: avenir;
-        text-anchor: start;
-        font-size: $xsmall;
-    }
-}
-*/
-
-/* race: radial */
-.radial-arc {
-    stroke-width: 1px;
-    fill: none;
-}
-.arc-place-1 {
-    @extend .radial-arc;
+/* race */
+.race-place-1 {
+    stroke-width: 2px;
     stroke: $gold;
 }
-.arc-place-2 {
-    @extend .radial-arc;
+.race-place-2 {
+    stroke-width: 2px;
     stroke: $silver;
 }
-.arc-place-3 {
-    @extend .radial-arc;
+.race-place-3 {
+    stroke-width: 2px;
     stroke: $bronze;
 }
-.arc-place-others {
-    @extend .radial-arc;
+.race-place-others {
+    stroke-width: 1px;
     stroke: $main-light;
 }
 .race-bg {
@@ -142,20 +121,36 @@
     fill: $main;
     opacity: 0.3;
 }
-.race-label {
-    @extend .pos-end;
+.race-place {
+    @extend .pos-middle;
+    @extend .v-central;
     @extend .size-small;
     fill: $grey-darker;
 }
-.meets-bg {
-    fill: $grey-lighter;
-    stroke: $white;
-    stroke-width: 4px;
+.race-label-meet, .race-label-year, .race-label-race {
+    @extend .size-xsmall;
+    @extend .v-top;
+    fill: $grey-darker;
 }
-.years-bg {
-    fill: $grey-light;
-    stroke: $white;
-    stroke-width: 4px;
+.race-label-meet, .race-label-year {
+    font-weight: bold;
+}
+.race-line-meet, .race-line-year, .race-line-race {
+    stroke: $grey-light;
+    stroke-width: 1px;
+}
+.race-athlete {
+    stroke: $grey-dark;
+}
+.race-athlete-out {
+    stroke: $grey;
+}
+.race-athlete-over {
+    stroke: $main;
+}
+.race-athlete-clicked {
+    stroke: $highlight;
+
 }
 .fill-place-1 {
     fill: $gold;
@@ -171,10 +166,4 @@
     fill: $bronze;
     stroke: $grey-dark;
     stroke-width: 2px;
-}
-.radial-place {
-    @extend .v-top;
-    @extend .pos-middle;
-    @extend .size-small;
-    fill: $grey-darker;
 }

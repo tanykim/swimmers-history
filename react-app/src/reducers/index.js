@@ -65,8 +65,8 @@ const options = (state = { isOpen: false }, action) => {
       let defaultIds;
       if (action.gender === 'men') {
         defaultEvents = {
-          meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008'],
-          events: ['0IND-a50Fr', '0IND-b100Fr', '0IND-c200Fr', '0IND-d400Fr', '0IND-f1500Fr']
+          meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008', '1WC-j2007', '4PPC-g2010'],
+          events: ['0IND-a50Fr', '0IND-b100Fr', '0IND-c200Fr', '0IND-d400Fr', '0IND-f1500Fr', '1TEAM-p4X200Fr']
         };
         defaultIds = [];
         // defaultIds = ['4038916', '4038679']; //phelps and lochte
@@ -224,6 +224,7 @@ const graph = (state = { clickedIds: [], clickedObjs: [], isLinksShown: false },
         clicked = true;
         prevIds.push(clickedId);
         prevObjs.push(getRacesObjByA(action.value));
+        console.log(action.value);
       } else {
         _.remove(prevIds, (id) => id === clickedId);
         prevObjs = _.reject(prevObjs, (obj) => obj.id === clickedId);
@@ -279,6 +280,19 @@ const country = (state = {}, action) => {
 
 const race = (state = {}, action) => {
   switch(action.type) {
+    case 'HOVER_RACE_ATHLETE':
+      return Object.assign({}, state, {
+        athleteId: action.value.aId,
+        hoverText: getRaceHoverText(action.value),
+        hoverTextCount: `total ${action.value.raceCount} race${action.value.raceCount > 1 ? 's' : ''}`,
+        hovered: true,
+      });
+    case 'UNHOVER_RACE_ATHLETE':
+      return Object.assign({}, state, {
+        hoverText: '',
+        hoverTextCount: '',
+        hovered: false,
+      });
     default:
       return state;
   }

@@ -160,7 +160,7 @@ export const getAthletesByCountry = (athletes) => {
 export const getAthletesByRace = (athletes, races) => {
   const byRace = _.fromPairs(races.map((r) => [r, {}]));
   const getAObj = (a, place) => {
-    return { place, id: a.id, country: a.country, name: a.name, raceCount: a.records.length };
+    return { ...a, place };
   }
   _.each(athletes, (a) => {
     _.each(a.records, (r) => {
@@ -183,19 +183,15 @@ export const getAthletesByRace = (athletes, races) => {
   //index of meets/events that change in the valid race array
   let meetsIndex = [0];
   let yearsIndex = [0];
-  for (let i = 1; i < validRaces.length; i++) {
+  for (let i = 1; i < validRaces.length - 1; i++) {
     const curr = validRaces[i].split('-');
     const prev = validRaces[i - 1].split('-');
     //0 is meet, year is event
     if (curr[0] !== prev[0]) {
       meetsIndex.push(i);
-    }
-    //year can be same with the previous one if the meet is different
-    if (curr[0] !== prev[0] || curr[1] !== prev[1]) {
       yearsIndex.push(i);
     }
-    if (i === validRaces.length - 1) {
-      meetsIndex.push(i);
+    if (curr[1] !== prev[1]) {
       yearsIndex.push(i);
     }
   }

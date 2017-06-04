@@ -16,25 +16,28 @@
 /* other sizing */
 /* borders */
 /* d3 */
-.pos-middle, .radial-place {
+.pos-middle, .race-place {
   text-anchor: middle; }
 
 .pos-start {
   text-anchor: start; }
 
-.pos-end, .race-label {
+.pos-end {
   text-anchor: end; }
 
-.v-central {
+.v-central, .race-place {
   alignment-baseline: central; }
 
-.v-top, .radial-place {
+.v-top, .race-label-meet, .race-label-year, .race-label-race {
   alignment-baseline: hanging; }
 
 .size-tiny {
   font-size: 9px; }
 
-.size-small, .race-label, .radial-place {
+.size-xsmall, .race-label-meet, .race-label-year, .race-label-race {
+  font-size: 12px; }
+
+.size-small, .race-place {
   font-size: 14px; }
 
 .size-normal {
@@ -101,39 +104,21 @@
 .node-linked {
   fill: #91f0f9; }
 
-/*.athlete {
-    fill: $grey-dark;
-}*/
-/*.axis {
-    path {
-        stroke: none;
-    }
-    line {
-        stroke-dasharray: 1, 3;
-        stroke: $grey-light;
-    }
-    text {
-        font-family: avenir;
-        text-anchor: start;
-        font-size: $xsmall;
-    }
-}
-*/
-/* race: radial */
-.radial-arc, .arc-place-1, .arc-place-2, .arc-place-3, .arc-place-others {
-  stroke-width: 1px;
-  fill: none; }
-
-.arc-place-1 {
+/* race */
+.race-place-1 {
+  stroke-width: 2px;
   stroke: #fbcd15; }
 
-.arc-place-2 {
+.race-place-2 {
+  stroke-width: 2px;
   stroke: #dadada; }
 
-.arc-place-3 {
+.race-place-3 {
+  stroke-width: 2px;
   stroke: #d88133; }
 
-.arc-place-others {
+.race-place-others {
+  stroke-width: 1px;
   stroke: #91f0f9; }
 
 .race-bg {
@@ -143,18 +128,30 @@
   fill: #2bc0e4;
   opacity: 0.3; }
 
-.race-label {
+.race-place {
   fill: #212529; }
 
-.meets-bg {
-  fill: #e9ecef;
-  stroke: #ffffff;
-  stroke-width: 4px; }
+.race-label-meet, .race-label-year, .race-label-race {
+  fill: #212529; }
 
-.years-bg {
-  fill: #adb5bd;
-  stroke: #ffffff;
-  stroke-width: 4px; }
+.race-label-meet, .race-label-year {
+  font-weight: bold; }
+
+.race-line-meet, .race-line-year, .race-line-race {
+  stroke: #adb5bd;
+  stroke-width: 1px; }
+
+.race-athlete {
+  stroke: #495057; }
+
+.race-athlete-out {
+  stroke: #868e96; }
+
+.race-athlete-over {
+  stroke: #2bc0e4; }
+
+.race-athlete-clicked {
+  stroke: #f5625a; }
 
 .fill-place-1 {
   fill: #fbcd15;
@@ -170,6 +167,3 @@
   fill: #d88133;
   stroke: #495057;
   stroke-width: 2px; }
-
-.radial-place {
-  fill: #212529; }

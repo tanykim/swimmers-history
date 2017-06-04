@@ -16,14 +16,14 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => (
   {
-    mouseOverFunc: (raceId, aName, place) => {
-      // dispatch({ type: 'HOVER_RACE', value: { raceId, aName, place } })
+    mouseOverFunc: (raceId, aName, place, aId, raceCount) => {
+      dispatch({ type: 'HOVER_RACE_ATHLETE', value: { raceId, aName, place, aId, raceCount } })
     },
     mouseOutFunc: () => {
-      //dispatch({ type: 'UNHOVER_NODE' })
+      dispatch({ type: 'UNHOVER_RACE_ATHLETE' })
     },
     clickFunc: (value, links) => {
-      //dispatch({ type: 'CLICK_NODE', value, links })
+      dispatch({ type: 'CLICK_NODE', value, links })
     },
   }
 );
@@ -31,8 +31,8 @@ const mapDispatchToProps = (dispatch) => (
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return Object.assign({}, {
     ...stateProps,
-    mouseOverFunc: (raceId, aName, place) => {
-      return dispatchProps.mouseOverFunc(raceId, aName, place);
+    mouseOverFunc: (raceId, aName, place, aId, raceCount) => {
+      return dispatchProps.mouseOverFunc(raceId, aName, place, aId, raceCount);
     },
     mouseOutFunc: () => {
       return dispatchProps.mouseOutFunc();
