@@ -1,8 +1,24 @@
 @import './colors.scss';
 @import './size.scss';
 
+
 body {
+    margin: 0;
+    padding: 0;
+    font-family: Avenir, 'Helvetica Neue', Helvetica, Arial, san-serif;
+    color: $grey-darker;
     background-color: $oc-gray-0;
+}
+select {
+    font-family: inherit;
+    color: $grey-darker;
+    border-color: $grey-light;
+    &:focus, &:active, &:hover {
+        border-color: $grey;
+    }
+}
+.select:after {
+    border-color: $grey-light;
 }
 .contents.container {
     position: inherit;
@@ -43,17 +59,6 @@ body {
         .control {
             margin-top: $pg-xs;
         }
-    }
-    select {
-        font-family: inherit;
-        color: $grey-darker;
-        border-color: $grey-light;
-        &:focus, &:active, &:hover {
-            border-color: $grey;
-        }
-    }
-    .select:after {
-        border-color: $grey-light;
     }
 }
 .vis-wrapper {

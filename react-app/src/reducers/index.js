@@ -11,7 +11,9 @@ import {
   getRaces,
   getTopAthletes,
   getAthletesData,
-  getAthletesByCountry,
+  getCountryList,
+  getSortedCountries,
+  getSortedAthletesPerCountry,
   getAthletesByRace,
   getAthletesLinks,
   getMutualLinkedNodes,
@@ -165,7 +167,7 @@ const data = (state = {}, action) => {
       //network data
       const graph = { nodes: athletes, links };
       //country data
-      const athletesByCounty = getAthletesByCountry(athletes);
+      const countryList = getCountryList(athletes);
       //race data
       const athletesByRace = getAthletesByRace(athletes, racesInfo.races);
       //athletes
@@ -175,9 +177,17 @@ const data = (state = {}, action) => {
         linksRange,
         topAthletes,
         graph,
-        athletesByCounty,
+        countryList,
+        sortCountry: 'alphabetical',
+        sortAthlete: 'races',
         athletesByRace,
       });
+    case 'SORT_COUNTRIES':
+      const sorted = getSortedCountries(state.countryList, action.value);
+      return Object.assign({}, state, { countryList: sorted, sortCountry: action.value });
+    case 'SORT_ATHLETES_PER_COUNTRY':
+      const newSorted = getSortedAthletesPerCountry(state.countryList, action.value);
+      return Object.assign({}, state, { countryList: newSorted, sortAthlete: action.value });
     default:
       return state;
   }

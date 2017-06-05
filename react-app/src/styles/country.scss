@@ -2,7 +2,17 @@
 @import './size.scss';
 
 .country {
-    /* where vis comes */
+    .country-sort {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: $pg-sm;
+        border-bottom: 1px solid $grey-lighter;
+        span {
+            font-size: $xsmall;
+            margin-right: $pg-xs;
+        }
+    }
     .country-linear {
         padding-right: $pg-md;
         padding-left: $pg-md;

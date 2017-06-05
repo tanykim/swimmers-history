@@ -5,7 +5,6 @@ const allLinks = Data.graph;
 const { meets, events, competitions } = Data;
 const category = { meets, events };
 
-
 //get the cetegory data
 export const setInitialSelections = () => {
   const selParent = {};
@@ -56,6 +55,7 @@ export const updateSelection = (selection, sel, isCancel) => {
   updatedSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? !isCancel : isCancel;
   return updatedSel;
 }
+
 export const cancelSelections = (selections, sel) => {
   let canceledSel = sel;
   _.each(selections, (d) => {
@@ -143,19 +143,47 @@ export const getAthletesData = (gender, races, searchedAthletes) => {
   return { athletes, pointRange };
 };
 
-export const getAthletesByCountry = (athletes) => {
-  const byCountry = _.groupBy(athletes, (a) => a.country);
-  //maximum number of athletes in one country
-  const maxCount = _.chain(byCountry)
-    .map((v) => v.length)
-    .max()
+export const getCountryList = (athletes) => {
+  return _.chain(athletes)
+    .groupBy((a) => a.country)
+    .map((list, country) => {
+      //default sorting option for athletes is races
+      const sorted = _.sortBy(list, (a) => -a.records.length);
+      return { country, athletes: sorted };
+    })
+    .sortBy((d) => d.country)
     .value();
-  return {
-    byCountry,
-    maxCount,
-    countries: _.sortBy(_.keys(byCountry), (c) => c),
-  };
 };
+
+export const getSortedCountries = (countryList, sortOption) => {
+  if (sortOption === 'alphabetical') {
+    return _.sortBy(countryList, (c) => c.country);
+  } else {
+    return _.sortBy(countryList, (c) => -c.athletes.length);
+  }
+};
+
+export const getSortedAthletesPerCountry = (countryList, sortOption) => {
+  return _.chain(countryList)
+    // .groupBy((a) => a.country)
+    .map((c) => {
+      const { athletes, country } = c;
+      let sorted;
+      if (sortOption === 'races') {
+        sorted = _.sortBy(athletes, (a) => -a.records.length);
+      } else if (sortOption === 'points') {
+        sorted = _.sortBy(athletes, (a) => (
+          -1 * _.reduce(a.records.map((r) => r.point), (memo, num) =>
+            { return memo + num; },
+          0)
+        ));
+      } else {
+        sorted = _.sortBy(athletes, (a) => a.name);
+      }
+      return { country, athletes: sorted };
+    })
+    .value();
+}
 
 export const getAthletesByRace = (athletes, races) => {
   const byRace = _.fromPairs(races.map((r) => [r, {}]));

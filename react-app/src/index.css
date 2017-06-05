@@ -5630,8 +5630,16 @@ label.panel-block:hover {
 /* paragraph spacing or padding*/
 /* other sizing */
 /* borders */
-.country {
-  /* where vis comes */ }
+.country .country-sort {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 15px;
+  border-bottom: 1px solid #e9ecef; }
+
+.country .country-sort span {
+  font-size: 12px;
+  margin-right: 6px; }
 
 .country .country-linear {
   padding-right: 18px;
@@ -5973,7 +5981,22 @@ label.panel-block:hover {
 /* other sizing */
 /* borders */
 body {
+  margin: 0;
+  padding: 0;
+  font-family: Avenir, 'Helvetica Neue', Helvetica, Arial, san-serif;
+  color: #212529;
   background-color: #f8f9fa; }
+
+select {
+  font-family: inherit;
+  color: #212529;
+  border-color: #adb5bd; }
+
+select:focus, select:active, select:hover {
+  border-color: #868e96; }
+
+.select:after {
+  border-color: #adb5bd; }
 
 .contents.container {
   position: inherit;
@@ -6012,17 +6035,6 @@ body {
 .instruction ol .control {
   margin-top: 6px; }
 
-.instruction select {
-  font-family: inherit;
-  color: #212529;
-  border-color: #adb5bd; }
-
-.instruction select:focus, .instruction select:active, .instruction select:hover {
-  border-color: #868e96; }
-
-.instruction .select:after {
-  border-color: #adb5bd; }
-
 .vis-wrapper {
   border: 1px solid #e9ecef;
   border-radius: 4px;
@@ -6060,9 +6072,3 @@ body {
 .vis-hover-double .second-line {
   padding-top: 0;
   margin-top: -4px; }
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Avenir, 'Helvetica Neue', Helvetica, Arial, san-serif;
-  color: #212529; }

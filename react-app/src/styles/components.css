@@ -16,7 +16,22 @@
 /* other sizing */
 /* borders */
 body {
+  margin: 0;
+  padding: 0;
+  font-family: Avenir, 'Helvetica Neue', Helvetica, Arial, san-serif;
+  color: #212529;
   background-color: #f8f9fa; }
+
+select {
+  font-family: inherit;
+  color: #212529;
+  border-color: #adb5bd; }
+
+select:focus, select:active, select:hover {
+  border-color: #868e96; }
+
+.select:after {
+  border-color: #adb5bd; }
 
 .contents.container {
   position: inherit;
@@ -54,17 +69,6 @@ body {
 
 .instruction ol .control {
   margin-top: 6px; }
-
-.instruction select {
-  font-family: inherit;
-  color: #212529;
-  border-color: #adb5bd; }
-
-.instruction select:focus, .instruction select:active, .instruction select:hover {
-  border-color: #868e96; }
-
-.instruction .select:after {
-  border-color: #adb5bd; }
 
 .vis-wrapper {
   border: 1px solid #e9ecef;
