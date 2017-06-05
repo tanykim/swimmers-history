@@ -5098,11 +5098,6 @@ label.panel-block:hover {
   font-weight: normal;
   font-style: normal; }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Avenir, 'Helvetica Neue', Helvetica, Arial, san-serif; }
-
 /* grey scale */
 /* content colors */
 /* vis */
@@ -5252,11 +5247,11 @@ body {
 .race-athlete-out {
   stroke: #868e96; }
 
-.race-athlete-over {
-  stroke: #2bc0e4; }
-
 .race-athlete-clicked {
   stroke: #f5625a; }
+
+.race-athlete-over {
+  stroke: #2bc0e4; }
 
 .fill-place-1 {
   fill: #fbcd15;
@@ -5292,15 +5287,16 @@ body {
 /* borders */
 .header-wrapper {
   border-bottom: 1px solid #e9ecef;
-  background-color: #ffffff; }
-
-.header {
+  background-color: #ffffff;
   -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1); }
+
+.header {
   width: 100%;
   padding-top: 6px;
-  padding-bottom: 6px; }
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e9ecef; }
 
 .header .logo {
   text-align: center; }
@@ -5425,20 +5421,23 @@ body {
 /* borders */
 .vis-types {
   display: flex;
-  align-items: center; }
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%; }
+
+.vis-types .vis-view {
+  font-size: 14px;
+  text-transform: capitalize;
+  cursor: pointer;
+  border-radius: 4px; }
+
+.vis-types .vis-view:not(:last-child) {
+  margin-right: 15px; }
 
 .vis-types .view-selected {
-  background-color: #e9ecef; }
-
-.vis-types .view-selected, .vis-types .view-normal {
-  font-size: 14px;
-  margin-right: 3px;
-  margin-left: 3px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  text-transform: capitalize;
-  display: inline-block;
-  cursor: pointer; }
+  background-color: #495057;
+  color: #ffffff;
+  padding: 4px 15px; }
 
 .options-wrapper {
   position: relative;
@@ -5452,7 +5451,6 @@ body {
 
 .panels {
   position: absolute;
-  /* TODO: programically change the top */
   top: 50px;
   background-color: #ffffff;
   border-right: 1px solid #e9ecef;
@@ -5463,6 +5461,9 @@ body {
   margin-bottom: 28px;
   padding-bottom: 18px;
   z-index: 100;
+  -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
   /* override react-select design */ }
 
 .panels .kind-wrapper-meets {
@@ -5493,6 +5494,16 @@ body {
 .panels .parent-botton .typcn {
   color: #ffffff;
   cursor: pointer; }
+
+.panels .radio-label {
+  display: inline-block;
+  line-height: 120%; }
+
+.panels .radio-label input {
+  margin-right: 4px; }
+
+.panels .radio-label:first-child {
+  margin-bottom: 6px; }
 
 .panels .list-normal {
   margin-left: 6px; }
@@ -5547,7 +5558,14 @@ body {
   border-radius: 4px;
   margin-top: 6px; }
 
-.panels .items-title .typcn, .panels .selected-list .typcn {
+.panels .selected-list .selected-list-name {
+  margin-right: 6px; }
+
+.panels .selected-list .typcn {
+  margin-left: 0;
+  cursor: pointer; }
+
+.panels .items-title .typcn {
   margin-left: 6px;
   cursor: pointer; }
 
@@ -5961,8 +5979,52 @@ body {
   position: inherit;
   margin-top: 12px; }
 
+.legends {
+  font-size: 13px;
+  line-height: 120%;
+  border-top: 1px solid #adb5bd;
+  border-bottom: 1px solid #adb5bd;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 15px; }
+
+.legends ul li:not(:last-child) {
+  margin-bottom: 6px; }
+
+.legends strong {
+  color: #2bc0e4; }
+
+.instruction {
+  font-size: 14px; }
+
+.instruction .instruction-title {
+  color: #2bc0e4; }
+
+.instruction ol {
+  color: #212529;
+  margin-top: 15px; }
+
+.instruction ol li {
+  margin-left: 15px;
+  margin-bottom: 15px;
+  line-height: 120%; }
+
+.instruction ol .control {
+  margin-top: 6px; }
+
+.instruction select {
+  font-family: inherit;
+  color: #212529;
+  border-color: #adb5bd; }
+
+.instruction select:focus, .instruction select:active, .instruction select:hover {
+  border-color: #868e96; }
+
+.instruction .select:after {
+  border-color: #adb5bd; }
+
 .vis-wrapper {
-  border: 1px solid #dee2e6;
+  border: 1px solid #e9ecef;
   border-radius: 4px;
   background-color: #ffffff; }
 
@@ -5998,3 +6060,9 @@ body {
 .vis-hover-double .second-line {
   padding-top: 0;
   margin-top: -4px; }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Avenir, 'Helvetica Neue', Helvetica, Arial, san-serif;
+  color: #212529; }

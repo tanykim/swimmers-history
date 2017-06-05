@@ -19,7 +19,7 @@ class NetworkComponent extends Component {
 
   dragended(d, isClicked, simulation) {
     if (!d3.event.active) {
-        simulation.alphaTarget(0);
+      simulation.alphaTarget(0);
     }
     d.fx = null;
     d.fy = null;
@@ -35,17 +35,19 @@ class NetworkComponent extends Component {
   }
 
   drawGraph(props) {
-    const { graph, pointRange } = props;
+    const { graph, pointRange, linksRange } = props;
     //set the size
     const w = document.getElementById('vis-network-width').clientWidth;
     const dim = w * 0.6;
     d3.select('#svg-network').attr('height', Math.round(w * 0.8));
     let svg = d3.select('#network-g');
-    const decayRange = d3.scaleLinear().range([0.5, 1]).domain([1, 800]);
+    const decayRange = d3.scaleLinear().range([0.2, 1]).domain([1, 800]);
     const simulation = d3.forceSimulation()
       .force('link', d3.forceLink().id((d) => d.id)
       .distance(() => dim / 5))
-      .velocityDecay(Math.max(Math.min(decayRange(graph.nodes.length), 1), 0.2))
+      .velocityDecay(decayRange(graph.nodes.length))
+
+      // .velocityDecay(Math.max(Math.min(decayRange(graph.nodes.length), 1), 0.5))
       .force('charge', d3.forceManyBody()
         .strength( -1 * dim / 5)
         .distanceMax(dim / 3)
@@ -54,17 +56,18 @@ class NetworkComponent extends Component {
 
     //link as lines
     let linkG = svg.append('g').attr('id', 'links');
+    const linkValRange = d3.scaleLinear().range([1, 100]).domain(linksRange);
     let link = linkG.selectAll('line')
         .data(graph.links)
         .enter().append('line')
-        .attr('stroke-width', (d) => d.value )
+        .style('stroke-width', (d) => Math.sqrt(linkValRange(d.value)))
         .attr('class', 'link-normal')
         .attr('id', (d) => `${_.min([d.source.id || d.source, d.target.id || d.target])}-${_.max([d.source.id || d.source, d.target.id || d.target])}`);
 
     //node as circles
-    //set radius size (min: square root 9 = 3), point range min is 700
+    //set radius size (min: square root 16 = 4), point range min is 700
     let radius = d3.scaleLinear()
-      .range([9, graph.nodes.length * 1.9])
+      .range([16, graph.nodes.length * 1.9])
       .domain(pointRange);
     let nodeG = svg.append('g').attr('id', 'nodes');
     let self = this;
@@ -120,6 +123,12 @@ class NetworkComponent extends Component {
     });
   }
 
+  highlightAthletes(ids, status) {
+    _.each(ids, (d) => {
+      d3.select(`circle[id="${d}"]`).classed('node-clicked', status);
+    })
+  }
+
   componentWillReceiveProps(nextProps) {
     //option change
     if (this.props.graph !== nextProps.graph) {
@@ -150,14 +159,16 @@ class NetworkComponent extends Component {
     }
     //removed from the results table
     if (this.props.clickedIds !== nextProps.clickedIds) {
-      const removed = _.filter(this.props.clickedIds, (id) => nextProps.clickedIds.indexOf(id) === -1);
-      _.each(removed, (id) => {
-        d3.select(`circle[id="${id}"]`).classed('node-clicked', false);
+      this.highlightAthletes(this.props.clickedIds, false);
+      this.highlightAthletes(nextProps.clickedIds, true);
+      // const removed = _.filter(this.props.clickedIds, (id) => nextProps.clickedIds.indexOf(id) === -1);
+      // _.each(removed, (id) => {
+      //   d3.select(`circle[id="${id}"]`).classed('node-clicked', false);
         if (this.props.isLinksShown) {
           this.highlightElements(this.props, false);
           this.highlightElements(nextProps, true);
         }
-      });
+      // });
     }
     //links View
     if (this.props.isLinksShown !== nextProps.isLinksShown) {
@@ -186,17 +197,17 @@ class NetworkComponent extends Component {
           <input
             type="radio"
             name="highlightElms"
-            value="network"
-            checked={this.props.isLinksShown}
-            onChange={this.props.toggleLinkedNodes} /> Both nodes &amp; edges (network)
+            value="nodes"
+            checked={!this.props.isLinksShown}
+            onChange={this.props.toggleLinkedNodes} /> Only nodes (selected swimmers)
         </label>
         <label className="radio">
           <input
             type="radio"
             name="highlightElms"
-            value="nodes"
-            checked={!this.props.isLinksShown}
-            onChange={this.props.toggleLinkedNodes} /> Only nodes (selected swimmers)
+            value="network"
+            checked={this.props.isLinksShown}
+            onChange={this.props.toggleLinkedNodes} /> Nodes &amp; connected edges
         </label>
       </div> }
       <div className="network" id="vis-network-width">

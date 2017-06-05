@@ -116,7 +116,7 @@ class RaceComponent extends Component {
     //set the size
     const containerW = document.getElementById('vis-race-width').clientWidth;
     const initialTop = 40;
-    let margin = { veryTop: 50, top: initialTop, right: 0, bottom: 50, left: 70, extended: 0 };
+    let margin = { veryTop: 30, top: initialTop, right: 0, bottom: 30, left: 70, extended: 0 };
     let dim = { w: containerW - 100 - margin.left - margin.right };
     let rDiff = 76; //minimum distance between races
     const aWidth = 8; //width of line representing an athlete
@@ -221,6 +221,12 @@ class RaceComponent extends Component {
     this.drawGraph(nextProps);
   }
 
+  highlightAthletes(ids, status) {
+    _.each(ids, (d) => {
+      d3.selectAll(`.js-race-a-${d}`).classed('race-athlete-clicked', status);
+    })
+  }
+
   componentWillReceiveProps(nextProps) {
     //option change
     if (this.props.byRace !== nextProps.byRace) {
@@ -240,20 +246,18 @@ class RaceComponent extends Component {
     //click
     if (nextProps.clicked || this.props !== nextProps.clicked) {
       d3.selectAll(`.js-race-a-${nextProps.clickedId}`).classed('race-athlete-clicked', nextProps.clicked);
-      if (this.props.isLinksShown) {
-        this.highlightElements(this.props, false);
-        this.highlightElements(nextProps, true);
-      }
+    }
+    //race selected
+    if (this.props.clickedIds !== nextProps.clickedIds) {
+      this.highlightAthletes(this.props.clickedIds, false);
+      this.highlightAthletes(nextProps.clickedIds, true);
     }
   }
 
   componentDidMount() {
     this.drawGraph(this.props);
     if (this.props.clickedIds.length > 0) {
-      //highlight clicked athletes
-      _.each(this.props.clickedIds, (d) => {
-        d3.selectAll(`.js-race-a-${d}`).classed('race-athlete-clicked', true);
-      })
+      this.highlightAthletes(this.props.clickedIds, true);
     }
   }
 

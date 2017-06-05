@@ -26,10 +26,11 @@ const mapDispatchToProps = (dispatch) => (
 );
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { graph, pointRange } = stateProps.graphData;
+  const { graph, pointRange, linksRange } = stateProps.graphData;
   return Object.assign({}, {
     graph,
     pointRange,
+    linksRange,
     ...stateProps.graphInfo,
     mouseOverFunc: (d) => {
       return dispatchProps.mouseOverFunc(d, graph);

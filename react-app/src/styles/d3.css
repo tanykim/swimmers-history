@@ -147,11 +147,11 @@
 .race-athlete-out {
   stroke: #868e96; }
 
-.race-athlete-over {
-  stroke: #2bc0e4; }
-
 .race-athlete-clicked {
   stroke: #f5625a; }
+
+.race-athlete-over {
+  stroke: #2bc0e4; }
 
 .fill-place-1 {
   fill: #fbcd15;

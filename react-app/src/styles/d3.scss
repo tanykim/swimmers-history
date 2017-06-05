@@ -145,12 +145,11 @@
 .race-athlete-out {
     stroke: $grey;
 }
-.race-athlete-over {
-    stroke: $main;
-}
 .race-athlete-clicked {
     stroke: $highlight;
-
+}
+.race-athlete-over {
+    stroke: $main;
 }
 .fill-place-1 {
     fill: $gold;

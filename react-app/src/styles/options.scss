@@ -4,18 +4,21 @@
 .vis-types {
     display: flex;
     align-items: center;
-    .view-selected {
-        background-color: $grey-lighter;
-    }
-    .view-selected, .view-normal {
+    justify-content: flex-end;
+    height: 100%;
+    .vis-view {
         font-size: $small;
-        margin-right: $pg-xs / 2;
-        margin-left: $pg-xs / 2;
-        padding: 2px 8px;
-        border-radius: 4px;
         text-transform: capitalize;
-        display: inline-block;
         cursor: pointer;
+        border-radius: 4px;
+        &:not(:last-child) {
+            margin-right: $pg-sm;
+        }
+    }
+    .view-selected {
+        background-color: $grey-dark;
+        color: $white;
+        padding: $pg-xxs $pg-sm;
     }
 }
 .options-wrapper {
@@ -30,7 +33,6 @@
 }
 .panels {
     position: absolute;
-    /* TODO: programically change the top */;
     top: 50px;
     background-color: $white;
     border-right: 1px solid $grey-lighter;
@@ -41,6 +43,9 @@
     margin-bottom: $pg-lg;
     padding-bottom: $pg-xs * 3;
     z-index: 100;
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
     .kind-wrapper-meets {
         padding-left: $pg-xs * 3;
         padding-right: $pg-xs;
@@ -68,6 +73,16 @@
         .typcn {
             color: $white;
             cursor: pointer;
+        }
+    }
+    .radio-label {
+        display: inline-block;
+        line-height: 120%;
+        input {
+            margin-right: $pg-xxs;
+        }
+        &:first-child {
+            margin-bottom: $pg-xs;
         }
     }
     .list-normal {
@@ -125,8 +140,15 @@
         background-color: $oc-gray-1;
         border-radius: 4px;
         margin-top: $pg-xs;
+        .selected-list-name {
+            margin-right: $pg-xs;
+        }
+        .typcn {
+            margin-left: 0;
+            cursor: pointer;
+        }
     }
-    .items-title, .selected-list {
+    .items-title {
         .typcn {
             margin-left: $pg-xs;
             cursor: pointer;

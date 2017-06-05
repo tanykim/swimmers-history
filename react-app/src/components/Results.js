@@ -1,13 +1,33 @@
 import React, { Component } from 'react';
+import scrollToComponent from 'react-scroll-to-component';
 import Countries from '../data/countries.json';
 
 class ResultsComponent extends Component {
+
+  scroll() {
+    //scroll to the result when a swimmer is selected
+    scrollToComponent(this.refs.results, {
+      offset: 0,
+      align: 'top',
+      duration: 400
+    });
+  }
+
+  componentDidMount() {
+    this.scroll();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.clicked && this.props.clickedIds !== nextProps.clickedIds) {
+      this.scroll();
+    }
+  }
 
   render() {
     const { clickedIds, sharedRaces, clickedObjs, sharedRacesWinner } = this.props;
 
     return (<div className="results" id="results">
-      <div className="remove-all">
+      <div className="remove-all" ref="results">
         <a onClick={() => this.props.removeAllAthletes()}>
           <span className="typcn typcn-delete"></span> Remove all swimmers
         </a>

@@ -22,8 +22,52 @@ body {
   position: inherit;
   margin-top: 12px; }
 
+.legends {
+  font-size: 13px;
+  line-height: 120%;
+  border-top: 1px solid #adb5bd;
+  border-bottom: 1px solid #adb5bd;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 15px; }
+
+.legends ul li:not(:last-child) {
+  margin-bottom: 6px; }
+
+.legends strong {
+  color: #2bc0e4; }
+
+.instruction {
+  font-size: 14px; }
+
+.instruction .instruction-title {
+  color: #2bc0e4; }
+
+.instruction ol {
+  color: #212529;
+  margin-top: 15px; }
+
+.instruction ol li {
+  margin-left: 15px;
+  margin-bottom: 15px;
+  line-height: 120%; }
+
+.instruction ol .control {
+  margin-top: 6px; }
+
+.instruction select {
+  font-family: inherit;
+  color: #212529;
+  border-color: #adb5bd; }
+
+.instruction select:focus, .instruction select:active, .instruction select:hover {
+  border-color: #868e96; }
+
+.instruction .select:after {
+  border-color: #adb5bd; }
+
 .vis-wrapper {
-  border: 1px solid #dee2e6;
+  border: 1px solid #e9ecef;
   border-radius: 4px;
   background-color: #ffffff; }
 

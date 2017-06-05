@@ -53,14 +53,17 @@ class CountryComponent extends Component {
     this.drawLinear(nextProps);
   }
 
+  highlightAthletes(ids, status) {
+    _.each(ids, (d) => {
+      d3.selectAll(`.js-a-${d}`).classed('a-clicked', status);
+    })
+  }
+
   componentDidMount() {
     this.drawLinear(this.props);
     if (this.props.clickedIds.length > 0) {
-      _.each(this.props.clickedIds, (d) => {
-        d3.selectAll(`.js-a-${d}`).classed('a-clicked', true);
-      })
+      this.highlightAthletes(this.props.clickedIds, true);
     }
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -83,13 +86,18 @@ class CountryComponent extends Component {
       d3.selectAll(`.js-a-${nextProps.clickedId}`)
         .classed('a-clicked', nextProps.clicked);
     }
-    //removed from the results table
+    //removed from the results table or race selected
+    // if (this.props.clickedIds !== nextProps.clickedIds) {
+    //   const removed = _.filter(this.props.clickedIds, (id) => nextProps.clickedIds.indexOf(id) === -1);
+    //   _.each(removed, (id) => {
+    //     console.log(id);
+    //     d3.selectAll(`.js-a-${id}`).classed('a-clicked', false);
+    //   });
+    // }
+    //race selected
     if (this.props.clickedIds !== nextProps.clickedIds) {
-      const removed = _.filter(this.props.clickedIds, (id) => nextProps.clickedIds.indexOf(id) === -1);
-      _.each(removed, (id) => {
-        console.log(id);
-        d3.selectAll(`.js-a-${id}`).classed('a-clicked', false);
-      });
+      this.highlightAthletes(this.props.clickedIds, false);
+      this.highlightAthletes(nextProps.clickedIds, true);
     }
   }
 

@@ -5,21 +5,21 @@ class NamesComponent extends Component {
   render() {
     return (<div className="column is-one-third">
       <div className="kind-wrapper-names">
-        <div className="kind-title">athletes</div>
+        <div className="kind-title">swimmers</div>
         <div className="items-title">
-          <input type="radio"
+          <span className="radio-label"><input type="radio"
             name="athelete"
             value="all"
             checked={this.props.nameOption === 'all'}
             onChange={this.props.updateNameOption}
-          /> All athletes
+          /> All swimmers</span>
           <br/>
-          <input type="radio"
+          <span className="radio-label"><input type="radio"
             name="athelete"
             value="search"
             checked={this.props.nameOption === 'search'}
             onChange={this.props.updateNameOption}
-          /> Athletes who competed with at least one of the following athletes
+          /> Swimmers who competed with at least one of the following swimmers</span>
         </div>
         { this.props.nameOption === 'search' && <div className="select-wrapper">
           <Select
@@ -31,7 +31,7 @@ class NamesComponent extends Component {
           />
           { this.props.searchedAthletes.map((a, i) => (<div className="selected-list" key={i}>
             <div>
-              { a.name } ({ a.country })
+              <span className="selected-list-name">{ a.name } ({ a.country })</span>
               <span onClick={() => this.props.removeName(a.id)} className="typcn typcn-minus"/>
             </div>
           </div>)) }

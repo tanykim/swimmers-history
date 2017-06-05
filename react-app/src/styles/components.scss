@@ -8,8 +8,56 @@ body {
     position: inherit;
     margin-top: 12px;
 }
+.legends {
+    font-size: 13px;
+    line-height: 120%;
+    border-top: 1px solid $grey-light;
+    border-bottom: 1px solid $grey-light;
+    padding-top: $pg-sm;
+    padding-bottom: $pg-sm;
+    margin-bottom: $pg-sm;
+    ul {
+        li {
+            &:not(:last-child) {
+                margin-bottom: $pg-xs;
+            }
+        }
+    }
+    strong {
+        color: $main;
+    }
+}
+.instruction {
+    font-size: $small;
+    .instruction-title {
+        color: $main;
+    }
+    ol {
+        color: $grey-darker;
+        margin-top: $pg-sm;
+        li {
+            margin-left: $pg-sm;
+            margin-bottom: $pg-sm;
+            line-height: 120%;
+        }
+        .control {
+            margin-top: $pg-xs;
+        }
+    }
+    select {
+        font-family: inherit;
+        color: $grey-darker;
+        border-color: $grey-light;
+        &:focus, &:active, &:hover {
+            border-color: $grey;
+        }
+    }
+    .select:after {
+        border-color: $grey-light;
+    }
+}
 .vis-wrapper {
-    border: $bd-thin-xlg;
+    border: 1px solid $grey-lighter;
     border-radius: $bd-radius;
     background-color: $white;
 }

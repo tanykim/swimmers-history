@@ -209,6 +209,7 @@ export const getTopAthletes = (allAthletes) => {
 export const getAthletesLinks = (gender, athletes, races) => {
   let links = [];
   const aIds = _.map(athletes, 'id');
+  let linksRange = [races.length, 1];
   _.each(allLinks[gender], (d) => {
     //check if both source and target are in the selected ids
     if (aIds.indexOf(d.source) > -1 && aIds.indexOf(d.target) > -1) {
@@ -219,15 +220,20 @@ export const getAthletesLinks = (gender, athletes, races) => {
         }
       });
       if (validRecords.length > 0) {
+        const value = validRecords.length;
         links.push({
           source: d.source,
           target: d.target,
-          value: validRecords.length
+          value
         });
+        linksRange = [
+          Math.min(linksRange[0], value),
+          Math.max(linksRange[1], value)
+        ];
       }
     }
   });
-  return links;
+  return { links, linksRange };
 };
 
 //get ids of connected nodes for mouseover effect

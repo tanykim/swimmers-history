@@ -161,7 +161,7 @@ const data = (state = {}, action) => {
       const { athletes, pointRange } = athletesData;
       //top athletes by meets/event, for HTML
       const topAthletes = getTopAthletes(athletes);
-      const links = getAthletesLinks(gender, athletes, racesInfo.races);
+      const { links, linksRange } = getAthletesLinks(gender, athletes, racesInfo.races);
       //network data
       const graph = { nodes: athletes, links };
       //country data
@@ -172,6 +172,7 @@ const data = (state = {}, action) => {
       return Object.assign({}, state, {
         racesInfo,
         pointRange,
+        linksRange,
         topAthletes,
         graph,
         athletesByCounty,
@@ -222,9 +223,8 @@ const graph = (state = { clickedIds: [], clickedObjs: [], isLinksShown: false },
       let clicked = false;
       if (state.clickedIds.indexOf(clickedId) === -1) {
         clicked = true;
-        prevIds.push(clickedId);
-        prevObjs.push(getRacesObjByA(action.value));
-        console.log(action.value);
+        prevIds.unshift(clickedId);
+        prevObjs.unshift(getRacesObjByA(action.value));
       } else {
         _.remove(prevIds, (id) => id === clickedId);
         prevObjs = _.reject(prevObjs, (obj) => obj.id === clickedId);
@@ -234,10 +234,10 @@ const graph = (state = { clickedIds: [], clickedObjs: [], isLinksShown: false },
       if (state.isLinksShown) {
         nodes = getMutualLinkedNodes(prevIds, action.links);
       }
-      const sharedRaces = prevIds.length > 0 ?
+      let sharedRaces = prevIds.length > 0 ?
         getSharedRaces(prevObjs) :
         [];
-      const sharedRacesWinner = sharedRaces.length > 0 ?
+      let sharedRacesWinner = sharedRaces.length > 0 ?
         getSharedRacesWinner(sharedRaces, prevObjs) :
         [];
       return Object.assign({}, state, {
@@ -248,7 +248,20 @@ const graph = (state = { clickedIds: [], clickedObjs: [], isLinksShown: false },
         mutualLinkedNodes: nodes,
         clickedIds: prevIds,
         clickedObjs: prevObjs,
-      })
+      });
+    case 'SELECT_RACE':
+      let { id, athletes } = action.value;
+      const newClickedIds = athletes.map((a) => a.id);
+      const newClickedObjs = athletes.map((a) => getRacesObjByA(a));
+      const races = [id];
+      const racesWinner = getSharedRacesWinner(races, newClickedObjs);
+      return Object.assign({}, state, {
+        clickedIds: newClickedIds,
+        clickedObjs: newClickedObjs,
+        sharedRaces: races,
+        sharedRacesWinner: racesWinner,
+        clicked: true,
+      });
     case 'TOGGLE_VIEW':
       const mutualLinkedNodes = getMutualLinkedNodes(state.clickedIds, action.links);
       return Object.assign({}, state, {
