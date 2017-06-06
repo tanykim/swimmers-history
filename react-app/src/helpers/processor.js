@@ -46,53 +46,15 @@ export const setSelections = (sel, selParent, selected) => {
 };
 
 export const getSearchedAthletes = (ids, gender) => {
-  console.log(ids, gender);
   return _.filter(_.cloneDeep(allAthletes[gender]), (d) => ids.indexOf(d.id) > -1);
-};
-
-export const updateTemporarySelection = (selections, val) => {
-  console.log('------', selections, val);
-  const splitted = val.split(',');
-  let sameIdx = -1;
-  for (let i = 0; i < selections.length; i++) {
-    const s = selections[i].split(',');
-    if (s[1] === splitted[1] && s[2] === splitted[2]) {
-      sameIdx = i;
-      break;
-    }
-  }
-  console.log(sameIdx, selections, val);
-  // let newSel;
-  if (sameIdx >= 0) {
-    selections.splice(sameIdx, 1);
-    // console.log(newSel);
-  }
-    // console.log(_.isArray(selections));
-    selections.push(val);
-    // console.log(newSel);
-
-  return selections;
 };
 
 export const updateSelection = (selection, sel) => {
   let updatedSel = sel;
   const arr = selection.split(',');
-  // if (isCancel) {
-    // updatedSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? false : true;
-  // } else {
-    updatedSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? true : false;
-  // }
-  // updatedSel[arr[0]][arr[1]][arr[2]] = !updatedSel[arr[0]][arr[1]][arr[2]];
+  updatedSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? true : false;
   return updatedSel;
 }
-
-export const cancelSelections = (tempSelections, sel) => {
-  let canceledSel = sel;
-  _.each(tempSelections, (d) => {
-    updateSelection(d, canceledSel, true);
-  });
-  return canceledSel;
-};
 
 export const getCompetition = () => {
   return competitions;

@@ -5,9 +5,7 @@ import {
   getAthletesList,
   setSelections,
   getSearchedAthletes,
-  updateTemporarySelection,
   updateSelection,
-  cancelSelections,
   getCompetition,
   getRaces,
   getTopAthletes,
@@ -33,8 +31,6 @@ const currentView = (state = { view: 'intro' }, action) => {
     case 'SET_DEFAULT_OPTIONS':
     case 'RESET_GRAPH':
       return Object.assign({}, state, { isLoading: true });
-    // case 'SET_VIS_DATA':
-    //   return Object.assign({}, state, { isLoading: false });
     case 'SET_GENDER':
       //set a default view depending on gender
       return Object.assign({}, state, { vis: action.value === 'men' ? 'network' : 'country' });
@@ -58,15 +54,6 @@ const gender = (state = '', action) => {
 /* option panels data */
 const options = (state = { isOpen: false }, action) => {
   switch (action.type) {
-    // case 'INITIALIZE':
-    //   const initSels = setInitialSelections();
-    //   return {
-    //     ...initSels,
-    //     searchedAthletes: [],
-    //     //tempSelection: [],
-    //     originalSel: {},
-    //     originalNames: [], //show in the option name
-    //   };
     case 'SET_GENDER':
       const initSels = setInitialSelections();
       const list = getAthletesList(action.value);
@@ -74,8 +61,8 @@ const options = (state = { isOpen: false }, action) => {
         ...initSels,
         list,
         searchedAthletes: [],
-        //tempSelection: [],
         originalSel: {},
+        origianlSelParent: {},
         originalNames: [], //show in the option name
       });
     case 'SET_DEFAULT_OPTIONS':
@@ -112,17 +99,7 @@ const options = (state = { isOpen: false }, action) => {
         isOpen: action.value
       });
     case 'SET_SELECTION':
-      // let ts = state.tempSelection;
-      // console.log(ts);
-      // let arr = action.value.split(',');
-      // const ts = updateTemporarySelection(state.tempSelection || [], action.value);
-      // console.log('-------', ts);
-      // ts.push(action.value);
-      // const updatedSel = updateSelection(action.value, state.sel);
-      const updatedSel = updateSelection(action.value, state.sel);
-
-      // state.sel[arr[0]][arr[1]][arr[2]] = !state.sel[arr[0]][arr[1]][arr[2]];
-      // return state;
+      const updatedSel = updateSelection(action.value, _.cloneDeep(state.sel));
       return Object.assign({}, state, { sel: updatedSel });
     case 'SET_NAME_OPTION':
       return Object.assign({}, state, {
@@ -142,16 +119,15 @@ const options = (state = { isOpen: false }, action) => {
     case 'SET_VIS_DATA':
       //reset temprary selection & temporary names
       return Object.assign({}, state, {
-        // tempSelection: [],
         originalNames: _.cloneDeep(state.searchedAthletes),
         originalSel: _.cloneDeep(state.sel),
         isOpen: false,
       });
     case 'CANCEL':
-      //revert selections to the pverious selection
       return Object.assign({}, state, {
         isOpen: false,
         sel: state.originalSel,
+        selParent: state.origianlSelParent,
         searchedAthletes: state.originalNames,
         nameOption: state.originalNames.length > 0 ? 'search' : 'all'}
       );
@@ -160,12 +136,13 @@ const options = (state = { isOpen: false }, action) => {
       const prevVal = state.selParent[kind][type];
       state.selParent[kind][type] = !prevVal;
       const childrenList = state.category[kind][type].children.map((d) => d[0]);
+      const selCloned = _.cloneDeep(state.sel);
       _.each(childrenList, (d) => {
-        state.sel[kind][type][d] = !prevVal;
+        selCloned[kind][type][d] = !prevVal;
       });
       return Object.assign({}, state, {
         selParent: state.selParent,
-        sel: state.sel,
+        sel: selCloned,
       });
     default:
       return state;
@@ -179,15 +156,15 @@ const data = (state = {}, action) => {
       const competitions = getCompetition();
       return Object.assign({}, state, { competitions });
     }
-    // case 'SET_TEMP_DATA': {
-    //   const { gender, sel, searchedAthletes } = action.value;
-    //   console.log(searchedAthletes);
-    //   const racesInfo = getRaces(sel, gender);
-    //   const athletesData = getAthletesData(gender, racesInfo.races, searchedAthletes);
-    //   return Object.assign({}, state, {
-    //     athletesCount: athletesData.athletes.length
-    //   });
-    // }
+    //show the filtered atheltes number
+    case 'SET_TEMP_DATA': {
+      const { gender, sel, searchedAthletes } = action.value;
+      const racesInfo = getRaces(sel, gender);
+      const athletesData = getAthletesData(gender, racesInfo.races, searchedAthletes);
+      return Object.assign({}, state, {
+        athletesCount: athletesData.athletes.length
+      });
+    }
     case 'SET_VIS_DATA': {
       const { gender, sel, searchedAthletes } = action.value;
       //races filtered by meets/event, for HTML

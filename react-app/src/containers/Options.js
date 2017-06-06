@@ -10,6 +10,7 @@ const mapStateToProps = (state, ownProps) => {
     gender: state.gender,
     racesInfo: state.data.racesInfo,
     count: state.data.graph.nodes.length,
+    tempCount: state.data.athletesCount,
   }
 };
 
@@ -39,6 +40,9 @@ const mapDispatchToProps = (dispatch) => (
     toggle: (isOpen) => {
       dispatch({ type: 'TOGGLE_OPTIONS', value: !isOpen });
     },
+    setTempData: (value) => {
+      dispatch({ type: 'SET_TEMP_DATA', value });
+    }
   }
 );
 
@@ -69,6 +73,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     toggle: () => {
       dispatchProps.toggle(stateProps.isOpen);
     },
+    setTempData: () => {
+      dispatchProps.setTempData(_.pick(stateProps, ['gender', 'sel', 'searchedAthletes']));
+    }
   })
 };
 

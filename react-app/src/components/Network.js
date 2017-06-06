@@ -156,18 +156,14 @@ class NetworkComponent extends Component {
         this.highlightElements(nextProps, true);
       }
     }
-    //removed from the results table
+    //removed from the results table, or from the legends
     if (this.props.clickedIds !== nextProps.clickedIds) {
       this.highlightAthletes(this.props.clickedIds, false);
       this.highlightAthletes(nextProps.clickedIds, true);
-      // const removed = _.filter(this.props.clickedIds, (id) => nextProps.clickedIds.indexOf(id) === -1);
-      // _.each(removed, (id) => {
-      //   d3.select(`circle[id="${id}"]`).classed('node-clicked', false);
-        if (this.props.isLinksShown) {
-          this.highlightElements(this.props, false);
-          this.highlightElements(nextProps, true);
-        }
-      // });
+      if (this.props.isLinksShown) {
+        this.highlightElements(this.props, false);
+        this.highlightElements(nextProps, true);
+      }
     }
     //links View
     if (this.props.isLinksShown !== nextProps.isLinksShown) {

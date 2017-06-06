@@ -5,7 +5,6 @@ import IntroComponent from '../components/Intro'
 const mapStateToProps = (state, ownProps) => (
   {
     searchedAthletes: state.options.searchedAthletes,
-    //nameOption: state.options.nameOption,
     sel: state.options.sel,
     gender: state.gender,
     isLoading: state.currentView.isLoading,
@@ -21,13 +20,6 @@ const mapDispatchToProps = (dispatch) => (
     setDefaultOptions: (value) => {
       dispatch({ type: 'SET_DEFAULT_OPTIONS', value });
     },
-    // startVis: (value) => {
-    //   dispatch({ type: 'SET_VIS_DATA', value });
-    //   //show loading sign
-    //   setTimeout(() => {
-    //     dispatch({ type: 'SET_CURRENT_VIEW', value: 'vis' })
-    //   }, 500);
-    // }
   }
 )
 
@@ -42,9 +34,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     setDefaultOptions: () => {
       dispatchProps.setDefaultOptions(stateProps.gender);
     },
-    // startVis: () => {
-    //   dispatchProps.startVis(_.pick(stateProps, ['gender', 'sel', 'searchedAthletes']));
-    // }
   })
 }
 

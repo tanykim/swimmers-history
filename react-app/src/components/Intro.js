@@ -6,15 +6,7 @@ class IntroComponent extends Component {
     this.props.setGender();
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (!this.props.isLoading && nextProps.isLoading) {
-  //     console.log('---------');
-  //     nextProps.startVis();
-  //   }
-  // }
-
   render() {
-    // console.log(this.props.isLoading);
     return (
       <div className="section">
         <div className="container">

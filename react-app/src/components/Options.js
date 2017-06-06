@@ -7,16 +7,21 @@ import Names from './Options-names';
 class OptionsComponent extends Component {
 
   componentWillReceiveProps(nextProps) {
-    let s = document.getElementById('options-panels').style;
+    let panel = document.getElementById('options-panels').style;
     let summary = document.getElementById('summary-list').style;
     if (nextProps.isOpen) {
-      s.top = `${document.getElementById('options-summary').offsetHeight}px`;
-      s.display = 'block';
+      panel.top = `${document.getElementById('options-summary').offsetHeight}px`;
+      panel.display = 'block';
       //hide summary list
       summary.visibility = 'hidden';
     } else {
-      s.display = 'none';
+      panel.display = 'none';
       summary.visibility = 'visible';
+    }
+
+    if(!_.isEqual(this.props.sel, nextProps.sel) ||
+      !_.isEqual(this.props.searchedAthletes, nextProps.searchedAthletes) ) {
+      nextProps.setTempData();
     }
   }
 

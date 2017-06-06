@@ -9,12 +9,6 @@ import Results from '../containers/Results';
 
 class VisComponent extends Component {
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.isLoading && this.props.isLoading !== nextProps.isLoading) {
-  //     this.props.startVis();
-  //   }
-  // }
-
   render() {
     return (<div>
       <div className="header-wrapper">
