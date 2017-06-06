@@ -5,6 +5,7 @@ import {
   getAthletesList,
   setSelections,
   getSearchedAthletes,
+  updateTemporarySelection,
   updateSelection,
   cancelSelections,
   getCompetition,
@@ -12,8 +13,8 @@ import {
   getTopAthletes,
   getAthletesData,
   getCountryList,
-  getSortedCountries,
-  getSortedAthletesPerCountry,
+  sortCountries,
+  sortAthletesPerCountry,
   getAthletesByRace,
   getAthletesLinks,
   getMutualLinkedNodes,
@@ -25,12 +26,18 @@ import {
 } from '../helpers/processor';
 
 /* views */
-const currentView = (state = { view: 'intro', vis: 'race' }, action) => {
+const currentView = (state = { view: 'intro' }, action) => {
   switch (action.type) {
     case 'SET_CURRENT_VIEW':
       return Object.assign({}, state, { view: action.value, isLoading: false });
     case 'SET_DEFAULT_OPTIONS':
+    case 'RESET_GRAPH':
       return Object.assign({}, state, { isLoading: true });
+    // case 'SET_VIS_DATA':
+    //   return Object.assign({}, state, { isLoading: false });
+    case 'SET_GENDER':
+      //set a default view depending on gender
+      return Object.assign({}, state, { vis: action.value === 'men' ? 'network' : 'country' });
     case 'SET_VIS_VIEW':
       return Object.assign({}, state, { vis: action.value });
     default:
@@ -39,7 +46,7 @@ const currentView = (state = { view: 'intro', vis: 'race' }, action) => {
 };
 
 /* select by gender */
-const gender = (state = 'men', action) => {
+const gender = (state = '', action) => {
   switch (action.type) {
     case 'SET_GENDER':
       return action.value;
@@ -48,30 +55,41 @@ const gender = (state = 'men', action) => {
   }
 };
 
-/* option data data */
+/* option panels data */
 const options = (state = { isOpen: false }, action) => {
   switch (action.type) {
-    case 'INITIALIZE':
-      const initSels = setInitialSelections();
-      return {
-        ...initSels,
-        searchedAthletes: [],
-        tempSelection: [],
-        originalNames: [], //show in the option name
-      };
+    // case 'INITIALIZE':
+    //   const initSels = setInitialSelections();
+    //   return {
+    //     ...initSels,
+    //     searchedAthletes: [],
+    //     //tempSelection: [],
+    //     originalSel: {},
+    //     originalNames: [], //show in the option name
+    //   };
     case 'SET_GENDER':
+      const initSels = setInitialSelections();
       const list = getAthletesList(action.value);
-      return Object.assign({}, state, { list });
+      return Object.assign({}, state, {
+        ...initSels,
+        list,
+        searchedAthletes: [],
+        //tempSelection: [],
+        originalSel: {},
+        originalNames: [], //show in the option name
+      });
     case 'SET_DEFAULT_OPTIONS':
       let defaultEvents;
       let defaultIds;
-      if (action.gender === 'men') {
+      if (action.value === 'men') {
         defaultEvents = {
-          meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008', '1WC-j2007', '4PPC-g2010'],
-          events: ['0IND-a50Fr', '0IND-b100Fr', '0IND-c200Fr', '0IND-d400Fr', '0IND-f1500Fr', '1TEAM-p4X200Fr']
+          meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008'],
+          events: ['0IND-a50Fr', '0IND-b100Fr', '0IND-c200Fr', '0IND-d400Fr', '0IND-f1500Fr',
+          '0IND-g100Bk', '0IND-h200Bk', '0IND-i100Br', '0IND-j200Br', '0IND-k100Fly', '0IND-l200Fly',
+          '0IND-m200IM', '0IND-n400IM',
+          '1TEAM-o4X100Fr', '1TEAM-p4X200Fr', '1TEAM-q4X100M']
         };
-        defaultIds = [];
-        // defaultIds = ['4038916', '4038679']; //phelps and lochte
+        defaultIds = ['4038916']; //phelps
       } else {
         defaultEvents = {
           meets: ['0OG-a2016', '0OG-e2012'],
@@ -81,7 +99,7 @@ const options = (state = { isOpen: false }, action) => {
       }
       const selections = setSelections(state.sel, state.selParent, defaultEvents);
       const { sel, selParent } = selections;
-      const searchedAthletes = getSearchedAthletes(defaultIds, action.gender);
+      const searchedAthletes = getSearchedAthletes(defaultIds, action.value);
       const originalNames = searchedAthletes;
       const nameOption = searchedAthletes.length > 0 ? 'search' : 'all';
       return Object.assign({}, state, {
@@ -94,13 +112,18 @@ const options = (state = { isOpen: false }, action) => {
         isOpen: action.value
       });
     case 'SET_SELECTION':
-      let ts = state.tempSelection;
-      ts.push(action.value);
-      const updatedSel = updateSelection(action.value, state.sel, false);
-      return Object.assign({}, state, {
-        tempSelection: ts,
-        sel: updatedSel,
-      });
+      // let ts = state.tempSelection;
+      // console.log(ts);
+      // let arr = action.value.split(',');
+      // const ts = updateTemporarySelection(state.tempSelection || [], action.value);
+      // console.log('-------', ts);
+      // ts.push(action.value);
+      // const updatedSel = updateSelection(action.value, state.sel);
+      const updatedSel = updateSelection(action.value, state.sel);
+
+      // state.sel[arr[0]][arr[1]][arr[2]] = !state.sel[arr[0]][arr[1]][arr[2]];
+      // return state;
+      return Object.assign({}, state, { sel: updatedSel });
     case 'SET_NAME_OPTION':
       return Object.assign({}, state, {
         searchedAthletes: action.value === 'all' ? [] : state.searchedAthletes,
@@ -119,15 +142,16 @@ const options = (state = { isOpen: false }, action) => {
     case 'SET_VIS_DATA':
       //reset temprary selection & temporary names
       return Object.assign({}, state, {
-        tempSelection: [],
-        originalNames: state.searchedAthletes,
+        // tempSelection: [],
+        originalNames: _.cloneDeep(state.searchedAthletes),
+        originalSel: _.cloneDeep(state.sel),
         isOpen: false,
       });
     case 'CANCEL':
       //revert selections to the pverious selection
       return Object.assign({}, state, {
         isOpen: false,
-        sel: cancelSelections(state.tempSelection, state.sel),
+        sel: state.originalSel,
         searchedAthletes: state.originalNames,
         nameOption: state.originalNames.length > 0 ? 'search' : 'all'}
       );
@@ -148,12 +172,23 @@ const options = (state = { isOpen: false }, action) => {
   }
 };
 
+/* vis data management */
 const data = (state = {}, action) => {
   switch (action.type) {
-    case 'INITIALIZE':
+    case 'SET_GENDER': {
       const competitions = getCompetition();
-      return Object.assign({}, state, { competitions })
-    case 'SET_VIS_DATA':
+      return Object.assign({}, state, { competitions });
+    }
+    // case 'SET_TEMP_DATA': {
+    //   const { gender, sel, searchedAthletes } = action.value;
+    //   console.log(searchedAthletes);
+    //   const racesInfo = getRaces(sel, gender);
+    //   const athletesData = getAthletesData(gender, racesInfo.races, searchedAthletes);
+    //   return Object.assign({}, state, {
+    //     athletesCount: athletesData.athletes.length
+    //   });
+    // }
+    case 'SET_VIS_DATA': {
       const { gender, sel, searchedAthletes } = action.value;
       //races filtered by meets/event, for HTML
       const racesInfo = getRaces(sel, gender);
@@ -178,30 +213,28 @@ const data = (state = {}, action) => {
         topAthletes,
         graph,
         countryList,
-        sortCountry: 'alphabetical',
-        sortAthlete: 'races',
         athletesByRace,
       });
-    case 'SORT_COUNTRIES':
-      const sorted = getSortedCountries(state.countryList, action.value);
-      return Object.assign({}, state, { countryList: sorted, sortCountry: action.value });
-    case 'SORT_ATHLETES_PER_COUNTRY':
-      const newSorted = getSortedAthletesPerCountry(state.countryList, action.value);
-      return Object.assign({}, state, { countryList: newSorted, sortAthlete: action.value });
+    }
+    case 'SORT_COUNTRIES': {
+      const sorted = sortCountries(state.countryList, action.value);
+      return Object.assign({}, state, { countryList: sorted });
+    }
+    case 'SORT_ATHLETES_PER_COUNTRY': {
+      const newSorted = sortAthletesPerCountry(state.countryList, action.value);
+      return Object.assign({}, state, { countryList: newSorted });
+    }
     default:
       return state;
   }
 };
 
+/* user interaction related data */
 const graph = (state = { clickedIds: [], clickedObjs: [], isLinksShown: false }, action) => {
   //clicked & clickedIds are used for all vis types
   switch(action.type) {
     case 'RESET_GRAPH':
       return Object.assign({}, state, {
-        hoverText: '',
-        connected: [],
-        hovered: false,
-        hoveredId: null,
         clicked: false,
         clickedId: null,
         mutualLinkedNodes: [],
@@ -211,22 +244,7 @@ const graph = (state = { clickedIds: [], clickedObjs: [], isLinksShown: false },
         sharedRaces: [],
         sharedRacesWinner: [],
       })
-    case 'HOVER_NODE':
-      const connected = getConnectedNodes(action.value.id, action.data.links);
-      const hoverText = `${action.value.name} swam with ${connected.length} swimmer${(connected.length > 1 ? 's' : '')} at ${action.value.records.length} race${action.value.records.length > 1 ? 's' : ''}`;
-      const hoveredId = action.value.id;
-      return Object.assign({}, state, {
-        hoverText,
-        connected,
-        hoveredId,
-        hovered: true ,
-      })
-    case 'UNHOVER_NODE':
-      return Object.assign({}, state, {
-        hoverText: '',
-        hovered: false
-      })
-    case 'CLICK_NODE':
+    case 'SELECT_ATHLETE':
       const clickedId = action.value.id;
       let prevIds = _.cloneDeep(state.clickedIds);
       let prevObjs = _.cloneDeep(state.clickedObjs);
@@ -283,8 +301,37 @@ const graph = (state = { clickedIds: [], clickedObjs: [], isLinksShown: false },
   }
 };
 
+/* network view specific info */
+const network = (state = {}, action) => {
+  switch(action.type) {
+    case 'HOVER_NODE':
+      const connected = getConnectedNodes(action.value.id, action.data.links);
+      const hoverText = `${action.value.name} swam with ${connected.length} swimmer${(connected.length > 1 ? 's' : '')} at ${action.value.records.length} race${action.value.records.length > 1 ? 's' : ''}`;
+      const hoveredId = action.value.id;
+      return Object.assign({}, state, {
+        hoverText,
+        connected,
+        hoveredId,
+        hovered: true,
+      })
+    case 'UNHOVER_NODE':
+      return Object.assign({}, state, {
+        hoverText: '',
+        hovered: false
+      })
+    default:
+      return state;
+  }
+};
+
+/* country view specific info */
 const country = (state = {}, action) => {
   switch(action.type) {
+    case 'SET_VIS_DATA':
+      return Object.assign({}, state, {
+        sortCountry: 'alphabetical',
+        sortAthlete: 'races',
+      });
     case 'HOVER_RACE':
       return Object.assign({}, state, {
         raceId: action.value.raceId,
@@ -296,11 +343,16 @@ const country = (state = {}, action) => {
         hoverText: '',
         hovered: false,
       });
+    case 'SORT_COUNTRIES':
+      return Object.assign({}, state, { sortCountry: action.value });
+    case 'SORT_ATHLETES_PER_COUNTRY':
+      return Object.assign({}, state, { sortAthlete: action.value });
     default:
       return state;
   }
 };
 
+/* race view specific info */
 const race = (state = {}, action) => {
   switch(action.type) {
     case 'HOVER_RACE_ATHLETE':
@@ -327,6 +379,7 @@ export default combineReducers({
   options,
   data,
   graph,
+  network,
   country,
   race,
 });

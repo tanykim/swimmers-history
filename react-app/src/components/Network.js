@@ -6,7 +6,7 @@ class NetworkComponent extends Component {
 
   dragstarted(d, simulation) {
     if (!d3.event.active) {
-      simulation.alphaTarget(0.5).restart();
+      simulation.alphaTarget(0.3).restart();
     }
     d.fx = d.x;
     d.fy = d.y;
@@ -38,21 +38,20 @@ class NetworkComponent extends Component {
     const { graph, pointRange, linksRange } = props;
     //set the size
     const w = document.getElementById('vis-network-width').clientWidth;
-    const dim = w * 0.6;
-    d3.select('#svg-network').attr('height', Math.round(w * 0.8));
+    const dim = w * 0.8;
+    d3.select('#svg-network').attr('height', Math.round(dim));
     let svg = d3.select('#network-g');
-    const decayRange = d3.scaleLinear().range([0.2, 1]).domain([1, 800]);
+    const decayRange = d3.scaleLinear().range([0.2, 0.8]).domain([1, 600]);
     const simulation = d3.forceSimulation()
-      .force('link', d3.forceLink().id((d) => d.id)
-      .distance(() => dim / 5))
-      .velocityDecay(decayRange(graph.nodes.length))
-
-      // .velocityDecay(Math.max(Math.min(decayRange(graph.nodes.length), 1), 0.5))
-      .force('charge', d3.forceManyBody()
-        .strength( -1 * dim / 5)
-        .distanceMax(dim / 3)
+      .force('link', d3.forceLink()
+        .id((d) => d.id)
+        .distance(() => dim / 10)
       )
-      .force('center', d3.forceCenter(w / 2, w * 0.8 / 2));
+      .force('charge', d3.forceManyBody()
+        .distanceMax(3000 / Math.sqrt(graph.nodes.length))
+      )
+      .force('center', d3.forceCenter(w / 2, dim / 2))
+      .velocityDecay(decayRange(graph.nodes.length));
 
     //link as lines
     let linkG = svg.append('g').attr('id', 'links');
@@ -65,9 +64,9 @@ class NetworkComponent extends Component {
         .attr('id', (d) => `${_.min([d.source.id || d.source, d.target.id || d.target])}-${_.max([d.source.id || d.source, d.target.id || d.target])}`);
 
     //node as circles
-    //set radius size (min: square root 16 = 4), point range min is 700
+    //set radius size (min: square root of radius), point range min is 700
     let radius = d3.scaleLinear()
-      .range([16, graph.nodes.length * 1.9])
+      .range([9, graph.nodes.length * 1.9])
       .domain(pointRange);
     let nodeG = svg.append('g').attr('id', 'nodes');
     let self = this;
@@ -199,7 +198,7 @@ class NetworkComponent extends Component {
             name="highlightElms"
             value="nodes"
             checked={!this.props.isLinksShown}
-            onChange={this.props.toggleLinkedNodes} /> Only nodes (selected swimmers)
+            onChange={this.props.toggleLinkedNodes} /> Only selected swimmers
         </label>
         <label className="radio">
           <input
@@ -207,7 +206,7 @@ class NetworkComponent extends Component {
             name="highlightElms"
             value="network"
             checked={this.props.isLinksShown}
-            onChange={this.props.toggleLinkedNodes} /> Nodes &amp; connected edges
+            onChange={this.props.toggleLinkedNodes} /> Selected and connected swimmers
         </label>
       </div> }
       <div className="network" id="vis-network-width">

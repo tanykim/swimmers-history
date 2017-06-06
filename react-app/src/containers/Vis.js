@@ -5,13 +5,15 @@ import _ from 'lodash';
 const mapStateToProps = (state, ownProps) => (
   {
     visType: state.currentView.vis,
-    clickedIds: state.graph.clickedIds,
+    // isLoading: state.currentView.isLoading,
+    gender: state.gender,
     validRaces: state.data.athletesByRace.validRaces,
     topAthletes: state.data.topAthletes,
-    searchedAthletes: state.options.searchedAthletes,
     links: state.data.graph.links,
     byRace: state.data.athletesByRace.byRace,
-    gender: state.gender,
+    // sel: state.options.sel,
+    searchedAthletes: state.options.searchedAthletes,
+    clickedIds: state.graph.clickedIds,
   }
 );
 
@@ -21,11 +23,14 @@ const mapDispatchToProps = (dispatch) => (
       dispatch({ type: 'SET_VIS_VIEW', value });
     },
     selectAthlete: (value, links) => {
-      dispatch({ type: 'CLICK_NODE', value, links });
+      dispatch({ type: 'SELECT_ATHLETE', value, links });
     },
     selectRace: (id, athletes) => {
       dispatch({ type: 'SELECT_RACE', value: { id, athletes }});
     },
+    // startVis: (value) => {
+    //   dispatch({ type: 'SET_VIS_DATA', value })
+    // }
   }
 );
 
@@ -40,6 +45,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       if (+id === 0) {
         return false;
       }
+      //find athlete from either top or searched athletes
       let athlete = _.findLast(stateProps.topAthletes, (a) => a.id === id);
       if (!athlete) {
         athlete = _.findLast(stateProps.searchedAthletes, (a) => a.id === id);
@@ -53,7 +59,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       }
       const athletes = _.flatten(_.values(stateProps.byRace[id]));
       dispatchProps.selectRace(id, athletes);
-    }
+    },
+    // startVis: () => {
+    //   dispatchProps.startVis(_.pick(stateProps, ['gender', 'sel', 'searchedAthletes']));
+    // }
   })
 };
 

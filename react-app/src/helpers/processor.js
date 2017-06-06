@@ -46,19 +46,49 @@ export const setSelections = (sel, selParent, selected) => {
 };
 
 export const getSearchedAthletes = (ids, gender) => {
+  console.log(ids, gender);
   return _.filter(_.cloneDeep(allAthletes[gender]), (d) => ids.indexOf(d.id) > -1);
 };
 
-export const updateSelection = (selection, sel, isCancel) => {
+export const updateTemporarySelection = (selections, val) => {
+  console.log('------', selections, val);
+  const splitted = val.split(',');
+  let sameIdx = -1;
+  for (let i = 0; i < selections.length; i++) {
+    const s = selections[i].split(',');
+    if (s[1] === splitted[1] && s[2] === splitted[2]) {
+      sameIdx = i;
+      break;
+    }
+  }
+  console.log(sameIdx, selections, val);
+  // let newSel;
+  if (sameIdx >= 0) {
+    selections.splice(sameIdx, 1);
+    // console.log(newSel);
+  }
+    // console.log(_.isArray(selections));
+    selections.push(val);
+    // console.log(newSel);
+
+  return selections;
+};
+
+export const updateSelection = (selection, sel) => {
   let updatedSel = sel;
   const arr = selection.split(',');
-  updatedSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? !isCancel : isCancel;
+  // if (isCancel) {
+    // updatedSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? false : true;
+  // } else {
+    updatedSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? true : false;
+  // }
+  // updatedSel[arr[0]][arr[1]][arr[2]] = !updatedSel[arr[0]][arr[1]][arr[2]];
   return updatedSel;
 }
 
-export const cancelSelections = (selections, sel) => {
+export const cancelSelections = (tempSelections, sel) => {
   let canceledSel = sel;
-  _.each(selections, (d) => {
+  _.each(tempSelections, (d) => {
     updateSelection(d, canceledSel, true);
   });
   return canceledSel;
@@ -155,7 +185,7 @@ export const getCountryList = (athletes) => {
     .value();
 };
 
-export const getSortedCountries = (countryList, sortOption) => {
+export const sortCountries = (countryList, sortOption) => {
   if (sortOption === 'alphabetical') {
     return _.sortBy(countryList, (c) => c.country);
   } else {
@@ -163,7 +193,7 @@ export const getSortedCountries = (countryList, sortOption) => {
   }
 };
 
-export const getSortedAthletesPerCountry = (countryList, sortOption) => {
+export const sortAthletesPerCountry = (countryList, sortOption) => {
   return _.chain(countryList)
     // .groupBy((a) => a.country)
     .map((c) => {
@@ -297,7 +327,7 @@ export const getMutualLinkedNodes = (focusedAIds, links) => {
 
   _.each(links, (l) => {
     //id pair from each link
-    const idPair = [l.source.id, l.target.id];
+    const idPair = [l.source.id || l.source, l.target.id || l.target];
     //compare the ID pair and the focused athletes IDs
     _.each(focusedAIds, (id, i) => {
       //if one of the pair is a focused athlete, get the other one of the pair

@@ -1,19 +1,15 @@
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import OptionsComponent from '../components/Options';
 import { getOptionsArray } from '../helpers/processor';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    list: state.options.list,
-    searchedAthletes: state.options.searchedAthletes,
-    nameOption: state.options.nameOption,
-    sel: state.options.sel,
-    selParent: state.options.selParent,
+    ...state.options,
     optionList: getOptionsArray(state.options.category, state.options.sel),
     gender: state.gender,
     racesInfo: state.data.racesInfo,
-    originalNames: state.options.originalNames,
-    isOptionOpen: state.options.isOpen,
+    count: state.data.graph.nodes.length,
   }
 };
 
@@ -27,7 +23,6 @@ const mapDispatchToProps = (dispatch) => (
     },
     update: (value) => {
       dispatch({ type: 'RESET_GRAPH'})
-      dispatch({ type: 'SET_VIS_DATA', value })
     },
     cancel: (gender, options) => {
       dispatch({ type: 'CANCEL' })
@@ -41,8 +36,8 @@ const mapDispatchToProps = (dispatch) => (
     toggleSelParent: (kind, type) => {
       dispatch( { type: 'TOGGLE_SEL_PARENT', value: { kind, type } })
     },
-    toggle: (isOptionOpen) => {
-      dispatch({ type: 'TOGGLE_OPTIONS', value: !isOptionOpen });
+    toggle: (isOpen) => {
+      dispatch({ type: 'TOGGLE_OPTIONS', value: !isOpen });
     },
   }
 );
@@ -51,28 +46,28 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return Object.assign({}, {
     ...stateProps,
     updateSelection: (e) => {
-      return dispatchProps.updateSelection(e.currentTarget.value);
+      dispatchProps.updateSelection(e.currentTarget.value);
     },
     updateNameOption: (e) => {
-      return dispatchProps.updateNameOption(e.currentTarget.value);
+      dispatchProps.updateNameOption(e.currentTarget.value);
     },
     update: () => {
-      return dispatchProps.update({ ...stateProps });
+      dispatchProps.update({ ...stateProps });
     },
     cancel: () => {
-      return dispatchProps.cancel();
+      dispatchProps.cancel();
     },
     addName: (e) => {
-      return dispatchProps.addName(e.value);
+      dispatchProps.addName(e.value);
     },
     removeName: (id) => {
-      return dispatchProps.removeName(id);
+      dispatchProps.removeName(id);
     },
     toggleSelParent: (kind, type) => {
-      return dispatchProps.toggleSelParent(kind, type);
+      dispatchProps.toggleSelParent(kind, type);
     },
     toggle: () => {
-      dispatchProps.toggle(stateProps.isOptionOpen);
+      dispatchProps.toggle(stateProps.isOpen);
     },
   })
 };

@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import IntroComponent from '../components/Intro'
 
 const mapStateToProps = (state, ownProps) => (
   {
     searchedAthletes: state.options.searchedAthletes,
-    nameOption: state.options.nameOption,
+    //nameOption: state.options.nameOption,
     sel: state.options.sel,
     gender: state.gender,
     isLoading: state.currentView.isLoading,
@@ -14,34 +15,36 @@ const mapStateToProps = (state, ownProps) => (
 
 const mapDispatchToProps = (dispatch) => (
   {
-    selectGender: (value) => {
+    setGender: (value) => {
       dispatch({ type: 'SET_GENDER', value });
     },
-    setDefaultOptions: (gender) => {
-      dispatch({ type: 'SET_DEFAULT_OPTIONS', gender });
+    setDefaultOptions: (value) => {
+      dispatch({ type: 'SET_DEFAULT_OPTIONS', value });
     },
-    setDefaultData: (value) => {
-      dispatch({ type: 'SET_VIS_DATA', value });
-      //show loading sign
-      // setTimeout(() => {
-        dispatch({ type: 'SET_CURRENT_VIEW', value: 'vis' })
-      // }, 1000);
-    }
+    // startVis: (value) => {
+    //   dispatch({ type: 'SET_VIS_DATA', value });
+    //   //show loading sign
+    //   setTimeout(() => {
+    //     dispatch({ type: 'SET_CURRENT_VIEW', value: 'vis' })
+    //   }, 500);
+    // }
   }
 )
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return Object.assign({}, {
     ...stateProps,
-    selectGender: (e) => {
-      dispatchProps.selectGender(e.currentTarget.value);
+    setGender: (e) => {
+      //default men
+      const gender = e ? e.currentTarget.value : 'men';
+      dispatchProps.setGender(gender);
     },
-    sendGenderSelection: () => {
+    setDefaultOptions: () => {
       dispatchProps.setDefaultOptions(stateProps.gender);
     },
-    startVis: () => {
-      dispatchProps.setDefaultData(stateProps);
-    }
+    // startVis: () => {
+    //   dispatchProps.startVis(_.pick(stateProps, ['gender', 'sel', 'searchedAthletes']));
+    // }
   })
 }
 

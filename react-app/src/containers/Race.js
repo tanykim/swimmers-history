@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch) => (
       dispatch({ type: 'UNHOVER_RACE_ATHLETE' })
     },
     clickFunc: (value, links) => {
-      dispatch({ type: 'CLICK_NODE', value, links })
+      dispatch({ type: 'SELECT_ATHLETE', value, links })
     },
   }
 );

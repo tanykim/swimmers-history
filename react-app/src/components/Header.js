@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 
 class HeaderComponent extends Component {
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.gender !== nextProps.gender) {
-      this.props.setData(nextProps.gender);
-    } else if (!nextProps.isOpen && this.props.searchedAthletes !== nextProps.searchedAthletes) {
-      this.props.setVis(nextProps);
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (this.props.gender !== nextProps.gender) {
+  //     this.props.setData(nextProps);
+  //   }
+  // }
 
   render() {
     return (<div className="header">

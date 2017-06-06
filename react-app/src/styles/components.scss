@@ -1,7 +1,6 @@
 @import './colors.scss';
 @import './size.scss';
 
-
 body {
     margin: 0;
     padding: 0;
@@ -9,20 +8,24 @@ body {
     color: $grey-darker;
     background-color: $oc-gray-0;
 }
-select {
-    font-family: inherit;
-    color: $grey-darker;
-    border-color: $grey-light;
-    &:focus, &:active, &:hover {
-        border-color: $grey;
+
+.legends, .country {
+    select {
+        font-family: inherit;
+        color: $grey-darker;
+        border-color: $grey-light;
+        &:focus, &:active, &:hover {
+            border-color: $grey;
+        }
     }
-}
-.select:after {
-    border-color: $grey-light;
+    .select:after {
+        border-color: $grey-light;
+    }
 }
 .contents.container {
     position: inherit;
-    margin-top: 12px;
+    margin-top: $pg-lg;
+    padding-bottom: $pg-lg * 2;
 }
 .legends {
     font-size: 13px;
@@ -98,5 +101,18 @@ select {
     .second-line {
         padding-top: 0;
         margin-top: -4px;
+    }
+}
+.footer {
+    background-color: $grey-dark;
+    color: $grey;
+    font-size: $small;
+    line-height: 180%;
+    a {
+        color: $white;
+    }
+    .divider {
+        margin-left: $pg-sm;
+        margin-right: $pg-sm;
     }
 }

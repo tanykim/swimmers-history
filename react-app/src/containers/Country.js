@@ -2,12 +2,10 @@ import { connect } from 'react-redux';
 import CountryComponent from '../components/Country';
 
 const mapStateToProps = (state, ownProps) => {
-  const { countryList, sortCountry, sortAthlete, graph } = state.data;
+  const { countryList, graph } = state.data;
   const { clickedId, clicked, clickedIds } = state.graph;
   return {
     countryList,
-    sortCountry,
-    sortAthlete,
     links: graph.links,
     ...state.country,
     clickedId,
@@ -25,7 +23,7 @@ const mapDispatchToProps = (dispatch) => (
       dispatch({ type: 'UNHOVER_RACE' });
     },
     clickFunc: (value, links) => {
-      dispatch({ type: 'CLICK_NODE', value, links });
+      dispatch({ type: 'SELECT_ATHLETE', value, links });
     },
     sortCountries: (value) => {
       dispatch({ type: 'SORT_COUNTRIES', value });

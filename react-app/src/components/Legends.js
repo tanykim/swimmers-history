@@ -13,7 +13,7 @@ class LegendsComponent extends Component {
       { type === 'country' &&
         <ul>
           <li>Each <strong>square</strong> is a single race result of a swimmer. 1st (gold), 2nd (silver) and 3rd (bronze) places are filled with the matching medal color.</li>
-          <li>Swimmers who competed multiple races are shown as a <strong>Rentangle</strong>, connected squares.</li>
+          <li>Swimmers who competed multiple races are shown as a <strong>rentangle</strong>, connected squares.</li>
         </ul>
       }
       { type === 'race' &&

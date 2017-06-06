@@ -1,12 +1,14 @@
 import { connect } from 'react-redux';
 import NetworkComponent from '../components/Network';
 
-const mapStateToProps = (state, ownProps) => (
-  {
-    graphData: state.data,
-    graphInfo: state.graph,
+const mapStateToProps = (state, ownProps) => {
+  const { graph, pointRange, linksRange } = state.data;
+  return {
+    graph, pointRange, linksRange,
+    ...state.graph,
+    ...state.network,
   }
-);
+};
 
 const mapDispatchToProps = (dispatch) => (
   {
@@ -17,7 +19,7 @@ const mapDispatchToProps = (dispatch) => (
       dispatch({ type: 'UNHOVER_NODE' })
     },
     clickFunc: (value, links) => {
-      dispatch({ type: 'CLICK_NODE', value, links })
+      dispatch({ type: 'SELECT_ATHLETE', value, links })
     },
     toggleLinkedNodes: (value, links) => {
       dispatch({ type: 'TOGGLE_VIEW', value: value === 'network' ? true : false, links })
@@ -26,23 +28,19 @@ const mapDispatchToProps = (dispatch) => (
 );
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { graph, pointRange, linksRange } = stateProps.graphData;
   return Object.assign({}, {
-    graph,
-    pointRange,
-    linksRange,
-    ...stateProps.graphInfo,
+    ...stateProps,
     mouseOverFunc: (d) => {
-      return dispatchProps.mouseOverFunc(d, graph);
+      return dispatchProps.mouseOverFunc(d, stateProps.graph);
     },
     mouseOutFunc: () => {
       return dispatchProps.mouseOutFunc();
     },
     clickFunc: (d) => {
-      return dispatchProps.clickFunc(d, graph.links);
+      return dispatchProps.clickFunc(d, stateProps.graph.links);
     },
     toggleLinkedNodes: (e) => {
-      return dispatchProps.toggleLinkedNodes(e.currentTarget.value, graph.links);
+      return dispatchProps.toggleLinkedNodes(e.currentTarget.value, stateProps.graph.links);
     },
   })
 };

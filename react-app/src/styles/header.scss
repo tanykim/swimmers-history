@@ -12,12 +12,13 @@
     width: 100%;
     padding-top: $pg-xs;
     padding-bottom: $pg-xs;
-    border-bottom: 1px solid $grey-lighter;
+    background-color: $main;
+    /*border-bottom: 1px solid $grey-lighter;*/
     .logo {
         text-align: center;
     }
     .logo-title {
-        color: $main;
+        color: $white;
         cursor: pointer;
         display: flex;
         align-items: center;
