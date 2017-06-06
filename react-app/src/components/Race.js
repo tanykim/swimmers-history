@@ -82,6 +82,16 @@ class RaceComponent extends Component {
   drawRaceLines(g, left, w, pDiff, isFirst) {
     _.each(_.range(8), (i) => {
       const y = pDiff * i;
+      if (i < 3) {
+        g.append('line')
+          .attr('x1', -40)
+          .attr('x2', w)
+          .attr('y1', y)
+          .attr('y2', y)
+          .attr('class', `race-place-${i + 1}`)
+          .style('stroke-width', pDiff- 4)
+          .style('stroke-opacity', 0.2);
+      }
       g.append('line')
         .attr('x1', -40)
         .attr('x2', w)

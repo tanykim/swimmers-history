@@ -20,7 +20,7 @@ const mapDispatchToProps = (dispatch) => (
       setTimeout(() => {
         dispatch({ type: 'SET_CURRENT_VIEW', value: 'vis' })
       }, 500);
-    }
+   }
   }
 );
 

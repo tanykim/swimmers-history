@@ -22,16 +22,17 @@ body {
   color: #212529;
   background-color: #f8f9fa; }
 
-.legends select, .country select {
+.instruction select, .country select {
   font-family: inherit;
   color: #212529;
   border-color: #adb5bd; }
+  .instruction select:active, .instruction select:hover, .country select:active, .country select:hover {
+    border-color: #868e96; }
+  .instruction select:focus, .country select:focus {
+    border-color: #2bc0e4 !important; }
 
-.legends select:focus, .legends select:active, .legends select:hover, .country select:focus, .country select:active, .country select:hover {
-  border-color: #868e96; }
-
-.legends .select:after, .country .select:after {
-  border-color: #adb5bd; }
+.instruction .select:after, .country .select:after {
+  border-color: #adb5bd !important; }
 
 .contents.container {
   position: inherit;
@@ -40,40 +41,45 @@ body {
 
 .legends {
   font-size: 13px;
-  line-height: 120%;
-  border-top: 1px solid #adb5bd;
-  border-bottom: 1px solid #adb5bd;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  margin-bottom: 15px; }
-
-.legends ul li:not(:last-child) {
-  margin-bottom: 6px; }
-
-.legends strong {
-  color: #2bc0e4; }
+  line-height: 140%;
+  margin-right: -24px;
+  margin-left: -25px;
+  /* double of Bulma padding */
+  background-color: #ffffff;
+  border-top: 1px solid #e9ecef;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding-top: 28px;
+  padding-bottom: 28px;
+  margin-bottom: 18px;
+  padding-right: 18px;
+  padding-left: 24px; }
+  .legends ul li:not(:last-child) {
+    margin-bottom: 6px; }
+  .legends strong {
+    color: #f5625a; }
 
 .instruction {
   font-size: 14px; }
-
-.instruction .instruction-title {
-  color: #2bc0e4; }
-
-.instruction ol {
-  color: #212529;
-  margin-top: 15px; }
-
-.instruction ol li {
-  margin-left: 15px;
-  margin-bottom: 15px;
-  line-height: 120%; }
-
-.instruction ol .control {
-  margin-top: 6px; }
+  .instruction .instruction-title {
+    color: #2bc0e4; }
+  .instruction ol {
+    color: #212529;
+    margin-top: 15px; }
+    .instruction ol li {
+      margin-left: 15px;
+      margin-bottom: 15px;
+      line-height: 120%; }
+    .instruction ol .control {
+      margin-top: 6px; }
 
 .vis-wrapper {
   border: 1px solid #e9ecef;
-  border-radius: 4px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   background-color: #ffffff; }
 
 .vis-hover, .vis-hover-double {
@@ -85,39 +91,34 @@ body {
   margin-top: -38px;
   display: none;
   overflow: visible; }
-
-.vis-hover .hover-content, .vis-hover-double .hover-content {
-  white-space: pre;
-  position: relative;
-  left: -50%;
-  background: #212529;
-  padding: 4px 8px; }
-
-.vis-hover .arrow-down, .vis-hover-double .arrow-down {
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 10px solid #212529;
-  position: relative;
-  left: -8px; }
+  .vis-hover .hover-content, .vis-hover-double .hover-content {
+    white-space: pre;
+    position: relative;
+    left: -50%;
+    background: #212529;
+    padding: 4px 8px; }
+  .vis-hover .arrow-down, .vis-hover-double .arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid #212529;
+    position: relative;
+    left: -8px; }
 
 .vis-hover-double {
   margin-top: -56px; }
-
-.vis-hover-double .second-line {
-  padding-top: 0;
-  margin-top: -4px; }
+  .vis-hover-double .second-line {
+    padding-top: 0;
+    margin-top: -4px; }
 
 .footer {
   background-color: #495057;
   color: #868e96;
   font-size: 14px;
   line-height: 180%; }
-
-.footer a {
-  color: #ffffff; }
-
-.footer .divider {
-  margin-left: 15px;
-  margin-right: 15px; }
+  .footer a {
+    color: #ffffff; }
+  .footer .divider {
+    margin-left: 15px;
+    margin-right: 15px; }

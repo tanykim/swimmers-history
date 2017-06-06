@@ -9,17 +9,20 @@ body {
     background-color: $oc-gray-0;
 }
 
-.legends, .country {
+.instruction, .country {
     select {
         font-family: inherit;
         color: $grey-darker;
         border-color: $grey-light;
-        &:focus, &:active, &:hover {
+        &:active, &:hover {
             border-color: $grey;
+        }
+        &:focus {
+            border-color: $main !important;
         }
     }
     .select:after {
-        border-color: $grey-light;
+        border-color: $grey-light !important;
     }
 }
 .contents.container {
@@ -29,12 +32,20 @@ body {
 }
 .legends {
     font-size: 13px;
-    line-height: 120%;
-    border-top: 1px solid $grey-light;
-    border-bottom: 1px solid $grey-light;
-    padding-top: $pg-sm;
-    padding-bottom: $pg-sm;
-    margin-bottom: $pg-sm;
+    line-height: 140%;
+    margin-right: -24px;
+    margin-left: -25px; /* double of Bulma padding */
+    background-color: $white;
+    border-top: 1px solid $grey-lighter;
+    border-right: 1px solid $grey-lighter;
+    border-bottom: 1px solid $grey-lighter;
+    border-top-right-radius: $bd-radius;
+    border-bottom-right-radius: $bd-radius;
+    padding-top: $pg-lg;
+    padding-bottom: $pg-lg;
+    margin-bottom: $pg-md;
+    padding-right: $pg-md;
+    padding-left: 24px;
     ul {
         li {
             &:not(:last-child) {
@@ -43,7 +54,7 @@ body {
         }
     }
     strong {
-        color: $main;
+        color: $highlight;
     }
 }
 .instruction {
@@ -66,7 +77,9 @@ body {
 }
 .vis-wrapper {
     border: 1px solid $grey-lighter;
-    border-radius: $bd-radius;
+    border-top-left-radius: $bd-radius;
+    border-bottom-left-radius: $bd-radius;
+    border-bottom-right-radius: $bd-radius;
     background-color: $white;
 }
 .vis-hover {

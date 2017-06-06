@@ -29,6 +29,7 @@ const currentView = (state = { view: 'intro' }, action) => {
     case 'SET_CURRENT_VIEW':
       return Object.assign({}, state, { view: action.value, isLoading: false });
     case 'SET_DEFAULT_OPTIONS':
+      return Object.assign({}, state, { isLoading: true });
     case 'RESET_GRAPH':
       return Object.assign({}, state, { isLoading: true });
     case 'SET_GENDER':
@@ -79,10 +80,11 @@ const options = (state = { isOpen: false }, action) => {
         defaultIds = ['4038916']; //phelps
       } else {
         defaultEvents = {
-          meets: ['0OG-a2016', '0OG-e2012'],
-          events: ['0IND-d400Fr', '0IND-e800Fr']
+          meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008'],
+          events: ['0IND-a50Fr', '0IND-b100Fr', '0IND-c200Fr', '0IND-d400Fr', '0IND-e800Fr',
+            '1TEAM-o4X100Fr', '1TEAM-p4X200Fr']
         };
-        defaultIds = ['4772552']; //ledecky
+        defaultIds = []; //ledecky '4772552'
       }
       const selections = setSelections(state.sel, state.selParent, defaultEvents);
       const { sel, selParent } = selections;
@@ -121,13 +123,14 @@ const options = (state = { isOpen: false }, action) => {
       return Object.assign({}, state, {
         originalNames: _.cloneDeep(state.searchedAthletes),
         originalSel: _.cloneDeep(state.sel),
+        originalSelParent: _.cloneDeep(state.selParent),
         isOpen: false,
       });
     case 'CANCEL':
       return Object.assign({}, state, {
         isOpen: false,
         sel: state.originalSel,
-        selParent: state.origianlSelParent,
+        selParent: state.originalSelParent,
         searchedAthletes: state.originalNames,
         nameOption: state.originalNames.length > 0 ? 'search' : 'all'}
       );
@@ -306,7 +309,7 @@ const country = (state = {}, action) => {
   switch(action.type) {
     case 'SET_VIS_DATA':
       return Object.assign({}, state, {
-        sortCountry: 'alphabetical',
+        sortCountry: 'athletes',
         sortAthlete: 'races',
       });
     case 'HOVER_RACE':

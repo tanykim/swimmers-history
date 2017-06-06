@@ -6,7 +6,7 @@ class NetworkComponent extends Component {
 
   dragstarted(d, simulation) {
     if (!d3.event.active) {
-      simulation.alphaTarget(0.3).restart();
+      simulation.alphaTarget(0.5).restart();
     }
     d.fx = d.x;
     d.fy = d.y;
@@ -41,17 +41,22 @@ class NetworkComponent extends Component {
     const dim = w * 0.8;
     d3.select('#svg-network').attr('height', Math.round(dim));
     let svg = d3.select('#network-g');
-    const decayRange = d3.scaleLinear().range([0.2, 0.8]).domain([1, 600]);
+    //1: no animation at first, 0: move more, dispersed
+    const decayRange = d3.scaleLinear().range([0.5, 1]).domain([1, 800]);
+    const distRange = d3.scaleLinear().range([dim, dim / 10]).domain([0, 800]);
     const simulation = d3.forceSimulation()
       .force('link', d3.forceLink()
         .id((d) => d.id)
-        .distance(() => dim / 10)
+        .distance(() => distRange(graph.nodes.length) / 10)
       )
       .force('charge', d3.forceManyBody()
-        .distanceMax(3000 / Math.sqrt(graph.nodes.length))
+        .distanceMax(distRange(graph.nodes.length))
+      )
+      .force('collide', d3.forceCollide()
+        .iterations(10)
       )
       .force('center', d3.forceCenter(w / 2, dim / 2))
-      .velocityDecay(decayRange(graph.nodes.length));
+      .velocityDecay(Math.max(Math.min(decayRange(graph.nodes.length), 1), 0.2));
 
     //link as lines
     let linkG = svg.append('g').attr('id', 'links');

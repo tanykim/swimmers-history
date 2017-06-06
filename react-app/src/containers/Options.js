@@ -11,6 +11,7 @@ const mapStateToProps = (state, ownProps) => {
     racesInfo: state.data.racesInfo,
     count: state.data.graph.nodes.length,
     tempCount: state.data.athletesCount,
+    isLoading: state.currentView.isLoading,
   }
 };
 
@@ -22,10 +23,10 @@ const mapDispatchToProps = (dispatch) => (
     updateNameOption: (value) => {
       dispatch({ type: 'SET_NAME_OPTION', value })
     },
-    update: (value) => {
+    update: () => {
       dispatch({ type: 'RESET_GRAPH'})
     },
-    cancel: (gender, options) => {
+    cancel: () => {
       dispatch({ type: 'CANCEL' })
     },
     addName: (value) => {
@@ -56,7 +57,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       dispatchProps.updateNameOption(e.currentTarget.value);
     },
     update: () => {
-      dispatchProps.update({ ...stateProps });
+      if (stateProps.tempCount > 0) {
+        dispatchProps.update();
+      }
     },
     cancel: () => {
       dispatchProps.cancel();

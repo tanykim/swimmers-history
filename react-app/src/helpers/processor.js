@@ -143,7 +143,8 @@ export const getCountryList = (athletes) => {
       const sorted = _.sortBy(list, (a) => -a.records.length);
       return { country, athletes: sorted };
     })
-    .sortBy((d) => d.country)
+    //default is by athletes count
+    .sortBy((d) => -d.athletes.length)
     .value();
 };
 
@@ -157,7 +158,6 @@ export const sortCountries = (countryList, sortOption) => {
 
 export const sortAthletesPerCountry = (countryList, sortOption) => {
   return _.chain(countryList)
-    // .groupBy((a) => a.country)
     .map((c) => {
       const { athletes, country } = c;
       let sorted;

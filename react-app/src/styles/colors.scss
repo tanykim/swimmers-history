@@ -9,6 +9,7 @@ $main-light: #91f0f9;
 $main-dark : darken($main, 5%);
 $sub: #21d7c4;
 $highlight: #f5625a;
+$highlight-dark : darken($highlight, 5%);
 $highlight-light: #ffebea;
 
 /* vis */
@@ -20,7 +21,7 @@ $linked: $main-light;
 /* result */
 $gold: #fbcd15;
 $silver: #dadada;
-$bronze: #d88133;
+$bronze: #e6852f;
 $white-trans: fade($white, 70%);
 
 /* grey */

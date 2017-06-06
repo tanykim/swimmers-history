@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => (
   {
     removeAthlete: (value, links) => {
-      dispatch({ type: 'CLICK_NODE', value, links })
+      dispatch({ type: 'SELECT_ATHLETE', value, links })
     },
     removeAllAthletes: () => {
       dispatch({ type: 'RESET_GRAPH' })

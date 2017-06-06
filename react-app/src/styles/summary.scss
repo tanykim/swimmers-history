@@ -22,6 +22,18 @@
             margin-left: $pg-xs;
         }
     }
+    .temp-count {
+        position: absolute;
+        font-size: $small;
+        .count {
+            color: $highlight;
+            font-size: $normal;
+            font-weight: bold;
+        }
+        .count-warning {
+            color: $highlight;
+        }
+    }
 }
 
 .buttons {

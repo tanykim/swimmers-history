@@ -34,8 +34,11 @@ class OptionsComponent extends Component {
           gender={this.props.gender}
           count={this.props.count}
         />
-        { this.props.isOpen && <div>
-          {this.props.tempCount === undefined ? this.props.count : this.props.tempCount}
+        { this.props.isOpen && <div className="temp-count">
+          <span className="count">
+            {this.props.tempCount === undefined ? this.props.count : this.props.tempCount}
+          </span> { this.props.gender } swimmers found.
+          { this.props.tempCount === 0 && <span className="count-warning"> Modify your selection.</span>}
         </div> }
       </div>
       <div className="column is-one-third buttons">
@@ -44,7 +47,7 @@ class OptionsComponent extends Component {
             <span className="typcn typcn-edit"/>MODIFY
           </a> :
           <span>
-            <a className="button is-small update" onClick={this.props.update}>
+            <a className="button is-small update" onClick={this.props.update} disabled={this.props.tempCount === 0}>
               <span className="typcn typcn-refresh"/>UPDATE
             </a>
             <a className="button is-small cancel" onClick={this.props.cancel}>
