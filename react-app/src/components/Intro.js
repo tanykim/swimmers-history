@@ -292,12 +292,12 @@ class IntroComponent extends Component {
               <input
                 type="radio"
                 name="gender"
-                value="men"
-                checked={this.props.gender === 'men'}
+                value="women"
+                checked={this.props.gender === 'women'}
                 disabled={this.props.isLoading}
-                onChange={this.props.setGender} /> <strong>MEN</strong>
+                onChange={this.props.setGender} /> <strong>WOMEN</strong>
               <div className="radio-desc">
-                Michael Phelps's all individual events <br/>in 2008, 2012 and 2016
+                All women's free style events in 2016
               </div>
             </label>
           </div>
@@ -306,12 +306,12 @@ class IntroComponent extends Component {
               <input
                 type="radio"
                 name="gender"
-                value="women"
-                checked={this.props.gender === 'women'}
+                value="men"
+                checked={this.props.gender === 'men'}
                 disabled={this.props.isLoading}
-                onChange={this.props.setGender} /> <strong>WOMEN</strong>
+                onChange={this.props.setGender} /> <strong>MEN</strong>
               <div className="radio-desc">
-                All women's free style events in 2016
+                Michael Phelps's all individual events <br/>in 2008, 2012 and 2016
               </div>
             </label>
           </div>

@@ -86,7 +86,7 @@ class NetworkComponent extends Component {
         }, 0);
         return total <= 700 ? 3 : Math.sqrt(radius(total));
       })
-      .attr('class', 'node-normal')
+      .attr('class', (d) => `node-normal${d.place <= 3 ? ` node-${d.place}` : ''}`)
       .call(d3.drag()
         .on('start', (d) => this.dragstarted(d, simulation))
         .on('drag', this.dragged)

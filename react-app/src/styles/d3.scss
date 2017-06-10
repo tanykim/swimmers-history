@@ -77,6 +77,15 @@
     @extend .node-common;
     fill: $node;
 }
+.node-1 {
+    fill: $gold;
+}
+.node-2 {
+    fill: $silver;
+}
+.node-3 {
+    fill: $bronze;
+}
 .node-all-linked {
     stroke: $highlight;
     stroke-opacity: 1;

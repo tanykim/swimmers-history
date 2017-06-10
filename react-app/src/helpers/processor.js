@@ -132,6 +132,7 @@ export const getAthletesData = (gender, races, searchedAthletes) => {
         allTotalPoints.push(totalPoint);
         athlete.records = _.sortBy(validRecords, (r) => r.race_id);
         athlete.totalPoint = totalPoint;
+        athlete.place = _.min(validRecords.map((r) => +r.place));
         athletes.push(athlete);
       }
   });

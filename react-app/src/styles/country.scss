@@ -28,7 +28,7 @@
         padding-left: 1.4em;
     }
     .athlete-element {
-        margin-top: 15px;
+        margin-top: 12px;
         margin-bottom: 13px;
     }
     .athlete-country {
@@ -37,16 +37,16 @@
         margin-top: 13px;
         margin-right: 3px;
         i {
-            font-size: $xsmall;
+            font-size: 11px;
             font-style: normal;
             background-color: $grey;
             color: $white;
-            width: 16px;
-            height: 16px;
-            border-radius: 8px;
+            width: 18px;
+            height: 18px;
+            border-radius: 9px;
             display: inline-block;
             text-align: center;
-            line-height: 140%;
+            line-height: 180%;
         }
     }
     .athlete-group {
@@ -55,7 +55,7 @@
     .r-general {
         margin-top: 15px;
         margin-bottom: 14px;
-        background-color: $main-light;
+        background-color: $node;
         width: 18px;
         height: 18px;
         cursor: pointer;
@@ -109,6 +109,6 @@
         border-bottom: $bd-race-clicked;
     }
     .a-clicked.r-hover, .r-hover {
-        border: 3px solid $grey-dark;
+        border: 3px solid $main-light;
     }
 }
