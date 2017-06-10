@@ -132,6 +132,11 @@
     @extend .v-top;
     fill: $grey-darker;
 }
+.race-label-date {
+    @extend .size-xsmall;
+    @extend .v-top;
+    fill: $grey;
+}
 .race-label-meet, .race-label-year {
     font-weight: bold;
 }
@@ -165,4 +170,51 @@
     fill: $bronze;
     stroke: $grey-dark;
     stroke-width: 2px;
+}
+.intro-wave {
+    stroke: $main;
+}
+.intro-year-line {
+    stroke: $grey-lighter;
+    stroke-dasharray: 4 6;
+}
+.intro-year-bg {
+    fill: $main;
+}
+.intro-year-paused {
+    fill: $highlight;
+}
+.intro-year-text {
+    font-size: $small;
+    fill: $white;
+    font-weight: bold;
+    @extend .unselectable;
+}
+.intro-meet-hidden {
+    opacity: 0;
+}
+.intro-meet-shown {
+    opacity: 1;
+}
+.intro-meet-dimmed {
+    opacity: 0.5;
+}
+.intro-meet-top, .intro-meet-bottom {
+    @extend .unselectable;
+    font-size: $xsmall;
+}
+.intro-year-top {
+    text-anchor: end
+}
+.intro-year-bottom {
+    @extend .v-top;
+}
+.intro-meet-bottom {
+    @extend .v-top;
+}
+.intro-swimmer {
+    fill: $highlight;
+    stroke: $white;
+    stroke-width: 6px;
+    stroke-opacity: 0.5;
 }

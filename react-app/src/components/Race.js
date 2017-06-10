@@ -40,24 +40,32 @@ class RaceComponent extends Component {
     });
   }
 
-  drawRaceLabels(g, aWidth, x, raceId, isFirstMeet, isFirstYear, initialTop, labelDist, h) {
-    let y = initialTop;
-    let line = g.append('line')
-      .attr('x1', x - aWidth / 2)
-      .attr('x2', x - aWidth / 2)
-      .attr('y1', h)
-      .attr('y2', -y)
-      .attr('class', 'race-line-race');
-    //draw race
+  drawRaceLabels(g, aWidth, x, raceId, raceDate, isFirstMeet, isFirstYear, initialTop, labelDist, ldWeight, h) {
+    let y = initialTop - labelDist * ldWeight.date;
+    //draw race date name
     const elms = raceId.split('-');
     g.append('text')
       .attr('x', x)
       .attr('y', -y)
       .text(elms[elms.length - 1].slice(1))
       .attr('class', 'race-label-race');
+    const dateArr = raceDate.split(' ');
+    y += labelDist * ldWeight.date;
+    g.append('text')
+      .attr('x', x)
+      .attr('y', -y)
+      .text(`${dateArr[1]} ${dateArr[0]}`)
+      .attr('class', 'race-label-date');
+    let line = g.append('line')
+      .attr('x1', x - aWidth / 2)
+      .attr('x2', x - aWidth / 2)
+      .attr('y1', h)
+      .attr('y2', -y)
+      .attr('class', 'race-line-race');
+
     //draw year
     if (isFirstYear) {
-      y += labelDist;
+      y += labelDist * ldWeight.year;
       g.append('text')
         .attr('x', x)
         .attr('y', -y)
@@ -68,7 +76,7 @@ class RaceComponent extends Component {
     }
     //draw meet
     if (isFirstMeet) {
-      y += labelDist;
+      y += labelDist * ldWeight.meet;
       g.append('text')
         .attr('x', x)
         .attr('y', -y)
@@ -122,11 +130,13 @@ class RaceComponent extends Component {
 
   drawGraph(props) {
 
-    const { byRace, validRaces, meetsIndex, yearsIndex } = props;
+    const { byRace, validRaces, meetsIndex, yearsIndex, raceDates } = props;
     //set the size
     const containerW = document.getElementById('vis-race-width').clientWidth;
-    const initialTop = 40;
-    let margin = { veryTop: 30, top: initialTop, right: 0, bottom: 30, left: 70, extended: 0 };
+    const labelDist = 20;
+    const ldWeight = { date: 0.8, year: 1.2, meet: 1};
+    const initialTop = 40 + labelDist * ldWeight.date;
+    let margin = { veryTop: 40, top: initialTop, right: 0, bottom: 40, left: 70, extended: 0 };
     let dim = { w: containerW - 100 - margin.left - margin.right };
     let rDiff = 76; //minimum distance between races
     const aWidth = 8; //width of line representing an athlete
@@ -161,7 +171,7 @@ class RaceComponent extends Component {
       //check more than 8 places or DSQ, set extended bottom margin
       let xLineCount = 0;
       //start to display after one place-length distance
-      const xGap = pDiff;
+      const xGap = pDiff / 2;
       if (_.size(race) > 8 || _.keys(race).indexOf('DSQ') > -1) {
         //get athletes count out of place 8
         const aOutside = _.chain(race)
@@ -189,19 +199,20 @@ class RaceComponent extends Component {
       //check if the race is the first in meets or years
       let isFirstYear = yearsIndex.indexOf(i) > -1 ? true : false;
       let isFirstMeet = meetsIndex.indexOf(i) > -1 ? true : false;
-      const labelDist = 20;
       if (isFirstYear) {
-        margin.top = Math.max(margin.top, initialTop + labelDist);
+        margin.top = Math.max(margin.top, initialTop + labelDist * ldWeight.year);
       }
       if (isFirstMeet) {
-        margin.top = Math.max(margin.top, initialTop + labelDist * 2);
+        margin.top = Math.max(margin.top, initialTop + labelDist * (ldWeight.year + ldWeight.meet));
       }
 
       //draw labels of meet, year, and event
       this.drawRaceLabels(
         g, aWidth, accWidth,
-        r, isFirstMeet, isFirstYear,
-        initialTop, labelDist, dim.h + halfL + (xLineCount ? xGap + xLineCount * pDiff : 0));
+        r, raceDates[i],
+        isFirstMeet, isFirstYear,
+        initialTop, labelDist, ldWeight,
+        dim.h + halfL + (xLineCount ? xGap + xLineCount * pDiff : 0));
 
       //translate each row
       d3.select(`#race-g-${gId}`)
@@ -215,6 +226,7 @@ class RaceComponent extends Component {
         gId += 1;
         accHeight += (dim.h + margin.top + margin.bottom + margin.extended)
         margin.top = initialTop;
+        margin.extended = 0;
       }
     });
 

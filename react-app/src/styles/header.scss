@@ -17,25 +17,6 @@
     .logo {
         text-align: center;
     }
-    .logo-title {
-        color: $white;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        .text-swimmer, .text-network {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-        }
-        .text-swimmer {
-            font-weight: bold;
-            width: 40%;
-        }
-        .text-network {
-            width: 48%;
-            margin-left: 2%;
-        }
-    }
     .header-gender {
         display: flex;
         align-items: center;

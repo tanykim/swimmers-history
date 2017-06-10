@@ -4,11 +4,10 @@ import IntroComponent from '../components/Intro'
 
 const mapStateToProps = (state, ownProps) => (
   {
-    searchedAthletes: state.options.searchedAthletes,
-    sel: state.options.sel,
     gender: state.gender,
     isLoading: state.currentView.isLoading,
-    competition: state.data.competition,
+    competitions: state.data.competitions,
+    meets: state.data.category.meets,
   }
 )
 

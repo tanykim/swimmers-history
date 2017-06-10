@@ -9,113 +9,6 @@ body {
     background-color: $oc-gray-0;
 }
 
-.instruction, .country {
-    select {
-        font-family: inherit;
-        color: $grey-darker;
-        border-color: $grey-light;
-        &:active, &:hover {
-            border-color: $grey;
-        }
-        &:focus {
-            border-color: $main !important;
-        }
-    }
-    .select:after {
-        border-color: $grey-light !important;
-    }
-}
-.contents.container {
-    position: inherit;
-    margin-top: $pg-lg;
-    padding-bottom: $pg-lg * 2;
-}
-.legends {
-    font-size: 13px;
-    line-height: 140%;
-    margin-right: -24px;
-    margin-left: -25px; /* double of Bulma padding */
-    background-color: $white;
-    border-top: 1px solid $grey-lighter;
-    border-right: 1px solid $grey-lighter;
-    border-bottom: 1px solid $grey-lighter;
-    border-top-right-radius: $bd-radius;
-    border-bottom-right-radius: $bd-radius;
-    padding-top: $pg-lg;
-    padding-bottom: $pg-lg;
-    margin-bottom: $pg-md;
-    padding-right: $pg-md;
-    padding-left: 24px;
-    ul {
-        li {
-            &:not(:last-child) {
-                margin-bottom: $pg-xs;
-            }
-        }
-    }
-    strong {
-        color: $highlight;
-    }
-}
-.instruction {
-    font-size: $small;
-    .instruction-title {
-        color: $main;
-    }
-    ol {
-        color: $grey-darker;
-        margin-top: $pg-sm;
-        li {
-            margin-left: $pg-sm;
-            margin-bottom: $pg-sm;
-            line-height: 120%;
-        }
-        .control {
-            margin-top: $pg-xs;
-        }
-    }
-}
-.vis-wrapper {
-    border: 1px solid $grey-lighter;
-    border-top-left-radius: $bd-radius;
-    border-bottom-left-radius: $bd-radius;
-    border-bottom-right-radius: $bd-radius;
-    background-color: $white;
-}
-.vis-hover {
-    position: absolute;
-    text-align: center;
-    font-size: $xsmall;
-    color: $white;
-    pointer-events: none;
-    margin-top: -38px;
-    display: none;
-    overflow: visible;
-    .hover-content {
-        white-space: pre;
-        position: relative;
-        left: -50%;
-        background: $grey-darker;
-        padding: 4px 8px;
-    }
-    .arrow-down {
-        width: 0;
-        height: 0;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-top: 10px solid $grey-darker;
-        position: relative;
-        left: -8px;
-    }
-}
-.vis-hover-double {
-    @extend .vis-hover;
-    margin-top: -56px;
-    .second-line {
-        padding-top: 0;
-        margin-top: -4px;
-    }
-}
 .footer {
     background-color: $grey-dark;
     color: $grey;
@@ -127,5 +20,92 @@ body {
     .divider {
         margin-left: $pg-sm;
         margin-right: $pg-sm;
+    }
+}
+
+.intro, .header {
+    .logo-title {
+        display: flex;
+        align-items: center;
+        .text-swimmer, .text-network {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+        .text-swimmer {
+            font-weight: bold;
+        }
+    }
+}
+.intro {
+    background-color: $white;
+    .logo-wrapper {
+        position: relative;
+    }
+    .logo-bg {
+        position: absolute;
+        width: 100%;
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .logo-title {
+        flex-direction: column;
+        color: $main;
+        font-size: 1.4em;
+        padding-right: 10%;
+        padding-left: 10%;
+    }
+    .text-swimmer {
+        width: 100%;
+        justify-content: space-between !important;
+    }
+    .text-network {
+        width: 100%;
+    }
+    .radio-selection {
+        text-align: center;
+        div {
+            padding-top: 2em;
+            color: $grey;
+            font-size: $small;
+        }
+    }
+    .radio {
+        text-align: center;
+        width: 100%;
+    }
+    .radio-wrapper {
+        border-right: 1px solid $grey-lighter;
+    }
+    .radio-desc {
+        margin-top: 1em;
+    }
+    .button-wrapper {
+        text-align: center;
+        margin-bottom: 2em;
+    }
+    .intro-button {
+        color: $white;
+        background-color: $highlight;
+        border-color: $highlight;
+        &:hover {
+            background-color: $highlight-dark;
+        }
+    }
+
+}
+.header {
+    .logo-title {
+        color: $white;
+        cursor: pointer;
+    }
+    .text-swimmer {
+        width: 40%;
+    }
+    .text-network {
+        width: 48%;
+        margin-left: 2%;
     }
 }

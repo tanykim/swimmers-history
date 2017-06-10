@@ -1,0 +1,69 @@
+@import './colors.scss';
+@import './size.scss';
+
+.instruction, .country {
+    select {
+        font-family: inherit;
+        color: $grey-darker;
+        border-color: $grey-light;
+        &:active, &:hover {
+            border-color: $grey;
+        }
+        &:focus {
+            border-color: $main !important;
+        }
+    }
+    .select:after {
+        border-color: $grey-light !important;
+    }
+}
+.contents.container {
+    position: inherit;
+    margin-top: $pg-lg;
+    padding-bottom: $pg-lg * 2;
+}
+.legends {
+    font-size: 13px;
+    line-height: 140%;
+    margin-right: -24px;
+    margin-left: -25px; /* double of Bulma padding */
+    background-color: $white;
+    border-top: 1px solid $grey-lighter;
+    border-right: 1px solid $grey-lighter;
+    border-bottom: 1px solid $grey-lighter;
+    border-top-right-radius: $bd-radius;
+    border-bottom-right-radius: $bd-radius;
+    padding-top: $pg-lg;
+    padding-bottom: $pg-lg;
+    margin-bottom: $pg-md;
+    padding-right: $pg-md;
+    padding-left: 24px;
+    ul {
+        li {
+            &:not(:last-child) {
+                margin-bottom: $pg-xs;
+            }
+        }
+    }
+    strong {
+        color: $highlight;
+    }
+}
+.instruction {
+    font-size: $small;
+    .instruction-title {
+        color: $main;
+    }
+    ol {
+        color: $grey-darker;
+        margin-top: $pg-sm;
+        li {
+            margin-left: $pg-sm;
+            margin-bottom: $pg-sm;
+            line-height: 120%;
+        }
+        .control {
+            margin-top: $pg-xs;
+        }
+    }
+}

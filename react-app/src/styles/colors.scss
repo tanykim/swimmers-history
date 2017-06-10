@@ -8,9 +8,11 @@ $main: #2bc0e4;
 $main-light: #91f0f9;
 $main-dark : darken($main, 5%);
 $sub: #21d7c4;
-$highlight: #f5625a;
+$highlight: #f32f57;
+/*#f5625a;*/
 $highlight-dark : darken($highlight, 5%);
-$highlight-light: #ffebea;
+$highlight-light: #fb8888;
+/*#ffebea;*/
 
 /* vis */
 $node: $oc-gray-8;

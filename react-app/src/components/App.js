@@ -4,9 +4,9 @@ import Vis from '../containers/Vis';
 
 class AppComponent extends Component {
 
-  // componentWillMount() {
-  //   this.props.init();
-  // }
+  componentWillMount() {
+    this.props.init();
+  }
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.isLoading && nextProps.isLoading) {

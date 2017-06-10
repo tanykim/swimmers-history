@@ -2,7 +2,7 @@ import _ from 'lodash';
 import Data from '../data/data.json';
 const allAthletes = Data.athletes;
 const allLinks = Data.graph;
-const { meets, events, competitions } = Data;
+const { meets, events, competitions, race } = Data;
 const category = { meets, events };
 
 //get the cetegory data
@@ -54,11 +54,15 @@ export const updateSelection = (selection, sel) => {
   const arr = selection.split(',');
   updatedSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? true : false;
   return updatedSel;
-}
+};
 
 export const getCompetition = () => {
   return competitions;
-}
+};
+
+export const getCategory = () => {
+  return category;
+};
 
 //get races from the selection in option
 export const getRaces = (sel, gender) => {
@@ -177,7 +181,7 @@ export const sortAthletesPerCountry = (countryList, sortOption) => {
     .value();
 }
 
-export const getAthletesByRace = (athletes, races) => {
+export const getAthletesByRace = (athletes, races, gender) => {
   const byRace = _.fromPairs(races.map((r) => [r, {}]));
   const getAObj = (a, place) => {
     return { ...a, place };
@@ -215,7 +219,8 @@ export const getAthletesByRace = (athletes, races) => {
       yearsIndex.push(i);
     }
   }
-  return { byRace, validRaces, meetsIndex, yearsIndex };
+  const raceDates = validRaces.map((r) => race[gender][r])
+  return { byRace, validRaces, meetsIndex, yearsIndex, raceDates };
 };
 
 //top athletes for selection dropdown
@@ -340,12 +345,13 @@ export const getRacesObjByA = (obj) => {
   }
 };
 
-export const getSharedRaces = (athletes) => {
+export const getSharedRaces = (athletes, gender) => {
   const raceIdsByA = athletes.map((a) => _.keys(a.records))
   let shared = raceIdsByA[0];
   for (let i = 1; i < raceIdsByA.length; i++) {
     shared = _.intersection(shared, raceIdsByA[i]);
   }
+  // const raceDate = shared.map((r) => race[gender][r]);
   return shared;
 };
 

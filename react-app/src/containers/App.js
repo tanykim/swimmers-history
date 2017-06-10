@@ -14,6 +14,9 @@ const mapStateToProps = (state, ownProps) => (
 
 const mapDispatchToProps = (dispatch) => (
   {
+    init: () => {
+      dispatch({ type: 'INITIALIZE' });
+    },
     startVis: (value) => {
       dispatch({ type: 'SET_VIS_DATA', value });
       //show loading sign
@@ -27,6 +30,9 @@ const mapDispatchToProps = (dispatch) => (
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return Object.assign({}, {
     ...stateProps,
+    init: () => {
+      dispatchProps.init();
+    },
     startVis: () => {
       dispatchProps.startVis(stateProps);
     }
