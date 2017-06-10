@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
+import scrollToComponent from 'react-scroll-to-component';
 import * as d3 from 'd3';
 import _ from 'lodash';
 import Logo from './Logo';
 import Footer from './Footer';
 
 class IntroComponent extends Component {
+
+  scroll(element) {
+    //scroll to the result when a swimmer is selected
+    scrollToComponent(this.refs[element], {
+      offset: 0,
+      align: 'top',
+      duration: 400
+    });
+  }
 
   getyearIdx (year, h) {
     let yPos;
@@ -214,8 +224,8 @@ class IntroComponent extends Component {
         .style('fill', 'none')
         .style('stroke-opacity', Math.random() * 0.4)
         //slightly add some offset of the wave lines
-        .attr('transform', `translate(0, ${14 + i * 5})`)
-        .attr('class', `intro-wave`);
+        .attr('transform', `translate(0, ${10 + i * 5})`)
+        .attr('class', `intro-wave-top`);
     });
 
     //byYear
@@ -274,17 +284,27 @@ class IntroComponent extends Component {
 
   render() {
     return (<div className="intro">
-      <div className="logo-wrapper">
+      <div className="columns logo-wrapper">
         <div className="logo-bg">
           <svg><g id="intro-logo-bg"></g></svg>
         </div>
-        <div className="column is-4 is-offset-4">
+        <div className="column is-4 logo-left"> Data Visualization of </div>
+        <div className="column is-4">
           <Logo />
         </div>
+        <div className="column is-4 logo-right">
+          <span className="intro-link" onClick={() => this.scroll('vis')}>Visualization</span>
+          <span className="intro-link" onClick={() => this.scroll('datasets')}>Datasets</span>
+        </div>
+      </div>
+      <div className="intro-vis-wrapper" id="intro-vis">
+        <svg id="intro-vis-svg">
+          <g id="intro-vis-g"/>
+        </svg>
       </div>
       <div className="container">
         <div className="columns is-multiline">
-          <div className="column is-8 is-offset-2 radio-selection">
+          <div className="column is-8 is-offset-2 radio-selection" ref="vis">
             <div>Explore Olympic Games data first</div>
           </div>
           <div className="column is-4 is-offset-2 radio-wrapper">
@@ -323,10 +343,8 @@ class IntroComponent extends Component {
           </div>
         </div>
       </div>
-      <div id="intro-vis">
-        <svg id="intro-vis-svg">
-          <g id="intro-vis-g"/>
-        </svg>
+      <div className="container" ref="datasets">
+        Datasets
       </div>
       <Footer />
     </div>);

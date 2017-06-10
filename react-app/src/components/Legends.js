@@ -16,7 +16,7 @@ class LegendsComponent extends Component {
           <li>Swimmers who competed multiple races are shown as a <strong>rentangle</strong>, connected squares.</li>
         </ul>
       }
-      { type === 'race' &&
+      { type === 'races' &&
         <ul>
           <li>Each swimmer is presented as <strong>thin square(s)</strong> over {gender === 'men' ? 'his' : 'her'} place in the race(s) {gender === 'men' ? 'he' : 'she'} competed.</li>
         </ul>

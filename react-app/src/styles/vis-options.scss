@@ -10,15 +10,14 @@
         font-size: $small;
         text-transform: capitalize;
         cursor: pointer;
-        border-radius: 4px;
-        &:not(:last-child) {
+        padding: 2px;
+          &:not(:last-child) {
             margin-right: $pg-sm;
         }
     }
     .view-selected {
-        background-color: $grey-dark;
-        color: $white;
-        padding: $pg-xxs $pg-sm;
+        padding-top: 0px;
+        border-bottom: 2px solid $grey-darker;
     }
 }
 .options-wrapper {

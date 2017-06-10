@@ -12,16 +12,18 @@
   font-style: normal;
 }
 @import '../node_modules/flag-icon-css/css/flag-icon.min.css';
+@import './styles/components';
 
-@import './styles/d3.scss';
-@import './styles/header.scss';
-@import './styles/summary.scss';
-@import './styles/options.scss';
-@import './styles/network.scss';
-@import './styles/country.scss';
-@import './styles/race.scss';
-@import './styles/results.scss';
-@import './styles/instructions.scss';
-@import './styles/vis-common.scss';
-@import './styles/legends.scss';
-@import './styles/components.scss';
+@import './styles/_d3';
+@import './styles/header';
+@import './styles/intro';
+@import './styles/footer';
+@import './styles/summary';
+@import './styles/vis-options';
+@import './styles/network';
+@import './styles/country';
+@import './styles/races';
+@import './styles/results';
+@import './styles/instructions';
+@import './styles/vis-common';
+@import './styles/legends';

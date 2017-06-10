@@ -29,4 +29,56 @@
             color: $highlight;
         }
     }
+
+    /* d3 */
+    .link-normal {
+        stroke:$oc-gray-8;
+        stroke-opacity: 0.1;
+    }
+    .link-all-linked {
+        stroke:$highlight;
+        stroke-opacity: 1;
+    }
+    .link-over {
+        stroke: $over;
+        stroke-opacity: 1;
+    }
+    .node-common {
+        stroke-width: 1;
+        stroke: $white;
+        stroke-opacity: 0.5;
+    }
+    .node-normal {
+        @extend .node-common;
+        fill: $node;
+    }
+    .node-1 {
+        fill: $gold;
+    }
+    .node-2 {
+        fill: $silver;
+    }
+    .node-3 {
+        fill: $bronze;
+    }
+    .node-all-linked {
+        stroke: $highlight;
+        stroke-opacity: 1;
+        fill: $white;
+    }
+    .node-over {
+        @extend .node-common;
+        fill: $over;
+        cursor: pointer;
+    }
+    .node-clicked {
+        @extend .node-common;
+        fill: $clicked;
+        cursor: pointer;
+    }
+    .node-linked {
+        @extend .node-common;
+        fill: $linked;
+    }
+
 }

@@ -7,7 +7,7 @@ class Logo extends Component {
           <span>S</span><span>W</span><span>I</span><span>M</span><span>M</span><span>E</span><span>R</span><span>S</span>
         </span>
         <span className="text-network">
-          <span>N</span><span>E</span><span>T</span><span>W</span><span>O</span><span>R</span><span>K</span>
+          <span>H</span><span>I</span><span>S</span><span>T</span><span>O</span><span>R</span><span>Y</span>
         </span>
       </div>)
   }

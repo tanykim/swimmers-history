@@ -1,0 +1,55 @@
+@import './colors.scss';
+@import './size.scss';
+
+/* d3 */
+.pos-middle {
+    text-anchor: middle;
+}
+.pos-start {
+    text-anchor: start;
+}
+.pos-end {
+    text-anchor: end;
+}
+.v-central {
+    alignment-baseline: central;
+}
+.v-top {
+    alignment-baseline: hanging;
+}
+.size-tiny {
+    font-size:$tiny;
+}
+.size-xsmall {
+    font-size:$xsmall;
+}
+.size-small {
+    font-size:$small;
+}
+.size-normal {
+    font-size:$normal;
+}
+.size-large {
+    font-size:$large;
+}
+.unselectable {
+    pointer-events: none;
+}
+.stroke-black {
+    stroke: black;
+}
+.stroke-lightGrey {
+    stroke:$oc-gray-5;
+}
+.stroke-lightestGrey {
+    stroke:$oc-gray-3;
+}
+.fill-darkGrey {
+    fill:$oc-gray-7;
+}
+.fill-grey {
+    fill:$oc-gray-6;
+}
+.fill-lightGrey {
+    fill:$oc-gray-5;
+}
