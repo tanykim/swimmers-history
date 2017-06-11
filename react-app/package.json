@@ -10,6 +10,7 @@
     "flag-icon-css": "^2.8.0",
     "jest-enzyme": "^3.1.0",
     "lodash": "^4.17.4",
+    "moment": "^2.18.1",
     "node-sass": "^4.5.2",
     "open-color": "^1.5.1",
     "react": "^15.5.4",

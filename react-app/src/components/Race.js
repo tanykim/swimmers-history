@@ -263,7 +263,6 @@ class RaceComponent extends Component {
         .style('left', `${d3.event.pageX}px`)
         .style('top', `${d3.event.pageY}px`);
       d3.select('.js-race-content').html(nextProps.hoverText);
-      d3.select('.js-race-content-count').html(nextProps.hoverTextCount);
     }
     //click
     if (nextProps.clicked || this.props !== nextProps.clicked) {
@@ -289,9 +288,8 @@ class RaceComponent extends Component {
         <svg id="svg-race">
           <g id="race-g"></g>
         </svg>
-        <div className="vis-hover-double js-race-hover">
+        <div className="vis-hover js-race-hover">
           <div className="hover-content js-race-content"/>
-          <div className="hover-content second-line js-race-content-count"/>
           <div className="arrow-down"/>
         </div>
       </div>

@@ -56,7 +56,7 @@ class VisComponent extends Component {
                   <p className="control">
                     <span className="select is-small">
                       <select onChange={this.props.selectAthlete}>
-                        <option value="0">select a swimmer</option>
+                        <option value="0">Select a swimmer</option>
                         {this.props.searchedAthletes.map((a) => {
                           return (<option key={a.id} value={a.id}>{a.name}</option>);
                         })}
@@ -68,7 +68,7 @@ class VisComponent extends Component {
                   <p className="control">
                     <span className="select is-small">
                       <select onChange={this.props.selectAthlete}>
-                        <option value="0">select a swimmer</option>
+                        <option value="0">Select a swimmer</option>
                         {this.props.topAthletes.map((a) => {
                           return (<option key={a.id} value={a.id}>{a.name} ({a.totalPoint} points)</option>);
                         })}
@@ -80,7 +80,7 @@ class VisComponent extends Component {
                   <p className="control">
                     <span className="select is-small">
                       <select onChange={this.props.selectRace}>
-                        <option value="0">select a race</option>
+                        <option value="0">Select a race</option>
                         {this.props.validRaces.map((r) => {
                           const label = r.split('-');
                           return (<option key={r} value={r}>

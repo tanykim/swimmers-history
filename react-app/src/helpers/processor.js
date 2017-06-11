@@ -1,9 +1,49 @@
 import _ from 'lodash';
 import Data from '../data/data.json';
+import moment from 'moment';
 const allAthletes = Data.athletes;
 const allLinks = Data.graph;
 const { meets, events, competitions, race } = Data;
 const category = { meets, events };
+
+export const getCategory = () => {
+  return category;
+};
+
+export const getYearInfo = () => {
+  const years = _.chain(meets)
+    .map((meet) => meet.children.map((c) => +c[0].slice(1)))
+    .flatten()
+    .uniq()
+    .sort()
+    .value();
+  const byYear = _.chain(meets)
+    .map((meet, key) => meet.children.map((c) => {
+      const competition = competitions[`${key}-${c[0]}`];
+      const startDate = moment(competition.startDate, 'DD MMM YYYY');
+      const endDate = moment(competition.endDate, 'DD MMM YYYY');
+      return {
+        year: c[0].slice(1),
+        location: c[1].split(' - ')[1].split('(')[0].split(' ').join(''), //trace city name
+        dates: `${moment(startDate).format('MMM D')} - ${moment(endDate).format('MMM D')}`,
+        meet: meet.name,
+        moment: startDate.format('YYYYMMDD'),
+        swimmerCount: { men: competition.men.length, women: competition.women.length },
+      }
+    }))
+    .flatten()
+    .sortBy('moment')
+    .groupBy('year')
+    .value();
+  return {
+    years,
+    byYear,
+    totalCount: {
+      men: allAthletes.men.length,
+      women: allAthletes.women.length,
+    }
+  };
+};
 
 //get the cetegory data
 export const setInitialSelections = () => {
@@ -54,14 +94,6 @@ export const updateSelection = (selection, sel) => {
   const arr = selection.split(',');
   updatedSel[arr[0]][arr[1]][arr[2]] = arr[3] === 'false' ? true : false;
   return updatedSel;
-};
-
-export const getCompetition = () => {
-  return competitions;
-};
-
-export const getCategory = () => {
-  return category;
 };
 
 //get races from the selection in option

@@ -77,13 +77,17 @@
         width: 100%;
     }
     .radio-wrapper {
-        border-right: 1px solid $grey-lighter;
+        border-right: 2px solid $grey-lighter;
+    }
+    .radio-wrapper-right {
+        border-left: 2px solid $grey-lighter;
     }
     .radio-desc {
         margin-top: 1em;
     }
     .button-wrapper {
         text-align: center;
+        margin-top: 1em;
         margin-bottom: 4em;
     }
     .intro-button {
@@ -147,5 +151,63 @@
         stroke: $white;
         stroke-width: 6px;
         stroke-opacity: 0.5;
+    }
+}
+
+.intro-datasets {
+    background-color: $white;
+    border-top: 1px solid $grey-lighter;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    .dataset-headline {
+        font-size: $large;
+        text-align: center;
+        margin-bottom: 1em;
+        strong {
+            color: $main;
+        }
+    }
+    .year-wrapper {
+        text-align: center;
+        .year {
+            background-color: $main;
+            display: inline-block;
+            color: $white;
+            padding: 2px 8px;
+            border-radius: 2px;
+            margin-top: -40px;
+            font-weight: bold;
+        }
+        .year-line {
+            border-top: 1px dashed $main;
+            margin-top: -10px;
+            padding-bottom: 10px;
+        }
+        .meet {
+            font-size: $small;
+            width: 100%;
+            display: flex;
+            align-items: flex;
+            .meet-name, .meet-info {
+                width: 50%;
+                padding-bottom: 0.8em;
+            }
+            .meet-first {
+                padding-top: 1.2em;
+            }
+            .meet-last {
+                padding-bottom: 1.2em;
+            }
+            .meet-name {
+                text-align: right;
+                padding-right: 12px;
+                border-right: 1px solid $grey-lighter;
+                /*font-weight: bold;*/
+            }
+            .meet-info {
+                text-align: left;
+                padding-left: 12px;
+            }
+        }
     }
 }

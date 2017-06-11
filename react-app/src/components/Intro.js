@@ -173,7 +173,7 @@ class IntroComponent extends Component {
     //meet names
     let mG = g.append('g')
     _.each(meets, (meet, i) => {
-      let meetText = mG.append('text')
+      mG.append('text')
         .attr('x', xPos)
         .attr('y', yPos + i * 16 + (year % 2 === 0 ? 8 : 0))
         .attr('dy', 6)
@@ -183,7 +183,7 @@ class IntroComponent extends Component {
     mG.attr('transform', `rotate(${angle}, ${xPos}, ${yPos})`)
   }
 
-  drawIntroVis(meets, competitions) {
+  drawIntroVis(yearsProp, byYear) {
     const w = document.getElementById('intro-vis').clientWidth;
     const margin = { top: 140, right: 0, bottom: 150, left: 0 };
     const dim = { w: w - margin.left - margin.right, h: 100 };
@@ -192,15 +192,9 @@ class IntroComponent extends Component {
       .attr('height', dim.h + margin.top + margin.bottom);
     const g = d3.select('#intro-vis-g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
-    let years = _.chain(meets)
-      .map((meet) => meet.children.map((c) => +c[0].slice(1)))
-      .flatten()
-      .uniq()
-      .sort()
-      .value();
-    //add padding 2 at the beginning and 3 at the end
     let firstYear;
     let lastYear;
+    let years = _.clone(yearsProp);
     _.each(_.range(2), (i) => {
       firstYear = years[0];
       years.unshift(firstYear - 1);
@@ -227,22 +221,6 @@ class IntroComponent extends Component {
         .attr('transform', `translate(0, ${10 + i * 5})`)
         .attr('class', `intro-wave-top`);
     });
-
-    //byYear
-    let byYear = _.chain(meets)
-      .map((meet, key) => meet.children.map((c) => {
-          const competition = competitions[`${key}-${c[0]}`];
-          return {
-            year: c[0].slice(1),
-            location: c[1].split(' - ')[1].split('(')[0], //trace city name
-            dates: `${competition.startDate} - ${competition.endDate}`,
-            meet: meet.name,
-          }
-        })
-      )
-      .flatten()
-      .groupBy('year')
-      .value();
 
     //draw year bg line
     _.each(byYear, (meets, key) => {
@@ -274,7 +252,7 @@ class IntroComponent extends Component {
 
   componentDidMount() {
     this.props.setGender();
-    this.drawIntroVis(this.props.meets, this.props.competitions);
+    this.drawIntroVis(this.props.years, this.props.byYear);
   }
 
   componentWillUnmount() {
@@ -321,7 +299,7 @@ class IntroComponent extends Component {
               </div>
             </label>
           </div>
-          <div className="column is-4">
+          <div className="column is-4 radio-wrapper-right">
             <label className="radio" disabled={this.props.isLoading}>
               <input
                 type="radio"
@@ -343,8 +321,33 @@ class IntroComponent extends Component {
           </div>
         </div>
       </div>
-      <div className="container" ref="datasets">
-        Datasets
+      <div className="intro-datasets" ref="datasets">
+        <div className="container">
+          <div className="columns is-multiline">
+            <div className="column is-12">
+              <div className="dataset-headline">
+                <strong>{this.props.totalCount.women}</strong> women and <strong>{this.props.totalCount.men}</strong> swimmers' race history <br/>
+                from the following meets
+              </div>
+              { _.cloneDeep(this.props.years).reverse().map((year) => {
+                  const list = this.props.byYear[year];
+                  return (<div className="year-wrapper" key={year}>
+                      <span className="year">{year}</span>
+                      <div className="year-line"></div>
+                        { _.cloneDeep(list).reverse().map((m, i) => (<div className="meet" key={i}>
+                            <div className={`meet-name${i === 0 ? ' meet-first' : ''}${i === list.length - 1 ? ' meet-last' : ''}`}>
+                              {m.meet.split(' ').map((word, j) => <span key={j}><strong>{word.charAt(0)}</strong>{word.slice(1)} </span>)}
+                            </div>
+                            <div className={`meet-info${i === 0 ? ' meet-first' : ''}${i === list.length - 1 ? ' meet-last' : ''}`}>
+                              {m.location}, {m.dates} <br/>
+                              <strong>{m.swimmerCount.women}</strong> women and <strong>{m.swimmerCount.men}</strong> men swimmers
+                            </div>
+                          </div>))}
+                    </div>);
+                })}
+            </div>
+          </div>
+        </div>
       </div>
       <Footer />
     </div>);

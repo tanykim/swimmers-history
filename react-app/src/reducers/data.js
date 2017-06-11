@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import {
-  getCompetition,
   getCategory,
+  getYearInfo,
   getRaces,
   getTopAthletes,
   getAthletesData,
@@ -17,9 +17,9 @@ import {
 const data = (state = {}, action) => {
   switch (action.type) {
     case 'INITIALIZE': {
-      const competitions = getCompetition();
       const category = getCategory();
-      return Object.assign({}, state, { competitions, category });
+      const yearInfo = getYearInfo();
+      return Object.assign({}, state, { category, yearInfo });
     }
     //show the filtered atheltes number
     case 'SET_TEMP_DATA': {

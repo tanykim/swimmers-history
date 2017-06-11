@@ -81,7 +81,7 @@ class NetworkComponent extends Component {
       .attr('id', (d) => d.id)
       .attr('r', (d) => {
         const points = _.map(d.records, 'point');
-        const total = _.reduce(points, function (memo, num) {
+        const total = _.reduce(points, (memo, num) => {
             return memo + num;
         }, 0);
         return total <= 700 ? 3 : Math.sqrt(radius(total));
@@ -152,6 +152,7 @@ class NetworkComponent extends Component {
         .style('left', `${d3.event.pageX}px`)
         .style('top', `${d3.event.pageY}px`);
       d3.select('.js-network-content').html(nextProps.hoverText);
+      d3.select('.js-network-content-count').html(nextProps.hoverTextCount);
     }
     //click
     if (nextProps.clicked || this.props !== nextProps.clicked) {
@@ -214,8 +215,9 @@ class NetworkComponent extends Component {
         <svg id="svg-network" style={{width: '100%'}}>
           <g id="network-g"></g>
         </svg>
-        <div className="vis-hover js-network-hover">
+        <div className="vis-hover-double js-network-hover">
           <div className="hover-content js-network-content"/>
+          <div className="hover-content second-line js-network-content-count"/>
           <div className="arrow-down"/>
         </div>
       </div>

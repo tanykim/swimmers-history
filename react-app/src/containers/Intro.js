@@ -6,8 +6,7 @@ const mapStateToProps = (state, ownProps) => (
   {
     gender: state.gender,
     isLoading: state.currentView.isLoading,
-    competitions: state.data.competitions,
-    meets: state.data.category.meets,
+    ...state.data.yearInfo,
   }
 )
 
