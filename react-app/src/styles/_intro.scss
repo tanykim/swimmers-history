@@ -1,23 +1,30 @@
 @import './colors.scss';
 @import './size.scss';
 
-.intro, .header {
-    .logo-title {
+.logo-title {
+    display: flex;
+    align-items: center;
+    .text-swimmer, .text-network {
         display: flex;
-        align-items: center;
-        .text-swimmer, .text-network {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-        }
-        .text-swimmer {
-            font-weight: bold;
-        }
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    .text-swimmer {
+        width: 40%;
+    }
+    .text-network {
+        width: 44%;
+        margin-left: 2%;
+        margin-right: 4%;
+    }
+    .text-swimmer {
+        font-weight: bold;
     }
 }
+
 .intro {
     .logo-wrapper {
-        background-color: $main;
+        background-color: $main-dark;
         color: $white;
         position: relative;
         padding-top: 12px;
@@ -32,14 +39,9 @@
             height: 100%;
         }
     }
-    .logo-left, .logo-right {
-        align-self: center;
-    }
-    .logo-left {
-        text-align: right;
-        font-size: $large;
-    }
     .logo-right {
+        align-self: center;
+        text-align: right;
         z-index: 100;
         .intro-link {
             margin-right: 24px;
@@ -53,23 +55,16 @@
         }
     }
     .logo-title {
-        flex-direction: column;
-        font-size: 1.4em;
-        padding-right: 10%;
-        padding-left: 10%;
-    }
-    .text-swimmer {
-        width: 100%;
-        justify-content: space-between !important;
-    }
-    .text-network {
-        width: 100%;
+        font-size: $large;
+        padding-top: 1em;
+        padding-bottom: 1em;
     }
     .radio-selection {
         text-align: center;
         div {
             padding-top: 4em;
             font-size: $large;
+            color: $main;
         }
     }
     .radio {
@@ -101,6 +96,7 @@
     .intro-vis-wrapper {
         background-color: $white;
         border-bottom: 1px solid $grey-lighter;
+        padding-top: 24px;
     }
     .intro-wave-top {
         stroke: $white;

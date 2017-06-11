@@ -5,12 +5,14 @@
     background-color: $grey-dark;
     color: $grey;
     font-size: $small;
-    line-height: 180%;
     a {
         color: $white;
     }
     .divider {
         margin-left: $pg-sm;
         margin-right: $pg-sm;
+    }
+    .second-line {
+        margin-top: 1em;
     }
 }

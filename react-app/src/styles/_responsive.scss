@@ -1,0 +1,76 @@
+@import './colors.scss';
+@import './size.scss';
+
+.logo-wrapper-mobile {
+    background-color: $main-dark;
+    color: $white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+    .logo-title {
+        justify-content: center;
+    }
+}
+.intro-warning {
+    margin-top: 60px;
+    border-bottom: 1px solid $grey-lighter;
+    text-align: center;
+    .desktop-icon {
+       width: 2em;
+       height: 2em;
+       background-image: url('styles/desktop.svg');
+       background-size: contain;
+       display: inline-block;
+    }
+    .desc {
+        font-size: $small;
+    }
+}
+
+/* Extra small devices (phones, less than 768px) */
+@media (max-width: 768px) {
+
+}
+
+/* tablet */
+@media (max-width: 999px) {
+    .text-network {
+        width: 36% !important;
+        margin-right: 0% !important;
+    }
+    .header-gender {
+        justify-content: center !important;
+        background-color: $white;
+    }
+    .logo-title, .vis-types {
+        justify-content: center;
+    }
+    .options-wrapper {
+        padding-right: 0.75em;
+        padding-left: 0.75em;
+    }
+    .kind-wrapper-meets, .kind-wrapper-events, .kind-wrapper-names {
+        padding-left: 0px !important;
+        padding-right: 10px !important;
+    }
+    .vis-wrapper, .legends{
+        border-radius: 0 !important;
+        border-right: none;
+        border-left: none;
+    }
+    .legends {
+        margin-left: 0;
+    }
+    .instruction, .results {
+        padding-left: 0.75em;
+        padding-right: 0.75em;
+    }
+    .country-sort {
+        display: inline-block !important;
+        width: 100% !important;
+    }
+}

@@ -10,7 +10,7 @@ class OptionsComponent extends Component {
     let panel = document.getElementById('options-panels').style;
     let summary = document.getElementById('summary-list').style;
     if (nextProps.isOpen) {
-      panel.top = `${document.getElementById('options-summary').offsetHeight}px`;
+      panel.top = `${document.getElementById('options-summary').offsetHeight - 12}px`;
       panel.display = 'block';
       //hide summary list
       summary.visibility = 'hidden';
@@ -26,8 +26,8 @@ class OptionsComponent extends Component {
   }
 
   render() {
-    return (<div className="columns is-multiline options-wrapper">
-      <div className="column is-two-thirds summary" id="options-summary">
+    return (<div className="columns is-multiline options-wrapper" id="options-summary">
+      <div className="column is-two-thirds summary">
         <Summary
           {...this.props.racesInfo}
           names={this.props.originalNames}

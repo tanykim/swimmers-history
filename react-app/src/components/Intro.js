@@ -213,12 +213,12 @@ class IntroComponent extends Component {
         .attr('d', d3.line()
           .curve(d3.curveCatmullRom)
           .x((d) => x(d))
-          .y((d, i) => this.getYearY(years, d, i, dim.h / 2) + (Math.random() * 10 - 5))
+          .y((d, i) => this.getYearY(years, d, i, dim.h / 3) + (Math.random() * 10 - 5))
         )
         .style('fill', 'none')
         .style('stroke-opacity', Math.random() * 0.4)
         //slightly add some offset of the wave lines
-        .attr('transform', `translate(0, ${10 + i * 5})`)
+        .attr('transform', `translate(0, ${i * 5})`)
         .attr('class', `intro-wave-top`);
     });
 
@@ -262,25 +262,37 @@ class IntroComponent extends Component {
 
   render() {
     return (<div className="intro">
-      <div className="columns logo-wrapper">
+      <div className="logo-wrapper is-hidden-touch">
         <div className="logo-bg">
           <svg><g id="intro-logo-bg"></g></svg>
         </div>
-        <div className="column is-4 logo-left"> Data Visualization of </div>
-        <div className="column is-4">
-          <Logo />
-        </div>
-        <div className="column is-4 logo-right">
-          <span className="intro-link" onClick={() => this.scroll('vis')}>Visualization</span>
-          <span className="intro-link" onClick={() => this.scroll('datasets')}>Datasets</span>
+        <div className="container">
+          <div className="columns">
+            <div className="column is-one-third-desktop is-full-mobile">
+              <Logo />
+            </div>
+            <div className="column is-two-thirds-desktop is-full-mobile logo-right is-hidden-touch">
+              <span className="intro-link" onClick={() => this.scroll('vis')}>Visualization</span>
+              <span className="intro-link" onClick={() => this.scroll('datasets')}>Datasets</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="intro-vis-wrapper" id="intro-vis">
+      <div className="logo-wrapper-mobile is-hidden-desktop">
+        <Logo />
+      </div>
+      <div className="section is-hidden-desktop intro-warning">
+        <div className="desktop-icon" />
+        <div className="desc">
+          Big screen is reommended for the full functionality and views of data visualizations.
+        </div>
+      </div>
+      <div className="is-hidden-touch intro-vis-wrapper" id="intro-vis">
         <svg id="intro-vis-svg">
           <g id="intro-vis-g"/>
         </svg>
       </div>
-      <div className="container">
+      <div className="container intro-vis-content">
         <div className="columns is-multiline">
           <div className="column is-8 is-offset-2 radio-selection" ref="vis">
             <div>Explore Olympic Games data first</div>
