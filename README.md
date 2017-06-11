@@ -1,6 +1,6 @@
-# [WIP] Swimmers Network Visualiation
+# Swimmers' History Data Visualization
 
-This is a visulaization project representing the network of elite swimmers in the world. 
+This is a data visulaization project of elite swimmers in the world. 
 
 ## Data Resource
 
@@ -48,22 +48,10 @@ This project includes two steps of data generation - 1) scrapping html pages wit
 
 ## Front-End Development Set-up
 
-The development environment includes followings.
+```react-app``` folder is the front-end development of data visualization. See the ```README.md``` in the folder.
 
-* Node v6.3.1
-* Angular v1.5
-* Less 458
-* grunt-cli v1.2.0
 
-To test the webapp, do the following steps. Bower installs necessary Javascript libraries for the client side. This includes Angular, D3 and Underscore. 
+### About other branches
 
-```
-cd webapp
-npm install
-bower install 
-```
-
-Then run ```grunt``` to see on the browser on your browser. The entire folder ```public``` is ready to be served on a server.
-
- 
+I originally started to use AngularJS (aka Angular 1), then I tried both React and Angular2. I decided to use React. Two other branches (angularJS-app and ng-app) have front-end code with those frameworks. 
 
