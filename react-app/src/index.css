@@ -5316,7 +5316,7 @@ body {
 .intro .logo-right .intro-link {
   margin-right: 24px;
   cursor: pointer;
-  padding-bottom: 2px;
+  padding: 2px;
   border-bottom: 2px solid #ffffff; }
 
 .intro .logo-right .intro-link:hover {
@@ -5822,18 +5822,18 @@ body {
 /* paragraph spacing or padding*/
 /* other sizing */
 /* borders */
-.country .country-sort {
+.country .country-sort, .legend-country .country-sort {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding: 15px;
   border-bottom: 1px solid #e9ecef; }
 
-.country .country-sort span {
+.country .country-sort span, .legend-country .country-sort span {
   font-size: 12px;
   margin-right: 6px; }
 
-.country .country-linear {
+.country .country-linear, .legend-country .country-linear {
   padding-right: 18px;
   padding-left: 18px;
   display: flex;
@@ -5841,22 +5841,22 @@ body {
   background-image: url("styles/country-bg.svg");
   background-size: 94px; }
 
-.country .fl-icon {
+.country .fl-icon, .legend-country .fl-icon {
   background-size: 1.2em;
   background-repeat: no-repeat;
   background-position-y: 45%;
   padding-left: 1.4em; }
 
-.country .athlete-element, .country .athlete-country {
+.country .athlete-element, .country .athlete-country, .legend-country .athlete-element, .legend-country .athlete-country {
   margin-top: 12px;
   margin-bottom: 13px; }
 
-.country .athlete-country {
+.country .athlete-country, .legend-country .athlete-country {
   font-size: 14px;
   margin-top: 13px;
   margin-right: 3px; }
 
-.country .athlete-country i {
+.country .athlete-country i, .legend-country .athlete-country i {
   font-size: 11px;
   font-style: normal;
   background-color: #868e96;
@@ -5868,10 +5868,10 @@ body {
   text-align: center;
   line-height: 180%; }
 
-.country .athlete-group {
+.country .athlete-group, .legend-country .athlete-group {
   display: inherit; }
 
-.country .r-general {
+.country .r-general, .legend-country .r-general {
   margin-top: 15px;
   margin-bottom: 14px;
   background-color: #495057;
@@ -5879,55 +5879,55 @@ body {
   height: 18px;
   cursor: pointer; }
 
-.country .r-1 {
+.country .r-1, .legend-country .r-1 {
   background-color: #fbcd15;
   border: 1px solid #495057; }
 
-.country .r-2 {
+.country .r-2, .legend-country .r-2 {
   background-color: #dadada;
   border: 1px solid #495057; }
 
-.country .r-3 {
+.country .r-3, .legend-country .r-3 {
   background-color: #e6852f;
   border: 1px solid #495057; }
 
-.country .r-single {
+.country .r-single, .legend-country .r-single {
   margin-right: 2px;
   margin-left: 2px; }
 
-.country .r-first {
+.country .r-first, .legend-country .r-first {
   margin-left: 2px; }
 
-.country .r-last {
+.country .r-last, .legend-country .r-last {
   margin-right: 2px; }
 
-.country .r-neighbor {
+.country .r-neighbor, .legend-country .r-neighbor {
   margin-left: -1px; }
 
-.country .r-a-last {
+.country .r-a-last, .legend-country .r-a-last {
   margin-right: 16px; }
 
-.country .a-clicked.r-1, .country .a-clicked.r-2, .country .a-clicked.r-3 {
+.country .a-clicked.r-1, .country .a-clicked.r-2, .country .a-clicked.r-3, .legend-country .a-clicked.r-1, .legend-country .a-clicked.r-2, .legend-country .a-clicked.r-3 {
   border: none; }
 
-.country .a-clicked.r-first {
+.country .a-clicked.r-first, .legend-country .a-clicked.r-first {
   border-top: 3px solid #f32f57;
   border-bottom: 3px solid #f32f57;
   border-left: 3px solid #f32f57; }
 
-.country .a-clicked.r-btw {
+.country .a-clicked.r-btw, .legend-country .a-clicked.r-btw {
   border-top: 3px solid #f32f57;
   border-bottom: 3px solid #f32f57; }
 
-.country .a-clicked.r-single {
+.country .a-clicked.r-single, .legend-country .a-clicked.r-single {
   border: 3px solid #f32f57; }
 
-.country .a-clicked.r-last {
+.country .a-clicked.r-last, .legend-country .a-clicked.r-last {
   border-top: 3px solid #f32f57;
   border-right: 3px solid #f32f57;
   border-bottom: 3px solid #f32f57; }
 
-.country .a-clicked.r-hover, .country .r-hover {
+.country .a-clicked.r-hover, .country .r-hover, .legend-country .a-clicked.r-hover, .legend-country .r-hover {
   border: 3px solid #91f0f9; }
 
 /* grey scale */
@@ -6335,9 +6335,6 @@ body {
   padding-bottom: 56px; }
 
 .legends {
-  font-size: 13px;
-  line-height: 140%;
-  margin-right: -24px;
   margin-left: -25px;
   /* double of Bulma padding */
   background-color: #ffffff;
@@ -6346,17 +6343,85 @@ body {
   border-bottom: 1px solid #e9ecef;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
-  padding-top: 28px;
-  padding-bottom: 28px;
+  padding-top: 18px;
+  padding-bottom: 18px;
   margin-bottom: 18px;
   padding-right: 18px;
   padding-left: 24px; }
 
-.legends ul li:not(:last-child) {
-  margin-bottom: 6px; }
+.legends .legend-wrapper {
+  display: flex;
+  align-items: center; }
 
-.legends strong {
-  color: #f32f57; }
+.legends .cursor-icon {
+  background-image: url("styles/cursor.svg");
+  width: 3em;
+  height: 3em;
+  background-repeat: no-repeat;
+  background-size: 2em;
+  background-position: left center;
+  border-right: 1px solid #e9ecef; }
+
+.legends .legend {
+  margin-left: 1em; }
+
+.legends .legend-item {
+  display: flex;
+  align-items: center; }
+
+.legends .legend-network {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 0.8em;
+  background-color: #495057;
+  display: inline-block; }
+
+.legends .legend-country {
+  display: flex; }
+
+.legends .legend-country .r-2, .legends .legend-country .r-3, .legends .legend-country .r-last {
+  margin-left: -1px; }
+
+.legends .legend-country .r-general {
+  cursor: default; }
+
+.legends .legend-races {
+  width: 8px;
+  height: 24px;
+  background-color: #495057;
+  display: inline-block; }
+
+.legends .legend-label {
+  margin-left: 0.5em; }
+
+.legends .medals {
+  display: flex;
+  align-items: center;
+  margin-top: 0.8em;
+  padding-top: 0.8em;
+  border-top: 1px solid #e9ecef; }
+
+.legends .medals .gold, .legends .medals .silver, .legends .medals .bronze {
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 0.7em;
+  border: 2px solid #495057; }
+
+.legends .medals .gold {
+  background-color: #fbcd15; }
+
+.legends .medals .silver {
+  background-color: #dadada; }
+
+.legends .medals .bronze {
+  background-color: #e6852f; }
+
+.legends .medals .medal-label {
+  margin-left: 0.5em;
+  font-size: 14px; }
+
+.legends .medals .medal-label:not(:last-child) {
+  margin-right: 1em; }
 
 .instruction {
   font-size: 14px; }

@@ -28,6 +28,7 @@ class NamesComponent extends Component {
             clearable={false}
             options={this.props.list}
             onChange={this.props.addName}
+            placeholder="Search..."
           />
           { this.props.searchedAthletes.map((a, i) => (<div className="selected-list" key={i}>
             <div>

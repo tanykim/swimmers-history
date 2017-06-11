@@ -1,0 +1,130 @@
+@import './colors.scss';
+@import './size.scss';
+
+.instruction, .country {
+    select {
+        font-family: inherit;
+        color: $grey-darker;
+        border-color: $grey-light;
+        &:active, &:hover {
+            border-color: $grey;
+        }
+        &:focus {
+            border-color: $main !important;
+        }
+    }
+    .select:after {
+        border-color: $grey-light !important;
+    }
+}
+.contents.container {
+    position: inherit;
+    margin-top: $pg-lg;
+    padding-bottom: $pg-lg * 2;
+}
+.legends {
+    margin-left: -25px; /* double of Bulma padding */
+    background-color: $white;
+    border-top: 1px solid $grey-lighter;
+    border-right: 1px solid $grey-lighter;
+    border-bottom: 1px solid $grey-lighter;
+    border-top-right-radius: $bd-radius;
+    border-bottom-right-radius: $bd-radius;
+    padding-top: $pg-md;
+    padding-bottom: $pg-md;
+    margin-bottom: $pg-md;
+    padding-right: $pg-md;
+    padding-left: 24px;
+    .legend-wrapper {
+        display: flex;
+        align-items: center;
+    }
+    .cursor-icon {
+        background-image: url('styles/cursor.svg');
+        width: 3em;
+        height: 3em;
+        background-repeat: no-repeat;
+        background-size: 2em;
+        background-position: left center;
+        border-right: 1px solid $grey-lighter;
+    }
+    .legend {
+        margin-left: 1em;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+    }
+    .legend-network {
+        width: 1.5em;
+        height: 1.5em;
+        border-radius: 0.8em;
+        background-color: $node;
+        display: inline-block;
+    }
+    .legend-country {
+        display: flex;
+        .r-2, .r-3, .r-last {
+            margin-left: -1px;
+        }
+        .r-general {
+            cursor: default;
+        }
+    }
+    .legend-races {
+        width: 8px;
+        height: 24px;
+        background-color: $node;
+        display: inline-block;
+    }
+    .legend-label {
+        margin-left: 0.5em;
+    }
+    .medals {
+        display: flex;
+        align-items: center;
+        margin-top: 0.8em;
+        padding-top: 0.8em;
+        border-top: 1px solid $grey-lighter;
+        .gold, .silver, .bronze {
+            width: 1.2em;
+            height: 1.2em;
+            border-radius: 0.7em;
+            border: 2px solid $node;
+        }
+        .gold {
+            background-color: $gold;
+        }
+        .silver {
+            background-color: $silver;
+        }
+        .bronze {
+            background-color: $bronze;
+        }
+        .medal-label {
+            margin-left: 0.5em;
+            font-size: $small;
+            &:not(:last-child) {
+                margin-right: 1em;
+            }
+        }
+    }
+}
+.instruction {
+    font-size: $small;
+    .instruction-title {
+        color: $main;
+    }
+    ol {
+        color: $grey-darker;
+        margin-top: $pg-sm;
+        li {
+            margin-left: $pg-sm;
+            margin-bottom: $pg-sm;
+            line-height: 120%;
+        }
+        .control {
+            margin-top: $pg-xs;
+        }
+    }
+}
