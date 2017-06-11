@@ -19,8 +19,7 @@ class VisComponent extends Component {
             <div className="column is-9">
               <Options />
             </div>
-            <div className="column is-3">
-              <div className="vis-types">
+            <div className="column is-3 vis-types">
               {['network', 'country', 'races'].map((view) => (
                 <div key={view}
                   className={`vis-view ${this.props.visType === view ? 'view-selected': 'l'}`}
@@ -29,7 +28,6 @@ class VisComponent extends Component {
                   { view }
                 </div>
               ))}
-              </div>
             </div>
           </div>
         </div>

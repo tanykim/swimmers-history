@@ -29,6 +29,8 @@
     }
     .temp-count {
         position: absolute;
+        left: 0;
+        margin-left: 12px;
         font-size: $small;
         .count {
             color: $highlight;
