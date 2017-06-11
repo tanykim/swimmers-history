@@ -4,14 +4,13 @@
 $white: #ffffff;
 
 /* content colors */
-$main: #2bc0e4;
-$main-light: #91f0f9;
+$main: #5B86E5;
+$main-light: #49DBEA;
 $main-dark : darken($main, 2%);
 $sub: #21d7c4;
-$highlight: #f32f57;
-/*#f5625a;*/
+$highlight: #A527AF;
 $highlight-dark : darken($highlight, 5%);
-$highlight-light: #fb8888;
+$highlight-light: lighten($highlight, 5%);
 /*#ffebea;*/
 
 /* grey */
@@ -33,3 +32,8 @@ $silver: #dadada;
 $bronze: #e6852f;
 $white-trans: fade($white, 70%);
 
+.gradation {
+  background: $main;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, $main, $sub);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, $main, $sub); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}

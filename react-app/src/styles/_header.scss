@@ -1,5 +1,5 @@
-@import './colors.scss';
-@import './size.scss';
+@import './colors';
+@import './size';
 
 .header-wrapper {
     border-bottom: 1px solid $grey-lighter;
@@ -9,11 +9,10 @@
     box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
 }
 .header {
+    @extend .gradation;
     width: 100%;
     padding-top: $pg-xs;
     padding-bottom: $pg-xs;
-    background-color: $main;
-    /*border-bottom: 1px solid $grey-lighter;*/
     .logo {
         text-align: center;
     }

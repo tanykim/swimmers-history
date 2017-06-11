@@ -9,10 +9,11 @@ class SummaryComponent extends Component {
     const { count, gender, meets, events, names } = this.props;
     return (
       <div className="summary-list" id="summary-list">
-        <span className="summary-gender">{count} {gender.toUpperCase()}</span>
+        <span className="summary-gender"><strong>{count}</strong> {gender.toUpperCase()}</span>
         { //meets
-          meets.map((m) => (<span key={m[0]} className="kind kind-events">
-          {m[0].slice(1, m[0].length)} - {csList(m[1])}
+          meets.map((m, i) => (<span key={m[0]} className="kind kind-events">
+          {m[0].slice(1, m[0].length)} ({csList(m[1])})
+          {i < meets.length - 1 ? '+ ' : ''}
         </span>)) }
         <span className="typcn typcn-times" />
         { //events

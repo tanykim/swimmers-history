@@ -7,6 +7,9 @@
     font-size: $small;
     a {
         color: $white;
+        &:hover {
+            color: $main-light;
+        }
     }
     .divider {
         margin-left: $pg-sm;

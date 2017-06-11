@@ -24,7 +24,9 @@
 
 .intro {
     .logo-wrapper {
-        background-color: $main-dark;
+        background: $main;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, $main, $sub);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, $main, $sub); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         color: $white;
         position: relative;
         padding-top: 12px;
@@ -160,7 +162,7 @@
         text-align: center;
         margin-bottom: 1em;
         strong {
-            color: $main;
+            color: $highlight;
         }
     }
     .year-wrapper {
@@ -175,7 +177,7 @@
             font-weight: bold;
         }
         .year-line {
-            border-top: 1px dashed $main;
+            border-top: 1px solid $main-light;
             margin-top: -10px;
             padding-bottom: 10px;
         }

@@ -6,9 +6,6 @@ class Footer extends Component {
     return (<div className="footer">
         <div className="container">
           <div>
-            Read about <a>datasets</a> creation, <a>visualization design</a> ideation, and discovered <a>insights</a>
-          </div>
-          <div className="second-line">
             View code on <a href="https://github.com/tanykim/swimmers-network" target="_blank">GitHub</a>
             <span className="divider">|</span>
             Data from <a href="https://www.swimrankings.net/" target="_blank">Swimranknigs</a>
@@ -21,3 +18,8 @@ class Footer extends Component {
 }
 
 export default Footer;
+
+
+          // <div className="second-line">
+          //   Read about <a>datasets</a> creation, <a>visualization design</a> ideation, and discovered <a>insights</a>
+          // </div>

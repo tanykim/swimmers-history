@@ -6,14 +6,19 @@
     align-items: center;
     .summary-list {
         line-height: 140%;
+        .typcn {
+            color: $main !important;
+        }
     }
     .summary-gender {
         font-size: $small;
         font-weight: bold;
         margin-right: $pg-xxs;
+        strong {
+            color: $highlight;
+        }
     }
     .kind {
-        background-color: $main-light;
         color: $grey-darker;
         font-size: $small;
     }

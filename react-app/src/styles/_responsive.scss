@@ -2,7 +2,7 @@
 @import './size.scss';
 
 .logo-wrapper-mobile {
-    background-color: $main-dark;
+    @extend .gradation;
     color: $white;
     position: fixed;
     top: 0;

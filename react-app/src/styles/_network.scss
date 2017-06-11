@@ -66,10 +66,12 @@
         stroke-opacity: 1;
         fill: $white;
     }
-    .node-over {
+/*    .node-over {
         @extend .node-common;
         fill: $over;
         cursor: pointer;
+        stroke-width: 2px;
+        stroke-opacity: 1;
     }
     .node-clicked {
         @extend .node-common;
@@ -79,6 +81,7 @@
     .node-linked {
         @extend .node-common;
         fill: $linked;
+        stroke: $over;
     }
-
+*/
 }
