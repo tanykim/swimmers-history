@@ -4,6 +4,9 @@ angular.module('swimmerApp').service('storage', ['$http', '_', function ($http, 
 
     var self = this;
 
+    //for intro
+    this.competition = {};
+
     var allGenderAthletes;
     var allGenderLinks;
 
@@ -20,7 +23,9 @@ angular.module('swimmerApp').service('storage', ['$http', '_', function ($http, 
 
    this.loadData = function (completeDataLoadingCb) {
         $http.get('../data/data.json').then(function (d) {
-            console.log('1.storage, data receiverd');
+            console.log('1.storage, data receiverd', d);
+
+            self.competition = d.data.competition;
 
             allGenderAthletes = d.data.athletes;
             allGenderLinks = d.data.graph;

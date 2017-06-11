@@ -1,0 +1,30 @@
+@import '../node_modules/bulma/bulma.sass';
+@import '../node_modules/react-select/dist/react-select.css';
+@import '../node_modules/typicons.font/src/font/typicons.css';
+@font-face {
+  font-family: 'typicons';
+  src: url("../node_modules/typicons.font/src/font/typicons.eot");
+  src: url("../node_modules/typicons.font/src/font/typicons.eot?#iefix") format('embedded-opentype'),
+       url("../node_modules/typicons.font/src/font/typicons.woff") format('woff'),
+       url("../node_modules/typicons.font/src/font/typicons.ttf") format('truetype'),
+       url("../node_modules/typicons.font/src/font/typicons.svg#typicons") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@import '../node_modules/flag-icon-css/css/flag-icon.min.css';
+@import './styles/components';
+
+@import './styles/_d3';
+@import './styles/header';
+@import './styles/intro';
+@import './styles/footer';
+@import './styles/summary';
+@import './styles/vis-options';
+@import './styles/network';
+@import './styles/country';
+@import './styles/races';
+@import './styles/results';
+@import './styles/instructions';
+@import './styles/vis-common';
+@import './styles/legends';
+@import './styles/responsive';

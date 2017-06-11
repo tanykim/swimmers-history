@@ -1,0 +1,87 @@
+@import './colors.scss';
+@import './size.scss';
+
+.network-options {
+    text-align: center;
+    margin-top: $pg-xs;
+    font-size: $small;
+    .radio {
+        &:first-child {
+            margin-right: $pg-xs;
+        }
+    }
+}
+.network {
+    margin-top: $pg-sm;
+    .hovered-swimmer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: $small;
+        background-color: $white-trans;
+        padding-right: $pg-xs;
+        padding-left: $pg-xs;
+        display: inline-table;
+        i {
+            font-style: normal;
+            color: $highlight;
+        }
+    }
+
+    /* d3 */
+    .link-normal {
+        stroke:$oc-gray-8;
+        stroke-opacity: 0.1;
+    }
+    .link-all-linked {
+        stroke:$highlight;
+        stroke-opacity: 1;
+    }
+    .link-over {
+        stroke: $over;
+        stroke-opacity: 1;
+    }
+    .node-common {
+        stroke-width: 1;
+        stroke: $white;
+        stroke-opacity: 0.5;
+    }
+    .node-normal {
+        @extend .node-common;
+        fill: $node;
+    }
+    .node-1 {
+        fill: $gold;
+    }
+    .node-2 {
+        fill: $silver;
+    }
+    .node-3 {
+        fill: $bronze;
+    }
+    .node-all-linked {
+        stroke: $highlight;
+        stroke-opacity: 1;
+        fill: $white;
+    }
+/*    .node-over {
+        @extend .node-common;
+        fill: $over;
+        cursor: pointer;
+        stroke-width: 2px;
+        stroke-opacity: 1;
+    }
+    .node-clicked {
+        @extend .node-common;
+        fill: $clicked;
+        cursor: pointer;
+    }
+    .node-linked {
+        @extend .node-common;
+        fill: $linked;
+        stroke: $over;
+    }
+*/
+}

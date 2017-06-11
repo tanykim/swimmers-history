@@ -1,0 +1,21 @@
+@import './colors.scss';
+@import './size.scss';
+
+.footer {
+    background-color: $grey-dark;
+    color: $grey;
+    font-size: $small;
+    a {
+        color: $white;
+        &:hover {
+            color: $main-light;
+        }
+    }
+    .divider {
+        margin-left: $pg-sm;
+        margin-right: $pg-sm;
+    }
+    .second-line {
+        margin-top: 1em;
+    }
+}

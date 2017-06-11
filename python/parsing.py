@@ -1,8 +1,11 @@
 from bs4 import BeautifulSoup
 import re
 import json
-from underscore import _
 import math
+import itertools
+from operator import itemgetter
+from collections import defaultdict
+import datetime
 
 meets = {}
 with open('R_results/json/meets.json') as meetsObj:
@@ -14,15 +17,14 @@ genders = {
 }
 
 #simple version for testing
-# meets = {
-#     "589276": {"type":"2","year":"2015","location":"Kazan (RUS)","name":"FINA: 16th World Championships"},
-#     "563769": {"type":"1","year":"2012","location":"London (GBR)","name":"XXX Olympic Games"},
-#     "596227": {"type":"1","year":"2016","location":"Rio (BRA)","name":"XXXI Olympic Games"},
-#     "546176": {"type": "7450054", "year": "2010", "location": "Irvine (USA)", "name": "11th Pan Pacific Championships"}
-# }
+# meets = [
+#     {"type":"1","year":"2012","location":"London (GBR)","name":"XXX Olympic Games","id":"563769"},
+#     {"type":"1","year":"2016","location":"Rio (BRA)","name":"XXXI Olympic Games","id":"596227"},
+#     {"type":"2","year":"2015","location":"Kazan (RUS)","name":"FINA: 16th World Championships","id":"589276"}
+# ]
 # genders = {
-#     '1': {'name': 'men', 'styles': [1, 2]}
-#     # '2': {'name': 'women', 'styles': [1]}
+#     '1': {'name': 'men', 'styles': [1, 2]},
+#     '2': {'name': 'women', 'styles': [1]}
 # }
 
 meets_name = {
@@ -45,23 +47,23 @@ meet_year_letter = {
     '2007': 'j'
 }
 events_name = {
-    '1': ['50m Freestyle', '50Fr', '0IND'],
-    '2': ['100m Freestyle', '100Fr', '0IND'],
-    '3': ['200m Freestyle', '200Fr', '0IND'],
-    '5': ['400m Freestyle', '400Fr', '0IND'],
-    '6': ['800m Freestyle', '800Fr', '0IND'],
-    '8': ['1500m Freestyle', '1500Fr', '0IND'],
-    '10': ['100m Backstroke', '100Bk', '0IND'],
-    '11': ['200m Backstroke', '200Bk', '0IND'],
-    '13': ['100m Breaststroke', '100Br', '0IND'],
-    '14': ['200m Breaststroke', '200Br', '0IND'],
-    '16': ['100m Butterfly', '100Fly', '0IND'],
-    '17': ['200m Butterfly', '200Fly', '0IND'],
-    '18': ['200m Medley', '200IM', '0IND'],
-    '19': ['400m Medley', '400IM', '0IND'],
-    '27': ['4 X 100m Freestyle', '4X100Fr', '1TEAM'],
-    '29': ['4 X 200m Freestyle', '4X200Fr', '1TEAM'],
-    '40': ['4 X 100m Medley', '4X100M', '1TEAM']
+    '1': ['50m Freestyle', 'a50Fr', '0IND'],
+    '2': ['100m Freestyle', 'b100Fr', '0IND'],
+    '3': ['200m Freestyle', 'c200Fr', '0IND'],
+    '5': ['400m Freestyle', 'd400Fr', '0IND'],
+    '6': ['800m Freestyle', 'e800Fr', '0IND'],
+    '8': ['1500m Freestyle', 'f1500Fr', '0IND'],
+    '10': ['100m Backstroke', 'g100Bk', '0IND'],
+    '11': ['200m Backstroke', 'h200Bk', '0IND'],
+    '13': ['100m Breaststroke', 'i100Br', '0IND'],
+    '14': ['200m Breaststroke', 'j200Br', '0IND'],
+    '16': ['100m Butterfly', 'k100Fly', '0IND'],
+    '17': ['200m Butterfly', 'l200Fly', '0IND'],
+    '18': ['200m Medley', 'm200IM', '0IND'],
+    '19': ['400m Medley', 'n400IM', '0IND'],
+    '27': ['4 X 100m Freestyle', 'o4X100Fr', '1TEAM'],
+    '29': ['4 X 200m Freestyle', 'p4X200Fr', '1TEAM'],
+    '40': ['4 X 100m Medley', 'q4X100M', '1TEAM']
 }
 
 # collect athletes from all html files
@@ -69,7 +71,7 @@ all_athletes = {'men': {}, 'women': {}}
 node_edges = {'men': [], 'women': []}
 
 # add race at each html read
-#race = {'men': {}, 'women': {}}
+race = {'men': {}, 'women': {}}
 
 # collect athletes from all html files
 all_athletes = {'men': {}, 'women': {}}
@@ -170,7 +172,7 @@ def get_athletes_by_html (race_id, results, gender):
                 place_no += 1
         else:
             #strip <img> tag for 1, 2, 3.
-            place_w_dot = re.findall('[0-9][.]', str(place))[0]
+            place_w_dot = re.findall('[0-9]+[.]', str(place))[0]
             place = re.sub('[.]', '', place_w_dot).strip()
             point = int(places[1].string)
 
@@ -223,6 +225,39 @@ def get_athletes_by_html (race_id, results, gender):
     else:
         create_node_edge_data(athlete_ids, gender, False, race_id)
 
+    return athlete_ids
+
+#competition info for intro
+competition_list = defaultdict(dict)
+
+def get_competition_info (race):
+    # c = competition_list[race['competition']]
+    if not competition_list[race['competition']]:
+        c = {}
+        c['startDate'] = race['date']
+        c['endDate'] = race['date']
+        if race['gender'] == 'men':
+            c['men'] = race['athletes']
+            c['women'] = []
+            c['raceCount'] = [1, 0]
+        else:
+            c['women'] = race['athletes']
+            c['men'] = []
+            c['raceCount'] = [0, 1]
+        competition_list[race['competition']] = c
+    else:
+        c = competition_list[race['competition']];
+        prevS = datetime.datetime.strptime(c['startDate'], '%d %b %Y')
+        prevE = datetime.datetime.strptime(c['endDate'], '%d %b %Y')
+        cd = datetime.datetime.strptime(race['date'], '%d %b %Y')
+        c['startDate'] = min([prevS, cd]).strftime('%d %b %Y')
+        c['endDate'] = max([prevE, cd]).strftime('%d %b %Y')
+        c[race['gender']] = list(set(c[race['gender']]) | (set(race['athletes'])))
+        if race['gender'] == 'men':
+            c['raceCount'][0] = c['raceCount'][0] + 1
+        else:
+            c['raceCount'][1] = c['raceCount'][1] + 1
+
 # get data from html file (parsed from swim result html page)
 for meet in meets:
     for gender in genders:
@@ -230,9 +265,11 @@ for meet in meets:
 
             file_id = meet['id'] + '-' + gender + '-' + str(style)
 
+            competition_id = meets_name[meet['type']][1] + '-' + meet_year_letter[meet['year']] + \
+                       meet['year']
+
             # set race id with meet and even info
-            race_id = meets_name[meet['type']][1] + '-' + meet_year_letter[meet['year']] + \
-                       meet['year'] + '--' + \
+            race_id = competition_id + '--' + \
                        events_name[str(style)][2] + '-' + \
                        events_name[str(style)][1]
 
@@ -241,16 +278,21 @@ for meet in meets:
             result_string = str(html.find('table', {'class', 'meetResult'})).replace('\n', '')
             result_html = BeautifulSoup(result_string, 'html.parser')
 
-            # update race object with race date
-            #race_date = result_html.find('tr').find_all('th')[1].string.split('-')[0].strip()
-            #race[genders[gender]['name']][race_id] = race_date
             results = list(result_html.find('table').children)[1:]
-            print (race_id)
-            get_athletes_by_html(race_id, results, genders[gender]['name'])
+            print (gender, race_id)
+            athlete_ids = get_athletes_by_html(race_id, results, genders[gender]['name'])
+            # update race object with race date
+            race_date = result_html.find('tr').find_all('th')[1].string.split('-')[0].strip()
+            race[genders[gender]['name']][race_id] = race_date
+            race_info = {
+                'date': race_date,
+                'gender': genders[gender]['name'],
+                'competition': competition_id,
+                'athletes': athlete_ids
+            }
+            get_competition_info(race_info);
 
-print('Men athletes', len(all_athletes['men']))
-print('Women athletes', len(all_athletes['women']))
-print(all_athletes)
+
 
 # save data files as json
 # data objects
@@ -258,17 +300,19 @@ print(all_athletes)
 # meets_list: { new type id: { name, children: [new id aka year, location] }
 # events_list: { new type id: { name, children: [new id aka abbr, full name }
 # athletes_list: { gender: [ { name, country, country_code, birth_date, races: [] }] }
-# race_list: { rage_id: date }
 
 # meets
 meets_list = {}
+
 # group by meet type (e.g., olympics)
-meets_grouped = _.groupBy(meets, lambda x, *a: x['type'])
+meets_grouped = {}
+sorted_meets = sorted(meets, key=itemgetter('type'))
+for key, group in itertools.groupby(sorted_meets, key=lambda x:x['type']):
+    meets_grouped[key] = list(group)
+
 for k, v in meets_grouped.iteritems():
-    print (k)
-    # [year, location]
-    children = _.map(v, lambda x, *a: [(meet_year_letter[x['year']] + str(x['year'])), x['year'] + ' - ' + x['location']])
-    children = _.sortBy(children, lambda x, *a: x[0])
+    children = map(lambda x: [(meet_year_letter[x['year']] + str(x['year'])), x['year'] + ' - ' + x['location']], v)
+    children = sorted(children, key=itemgetter(0))
     meets_grouped[k] = {
         'name': meets_name[k][0],
         'children': children
@@ -279,13 +323,15 @@ for k, v in meets_grouped.iteritems():
 # add key (i.e. asec sortable style_id) to the value
 for k, v in events_name.iteritems(): v.append(k)
 # group by event type (e.g., team or individual)
-events_list = _.groupBy(events_name, lambda x, *a: x[2])
+events_list = defaultdict(list)
+for key, value in events_name.iteritems():
+    events_list[value[2]].append(value)
+
 for k, v in events_list.iteritems():
     # x[3] is the style_id
-    children = _(v).chain().map(lambda x, *a: [x[1], x[0], x[3]])\
-        .sortBy(lambda x, *a: int(x[2]))\
-        .map(lambda x, *a: [x[0], x[1]])\
-        .value()
+    children = map(lambda x: [x[1], x[0], x[3]], v)
+    children = sorted(children, key=itemgetter(2))
+    children = map(lambda x: [x[0], x[1]], children)
     events_list[k] = {
         'name': 'Individual' if k == '0IND' else 'Team',
         'children': children
@@ -300,21 +346,24 @@ for gender, athletes_by_id in all_athletes.iteritems():
         info.append(val)
     athletes_list[gender] = info
 
-print('graph', node_edges)
-print('meets', meets_list)
-print('events', events_list)
-print('athletes', athletes_list)
-#print('race', race)
-
 # save files
 simplejson = json
+print events_list
 jsondata = simplejson.dumps({
         'graph': node_edges,
         'meets': meets_list,
         'events': events_list,
-        'athletes': athletes_list
-        #'race': race
+        'athletes': athletes_list,
+        'competitions': competition_list,
+        'race': race
     }, separators=(',',':'), sort_keys=True)
-fd = open('../webapp/public/data/data.json', 'w')
-fd.write(jsondata)
-fd.close()
+# fd = open('../webapp/public/data/data.json', 'w')
+# fd2 = open('../ng-app/src/app/services/data.json', 'w')
+fd3 = open('../react-app/src/data/data.json', 'w')
+# fd.write(jsondata)
+# fd.close()
+# fd2.write(jsondata)
+# fd2.close()
+fd3.write(jsondata)
+fd3.close()
+

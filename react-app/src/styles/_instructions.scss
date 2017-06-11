@@ -1,0 +1,50 @@
+@import './colors.scss';
+@import './size.scss';
+
+.instructions {
+    .info-title {
+        color: $highlight;
+        font-size: $small;
+        letter-spacing: $ls-md;
+    }
+    .info-options {
+        .option {
+            color: $main;
+            font-size: $xsmall;
+            padding-right: $pg-xs;
+            letter-spacing: $ls-md;
+        }
+        padding-left: 0;
+        margin-top: $pg-sm;
+        .option-li {
+            list-style: none;
+            margin-bottom: $pg-sm;
+            .dropdown {
+                display: inline-block;
+            }
+        }
+    }
+    .option-click, .option-dd-click {
+        color: $main;
+    }
+    .option-click {
+        cursor: pointer;
+    }
+    .dropdown-menu {
+        margin-top: $pg-xs;
+        margin-bottom: $pg-lg;
+        -webkit-box-shadow: 0 0 0 rgba(0,0,0,0);
+        box-shadow: 0 0 0 rgba(0,0,0,0);
+        border: 1px solid $oc-gray-3;
+    }
+    .dropdown-menu > li >a {
+        cursor: pointer;
+        color: $oc-gray-7;
+        &:hover {
+            background-color: $oc-gray-1;
+        };
+    }
+    .sub {
+        color: $oc-gray-6;
+    }
+}

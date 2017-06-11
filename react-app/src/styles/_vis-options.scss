@@ -1,0 +1,156 @@
+@import './colors.scss';
+@import './size.scss';
+
+.vis-types {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    .vis-view {
+        font-size: $small;
+        text-transform: capitalize;
+        cursor: pointer;
+        padding: 2px;
+          &:not(:last-child) {
+            margin-right: $pg-sm;
+        }
+    }
+    .view-selected {
+        padding-top: 0px;
+        border-bottom: 2px solid $grey-darker;
+    }
+}
+.options-wrapper {
+    position: relative;
+    padding-top: $pg-xs;
+    padding-bottom: $pg-xs;
+    .typcn {
+        margin-right: $pg-xs;
+        margin-left: $pg-xs;
+        color: $grey-darker;
+    }
+}
+.panels {
+    position: absolute;
+    top: 32px;
+    background-color: $white;
+    border-right: 1px solid $grey-lighter;
+    border-bottom: 1px solid $grey-lighter;
+    border-left: 1px solid $grey-lighter;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    margin-bottom: $pg-lg;
+    padding-bottom: $pg-xs * 3;
+    z-index: 100;
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+    .kind-wrapper-meets {
+        padding-left: $pg-xs * 3;
+        padding-right: $pg-xs;
+    }
+    .kind-wrapper-evetns {
+        padding-left: $pg-xs * 2;
+        padding-right: $pg-xs * 2;
+    }
+    .kind-wrapper-names {
+        padding-left: $pg-xs;
+        padding-right: $pg-xs * 3;
+    }
+    .kind-title {
+        border-bottom: 1px solid $grey-lighter;
+        padding-bottom: $pg-xs;
+        letter-spacing: $ls-lg;
+        text-transform: uppercase;
+    }
+    .items-title {
+        margin-top: $pg-sm;
+    }
+    .parent-botton {
+        display: inline-block;
+        background-color: $grey-dark;
+        .typcn {
+            color: $white;
+            cursor: pointer;
+        }
+    }
+    .radio-label {
+        display: inline-block;
+        line-height: 120%;
+        input {
+            margin-right: $pg-xxs;
+        }
+        &:first-child {
+            margin-bottom: $pg-xs;
+        }
+    }
+    .list-normal {
+        margin-left: $pg-xs;
+    }
+    .list-disabled {
+        text-decoration: line-through;
+    }
+    .select-wrapper {
+        margin-top: $pg-xs;
+        font-size: $small;
+        /*padding-left: $pg-sm;*/
+    }
+    /* override react-select design */
+    .Select-control {
+        border: 1px solid $grey-light;;
+        color: $grey;
+        a.Select-value-label {
+            &:hover, &:focus {
+                background-color: $main;
+            }
+        }
+    }
+    .Select-arrow {
+        border-color: $grey-light transparent transparent;
+        &:hover {
+            border-color: $grey-darker transparent transparent;
+        }
+    }
+    .is-open > .Select-control .Select-arrow {
+        border-color: transparent transparent $grey;
+        &:hover {
+          border-color: $grey-darker transparent transparent;
+        }
+    }
+    .Select-option.is-selected {
+        background-color: lighten($main, 20%);
+        color: $grey-darker;
+    }
+    .Select-option.is-focused {
+        background-color: lighten($main, 10%);
+    }
+    .is-focused:not(.is-open) > .Select-control {
+        border-color: $main;
+        box-shadow: none;
+    }
+    .Select-menu-outer {
+        border: 1px solid $grey-light;
+        margin-right: 20px;
+        border-top-color: $grey-lighter;
+    }
+    .selected-list {
+        font-size: $small;
+        padding: $pg-xs $pg-sm;
+        background-color: $oc-gray-1;
+        border-radius: 4px;
+        margin-top: $pg-xs;
+        .selected-list-name {
+            margin-right: $pg-xs;
+        }
+        .typcn {
+            margin-left: 0;
+            cursor: pointer;
+        }
+    }
+    .items-title {
+        .typcn {
+            margin-left: $pg-xs;
+            cursor: pointer;
+        }
+    }
+}

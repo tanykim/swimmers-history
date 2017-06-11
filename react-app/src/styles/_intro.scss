@@ -1,0 +1,211 @@
+@import './colors.scss';
+@import './size.scss';
+
+.logo-title {
+    display: flex;
+    align-items: center;
+    .text-swimmer, .text-network {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    .text-swimmer {
+        width: 40%;
+    }
+    .text-network {
+        width: 44%;
+        margin-left: 2%;
+        margin-right: 4%;
+    }
+    .text-swimmer {
+        font-weight: bold;
+    }
+}
+
+.intro {
+    .logo-wrapper {
+        background: $main;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, $main, $sub);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, $main, $sub); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        color: $white;
+        position: relative;
+        padding-top: 12px;
+        margin-bottom: 0;
+    }
+    .logo-bg {
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .logo-right {
+        align-self: center;
+        text-align: right;
+        z-index: 100;
+        .intro-link {
+            margin-right: 24px;
+            cursor: pointer;
+            padding: 2px;
+            border-bottom: 2px solid $white;
+            &:hover {
+                color: $grey-darker;
+                border-bottom: 2px solid $grey-darker;
+            }
+        }
+    }
+    .logo-title {
+        font-size: $large;
+        padding-top: 1em;
+        padding-bottom: 1em;
+    }
+    .radio-selection {
+        text-align: center;
+        div {
+            padding-top: 4em;
+            font-size: $large;
+            color: $main;
+        }
+    }
+    .radio {
+        text-align: center;
+        width: 100%;
+    }
+    .radio-wrapper {
+        border-right: 2px solid $grey-lighter;
+    }
+    .radio-wrapper-right {
+        border-left: 2px solid $grey-lighter;
+    }
+    .radio-desc {
+        margin-top: 1em;
+    }
+    .button-wrapper {
+        text-align: center;
+        margin-top: 1em;
+        margin-bottom: 4em;
+    }
+    .intro-button {
+        color: $white;
+        background-color: $highlight;
+        border-color: $highlight;
+        &:hover {
+            background-color: $highlight-dark;
+        }
+    }
+    .intro-vis-wrapper {
+        background-color: $white;
+        border-bottom: 1px solid $grey-lighter;
+        padding-top: 24px;
+    }
+    .intro-wave-top {
+        stroke: $white;
+    }
+    .intro-wave {
+        stroke: $main;
+    }
+    .intro-year-line {
+        stroke: $grey-lighter;
+        stroke-dasharray: 4 6;
+    }
+    .intro-year-bg {
+        fill: $main;
+    }
+    .intro-year-paused {
+        fill: $highlight;
+    }
+    .intro-year-text {
+        font-size: $small;
+        fill: $white;
+        font-weight: bold;
+        @extend .unselectable;
+    }
+    .intro-meet-hidden {
+        opacity: 0;
+    }
+    .intro-meet-shown {
+        opacity: 1;
+    }
+    .intro-meet-dimmed {
+        opacity: 0.5;
+    }
+    .intro-meet-top, .intro-meet-bottom {
+        @extend .unselectable;
+        font-size: $xsmall;
+    }
+    .intro-year-top {
+        text-anchor: end
+    }
+    .intro-year-bottom {
+        @extend .v-top;
+    }
+    .intro-meet-bottom {
+        @extend .v-top;
+    }
+    .intro-swimmer {
+        fill: $highlight;
+        stroke: $white;
+        stroke-width: 6px;
+        stroke-opacity: 0.5;
+    }
+}
+
+.intro-datasets {
+    background-color: $white;
+    border-top: 1px solid $grey-lighter;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    .dataset-headline {
+        font-size: $large;
+        text-align: center;
+        margin-bottom: 1em;
+        strong {
+            color: $highlight;
+        }
+    }
+    .year-wrapper {
+        text-align: center;
+        .year {
+            background-color: $main;
+            display: inline-block;
+            color: $white;
+            padding: 2px 8px;
+            border-radius: 2px;
+            margin-top: -40px;
+            font-weight: bold;
+        }
+        .year-line {
+            border-top: 1px solid $main-light;
+            margin-top: -10px;
+            padding-bottom: 10px;
+        }
+        .meet {
+            font-size: $small;
+            width: 100%;
+            display: flex;
+            align-items: flex;
+            .meet-name, .meet-info {
+                width: 50%;
+                padding-bottom: 0.8em;
+            }
+            .meet-first {
+                padding-top: 1.2em;
+            }
+            .meet-last {
+                padding-bottom: 1.2em;
+            }
+            .meet-name {
+                text-align: right;
+                padding-right: 12px;
+                border-right: 1px solid $grey-lighter;
+                /*font-weight: bold;*/
+            }
+            .meet-info {
+                text-align: left;
+                padding-left: 12px;
+            }
+        }
+    }
+}

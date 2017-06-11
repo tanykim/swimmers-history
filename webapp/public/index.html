@@ -51,7 +51,7 @@
 
         <div class="col-xs-12 col-md-9 col-md-push-3">
             <!-- intro -->
-            <div class="intro" ng-hide="isLoaded.content" ng-include="'views/intro.html'"></div>
+            <div class="intro" ng-hide="isLoaded.content" ng-include="'views/intro.html'" ng-controller="IntroCtrl"></div>
             <!-- main content -->
             <div class="content" ng-show="isLoaded.content" ng-include="'views/content.html'" ng-controller="ContentCtrl"></div>
             <!-- sub content -->
@@ -82,9 +82,11 @@
 <script src="scripts/controllers/content.js"></script>
 <script src="scripts/controllers/contents/panels.js"></script>
 <script src="scripts/controllers/contents/vis.js"></script>
+<script src="scripts/controllers/intro.js"></script>
 <script src="scripts/main.js"></script>
 <script src="scripts/services/processor.js"></script>
 <script src="scripts/services/storage.js"></script>
+<script src="scripts/services/timeline.js"></script>
 <script src="scripts/services/visualizer.js"></script>
 <!-- endinjector -->
 </body>

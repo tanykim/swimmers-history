@@ -1,0 +1,39 @@
+/* grey scale */
+@import '../../node_modules/open-color/open-color.scss';
+
+$white: #ffffff;
+
+/* content colors */
+$main: #5B86E5;
+$main-light: #49DBEA;
+$main-dark : darken($main, 2%);
+$sub: #21d7c4;
+$highlight: #A527AF;
+$highlight-dark : darken($highlight, 5%);
+$highlight-light: lighten($highlight, 5%);
+/*#ffebea;*/
+
+/* grey */
+$grey-darker: $oc-gray-9;
+$grey-dark: $oc-gray-7;
+$grey: $oc-gray-6;
+$grey-light: $oc-gray-5;
+$grey-lighter: $oc-gray-2;
+
+/* vis */
+$node: $grey-dark;
+$over: $main;
+$clicked: $highlight;
+$linked: $main-light;
+
+/* result */
+$gold: #fbcd15;
+$silver: #dadada;
+$bronze: #e6852f;
+$white-trans: fade($white, 70%);
+
+.gradation {
+  background: $main;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, $main, $sub);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, $main, $sub); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}

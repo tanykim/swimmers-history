@@ -1,0 +1,13 @@
+@import './colors.scss';
+@import './size.scss';
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Avenir, 'Helvetica Neue', Helvetica, Arial, san-serif;
+    color: $grey-darker;
+    background-color: $oc-gray-0;
+}
+.footer {
+    margin-bottom: 3em;
+}

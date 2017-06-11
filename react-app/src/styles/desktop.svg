@@ -1,0 +1,11 @@
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <title>desktop</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="FUJICONS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="desktop" fill="#221F20">
+            <path d="M3,16.5 L21,16.5 L21,4.5 L3,4.5 L3,16.5 Z M2,2.5 C1.448,2.5 1,2.947 1,3.5 L1,17.5 C1,18.051 1.448,18.5 2,18.5 L10,18.5 L9,20.5 L6,20.5 C5.447,20.5 5,20.947 5,21.5 C5,22.051 5.447,22.5 6,22.5 L18,22.5 C18.553,22.5 19,22.051 19,21.5 C19,20.947 18.553,20.5 18,20.5 L15,20.5 L14,18.5 L22,18.5 C22.553,18.5 23,18.051 23,17.5 L23,3.5 C23,2.947 22.553,2.5 22,2.5 L2,2.5 Z" id="Page-1"></path>
+        </g>
+    </g>
+</svg>
