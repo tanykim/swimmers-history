@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import AppComponent from '../components/App'
 
 const mapStateToProps = (state, ownProps) => (

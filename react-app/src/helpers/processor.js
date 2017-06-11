@@ -73,8 +73,10 @@ export const getAthletesList = (gender) => {
 };
 
 //set options
-export const setSelections = (sel, selParent, selected) => {
-  _.each(selected, (vals, kind) => {
+export const setSelections = (sel, selParentPrev, selectedPrev) => {
+  const selParent = _.cloneDeep(selParentPrev);
+  const selected = _.cloneDeep(selectedPrev);
+  _.each(_.cloneDeep(selected), (vals, kind) => {
       //example: kind(meets): '0OG-a2016', kind(eventts): '0IND-50Fr'
     _.each(vals, (val) => {
       const sep = val.split('-');

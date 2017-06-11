@@ -7,10 +7,10 @@ class HeaderComponent extends Component {
     return (<div className="header">
       <div className="container">
         <div className="columns">
-          <div className="column is-4" onClick={() => this.props.goIntro()}>
+          <div className="column is-half" onClick={() => this.props.goIntro()}>
             <Logo />
           </div>
-          <div className="column is-1 is-offset-7 header-gender">
+          <div className="column is-half header-gender">
             <span className="gender-change" onClick={() => this.props.switchGender()}>
               <span className="typcn typcn-arrow-right" />{ this.props.gender === 'women' ? 'men' : 'women' }
             </span>

@@ -6,11 +6,11 @@ class Footer extends Component {
     return (<div className="footer">
         <div className="container">
           <div>
-            View code on <a href="https://github.com/tanykim/swimmers-network" target="_blank">GitHub</a>
+            View code on <a href="https://github.com/tanykim/swimmers-network" target="_blank" rel="noopener noreferrer" >GitHub</a>
             <span className="divider">|</span>
-            Data from <a href="https://www.swimrankings.net/" target="_blank">Swimranknigs</a>
+            Data from <a href="https://www.swimrankings.net/" target="_blank" rel="noopener noreferrer" >Swimranknigs</a>
             <span className="divider">|</span>
-            Made by <a href="http://tany.kim" target="_blank">Tanyoung Kim</a>
+            Made by <a href="http://tany.kim" target="_blank" rel="noopener noreferrer" >Tanyoung Kim</a>
           </div>
         </div>
       </div>);

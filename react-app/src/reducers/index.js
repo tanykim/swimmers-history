@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import _ from 'lodash';
 import currentView from './currentView';
 import options from './options';
 import data from './data';

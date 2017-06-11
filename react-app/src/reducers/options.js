@@ -11,26 +11,30 @@ import {
 
 const options = (state = { isOpen: false }, action) => {
   switch (action.type) {
-    case 'INITIALIZE':
+    case 'INITIALIZE': {
       const initSels = setInitialSelections();
       return Object.assign({}, state, {
         ...initSels,
       });
-    case 'SET_GENDER':
+    }
+    case 'SET_GENDER': {
       const list = getAthletesList(action.value);
+      const initSels = setInitialSelections();
       return Object.assign({}, state, {
         list,
+        ...initSels,
         searchedAthletes: [],
         originalSel: {},
         origianlSelParent: {},
         originalNames: [], //show in the option name
       });
-    case 'SET_DEFAULT_OPTIONS':
+    }
+    case 'SET_DEFAULT_OPTIONS': {
       let defaultEvents;
       let defaultIds;
       if (action.value === 'men') {
         defaultEvents = {
-          meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008'],
+          meets: ['0OG-a2016'],
           events: ['0IND-a50Fr', '0IND-b100Fr', '0IND-c200Fr', '0IND-d400Fr', '0IND-f1500Fr',
           '0IND-g100Bk', '0IND-h200Bk', '0IND-i100Br', '0IND-j200Br', '0IND-k100Fly', '0IND-l200Fly',
           '0IND-m200IM', '0IND-n400IM',
@@ -40,12 +44,12 @@ const options = (state = { isOpen: false }, action) => {
       } else {
         defaultEvents = {
           meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008'],
-          events: ['0IND-a50Fr', '0IND-b100Fr', '0IND-c200Fr', '0IND-d400Fr', '0IND-e800Fr',
-            '1TEAM-o4X100Fr', '1TEAM-p4X200Fr']
+          events: ['0IND-k100Fly', '0IND-l200Fly', '0IND-m200IM', '0IND-n400IM']
         };
         defaultIds = []; //ledecky '4772552'
       }
       const selections = setSelections(state.sel, state.selParent, defaultEvents);
+      // console.log(selections);
       const { sel, selParent } = selections;
       const searchedAthletes = getSearchedAthletes(defaultIds, action.value);
       const originalNames = searchedAthletes;
@@ -55,29 +59,35 @@ const options = (state = { isOpen: false }, action) => {
         searchedAthletes, originalNames,
         nameOption
       });
-    case 'TOGGLE_OPTIONS':
+    }
+    case 'TOGGLE_OPTIONS': {
       return Object.assign({}, state, {
         isOpen: action.value
       });
-    case 'SET_SELECTION':
+    }
+    case 'SET_SELECTION': {
       const updatedSel = updateSelection(action.value, _.cloneDeep(state.sel));
       return Object.assign({}, state, { sel: updatedSel });
-    case 'SET_NAME_OPTION':
+    }
+    case 'SET_NAME_OPTION': {
       return Object.assign({}, state, {
         searchedAthletes: action.value === 'all' ? [] : state.searchedAthletes,
         nameOption: action.value
       });
-    case 'ADD_ATHLETE':
+    }
+    case 'ADD_ATHLETE': {
       return Object.assign({}, state, {
         searchedAthletes: state.searchedAthletes.concat(action.value)
       });
-    case 'REMOVE_AHLETE':
+    }
+    case 'REMOVE_AHLETE': {
       const newSearched = _.reject(state.searchedAthletes, (d) => d.id === action.value);
       return Object.assign({}, state, {
         searchedAthletes: newSearched,
         nameOption: newSearched.length === 0 ? 'all' : state.nameOption,
       });
-    case 'SET_VIS_DATA':
+    }
+    case 'SET_VIS_DATA': {
       //reset temprary selection & temporary names
       return Object.assign({}, state, {
         originalNames: _.cloneDeep(state.searchedAthletes),
@@ -85,7 +95,8 @@ const options = (state = { isOpen: false }, action) => {
         originalSelParent: _.cloneDeep(state.selParent),
         isOpen: false,
       });
-    case 'CANCEL':
+    }
+    case 'CANCEL': {
       return Object.assign({}, state, {
         isOpen: false,
         sel: state.originalSel,
@@ -93,7 +104,8 @@ const options = (state = { isOpen: false }, action) => {
         searchedAthletes: state.originalNames,
         nameOption: state.originalNames.length > 0 ? 'search' : 'all'}
       );
-    case 'TOGGLE_SEL_PARENT':
+    }
+    case 'TOGGLE_SEL_PARENT': {
       const { kind, type } = action.value;
       const prevVal = state.selParent[kind][type];
       state.selParent[kind][type] = !prevVal;
@@ -106,6 +118,7 @@ const options = (state = { isOpen: false }, action) => {
         selParent: state.selParent,
         sel: selCloned,
       });
+    }
     default:
       return state;
   }

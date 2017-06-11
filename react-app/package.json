@@ -14,10 +14,12 @@
     "node-sass": "^4.5.2",
     "open-color": "^1.5.1",
     "react": "^15.5.4",
+    "react-dev-utils": "^3.0.0",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
+    "react-scripts": "^1.0.7",
     "react-scroll-to-component": "^1.0.1",
     "react-select": "^1.0.0-rc.5",
     "react-test-renderer": "^15.5.4",
@@ -25,6 +27,7 @@
     "redux-logger": "^3.0.1",
     "typicons.font": "^2.0.9"
   },
+  "homepage": "http://tany.kim/swimmers-history",
   "scripts": {
     "build-css": "node_modules/node-sass/bin/node-sass src/ -o src/",
     "watch-css": "npm run build-css && node_modules/node-sass/bin/node-sass src/ -o src/ --watch --recursive",

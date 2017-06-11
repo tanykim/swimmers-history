@@ -256,22 +256,21 @@ class IntroComponent extends Component {
   }
 
   componentWillUnmount() {
-    console.log('--------unmount');
     d3.select('.js-intro-swimmer').interrupt();
   }
 
   render() {
     return (<div className="intro">
-      <div className="logo-wrapper is-hidden-touch">
+      <div className="logo-wrapper is-hidden-mobile">
         <div className="logo-bg">
           <svg><g id="intro-logo-bg"></g></svg>
         </div>
         <div className="container">
           <div className="columns">
-            <div className="column is-one-third-desktop is-full-mobile">
+            <div className="column is-one-third-desktop ">
               <Logo />
             </div>
-            <div className="column is-two-thirds-desktop is-full-mobile logo-right is-hidden-touch">
+            <div className="column is-two-thirds-desktop logo-right is-hidden-mobile">
               <span className="intro-link" onClick={() => this.scroll('vis')}>Visualization</span>
               <span className="intro-link" onClick={() => this.scroll('datasets')}>Datasets</span>
             </div>
@@ -287,7 +286,7 @@ class IntroComponent extends Component {
           Big screen is reommended for the full functionality and views of data visualizations.
         </div>
       </div>
-      <div className="is-hidden-touch intro-vis-wrapper" id="intro-vis">
+      <div className="is-hidden-mobile intro-vis-wrapper" id="intro-vis">
         <svg id="intro-vis-svg">
           <g id="intro-vis-g"/>
         </svg>
@@ -307,7 +306,7 @@ class IntroComponent extends Component {
                 disabled={this.props.isLoading}
                 onChange={this.props.setGender} /> <strong>WOMEN</strong>
               <div className="radio-desc">
-                All women's free style events in 2016
+                All butterfly and individual medley races <br/>in 2008, 2012, and 2016
               </div>
             </label>
           </div>
@@ -321,7 +320,7 @@ class IntroComponent extends Component {
                 disabled={this.props.isLoading}
                 onChange={this.props.setGender} /> <strong>MEN</strong>
               <div className="radio-desc">
-                Michael Phelps's all individual events <br/>in 2008, 2012 and 2016
+                All Michael Phelps's races in 2016
               </div>
             </label>
           </div>
