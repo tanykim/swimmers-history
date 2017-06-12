@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactResizeDetector from 'react-resize-detector';
 import * as d3 from 'd3';
 import _ from 'lodash';
 
@@ -92,7 +93,7 @@ class RaceComponent extends Component {
       const y = pDiff * i;
       if (i < 3) {
         g.append('line')
-          .attr('x1', -40)
+          .attr('x1', -20)
           .attr('x2', w)
           .attr('y1', y)
           .attr('y2', y)
@@ -101,7 +102,7 @@ class RaceComponent extends Component {
           .style('stroke-opacity', 0.2);
       }
       g.append('line')
-        .attr('x1', -40)
+        .attr('x1', -20)
         .attr('x2', w)
         .attr('y1', y)
         .attr('y2', y)
@@ -136,7 +137,7 @@ class RaceComponent extends Component {
     const labelDist = 20;
     const ldWeight = { date: 0.8, year: 1.2, meet: 1};
     const initialTop = 40 + labelDist * ldWeight.date;
-    let margin = { veryTop: 40, top: initialTop, right: 0, bottom: 40, left: 70, extended: 0 };
+    let margin = { veryTop: 40, top: initialTop, right: 0, bottom: 40, left: 50, extended: 0 };
     let dim = { w: containerW - 100 - margin.left - margin.right };
     let rDiff = 76; //minimum distance between races
     const aWidth = 8; //width of line representing an athlete
@@ -282,6 +283,10 @@ class RaceComponent extends Component {
     }
   }
 
+  _onResize() {
+    this.updateGraph(this.props);
+  }
+
   render() {
     return (<div>
       <div className="race" id="vis-race-width">
@@ -293,6 +298,7 @@ class RaceComponent extends Component {
           <div className="arrow-down"/>
         </div>
       </div>
+      <ReactResizeDetector handleWidth onResize={this._onResize.bind(this)} />
     </div>);
   }
 }

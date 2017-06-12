@@ -22,7 +22,7 @@ const mapDispatchToProps = (dispatch) => (
       setTimeout(() => {
         dispatch({ type: 'SET_CURRENT_VIEW', value: 'vis' })
       }, 500);
-   }
+   },
   }
 );
 
@@ -34,7 +34,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     },
     startVis: () => {
       dispatchProps.startVis(stateProps);
-    }
+    },
   })
 }
 

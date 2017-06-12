@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactResizeDetector from 'react-resize-detector';
 import * as d3 from 'd3';
 import _ from 'lodash';
 
@@ -191,6 +192,10 @@ class NetworkComponent extends Component {
     }
   }
 
+  _onResize() {
+    this.updateGraph(this.props);
+  }
+
   render() {
     return (<div>
       { this.props.clickedIds.length > 1 && <div className="network-options">
@@ -221,6 +226,7 @@ class NetworkComponent extends Component {
           <div className="arrow-down"/>
         </div>
       </div>
+      <ReactResizeDetector handleWidth onResize={this._onResize.bind(this)} />
     </div>);
   }
 }

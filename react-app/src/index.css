@@ -5668,7 +5668,7 @@ body {
 
 .panels {
   position: absolute;
-  left: 0px;
+  left: 12px;
   top: 32px;
   background-color: #ffffff;
   border-right: 1px solid #e9ecef;
@@ -6781,8 +6781,7 @@ body {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1); }
 
 .logo-wrapper-mobile .logo-title {
-  justify-content: center;
-  padding-top: 0.4em; }
+  justify-content: center; }
 
 .intro-warning {
   margin-top: 60px;
@@ -6805,6 +6804,8 @@ body {
   .text-network {
     width: 36% !important;
     margin-right: 0% !important; }
+  .header .logo-title {
+    padding-top: 0.4em; }
   .header-gender {
     justify-content: center !important;
     background-color: #ffffff; }
