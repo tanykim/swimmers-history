@@ -259,10 +259,11 @@ class RaceComponent extends Component {
     //mouse over/out
     if (this.props.hovered !== nextProps.hovered) {
       d3.selectAll(`.js-race-a-${nextProps.athleteId}`).classed('race-athlete-over', nextProps.hovered);
+      const coor = d3.mouse(d3.select('#svg-race').node());
       d3.select('.js-race-hover')
         .style('display', `${nextProps.hovered ? 'inline-block' : 'none'}`)
-        .style('left', `${d3.event.pageX}px`)
-        .style('top', `${d3.event.pageY}px`);
+        .style('left', `${coor[0] + 45}px`)
+        .style('top', `${coor[1]}px`);
       d3.select('.js-race-content').html(nextProps.hoverText);
     }
     //click
