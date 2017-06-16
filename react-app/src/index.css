@@ -1,5 +1,6 @@
 /*! bulma.io v0.4.2 | MIT License | github.com/jgthms/bulma */
 @import url(../node_modules/react-select/dist/react-select.css);
+@import url(../node_modules/tippy.js/dist/tippy.css);
 @import url(../node_modules/typicons.font/src/font/typicons.css);
 @import url(../node_modules/flag-icon-css/css/flag-icon.min.css);
 @keyframes spinAround {
@@ -6540,39 +6541,6 @@ body {
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   background-color: #ffffff; }
-
-.vis-hover, .vis-hover-double {
-  position: absolute;
-  text-align: center;
-  font-size: 12px;
-  color: #ffffff;
-  pointer-events: none;
-  margin-top: -38px;
-  display: none;
-  overflow: visible; }
-
-.vis-hover .hover-content, .vis-hover-double .hover-content {
-  white-space: pre;
-  position: relative;
-  left: -50%;
-  background: #212529;
-  padding: 4px 8px; }
-
-.vis-hover .arrow-down, .vis-hover-double .arrow-down {
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 10px solid #212529;
-  position: relative;
-  left: -8px; }
-
-.vis-hover-double {
-  margin-top: -56px; }
-
-.vis-hover-double .second-line {
-  padding-top: 0;
-  margin-top: -4px; }
 
 /* grey scale */
 /* content colors */

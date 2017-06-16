@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import _ from 'lodash';
+import Tippy from 'tippy.js';
 import Countries from '../data/countries.json';
 
 class CountryComponent extends Component {
@@ -34,11 +35,18 @@ class CountryComponent extends Component {
           const lastA = (j === a.records.length - 1 && i === athletes.length - 1) ? true : false;
           d3.select(`#div-country`)
             .append('span')
+            .attr('id', `${a.id}-${r.race_id}`)
             .attr('class', `js-a-${a.id} r-general js-r-${r.race_id} r-${r.place} r-${styles[j]}${neighbor ? ' r-neighbor': ''}${lastA ? ' r-a-last' : ''}`)
             .on('mouseover', () => {
-              this.props.mouseOverFunc(r.race_id, a.name, r.place);
+              if ('ontouchstart' in document) {
+                return false;
+              }
+              this.props.mouseOverFunc(r.race_id, a.name, a.id, r.place);
             })
             .on('mouseout', () => {
+              if ('ontouchstart' in document) {
+                return false;
+              }
               this.props.mouseOutFunc();
             })
             .on('click', () => {
@@ -75,12 +83,17 @@ class CountryComponent extends Component {
     }
     //mouse over
     if (this.props.hovered !== nextProps.hovered) {
+      d3.select(`span[id="${nextProps.athleteId}-${nextProps.raceId}"]`)
+        .attr('title', nextProps.hoverText);
       d3.selectAll(`.js-r-${nextProps.raceId}`).classed('r-hover', nextProps.hovered);
-      d3.select('.js-country-hover')
-        .style('display', `${nextProps.hovered ? 'inline-block' : 'none'}`)
-        .style('left', `${d3.event.pageX}px`)
-        .style('top', `${d3.event.pageY}px`);
-      d3.select('.js-country-content').html(nextProps.hoverText);
+      if (nextProps.hovered) {
+        Tippy(`span[id="${nextProps.athleteId}-${nextProps.raceId}"]`, {
+          arrow: true,
+          animation: 'fade',
+          size: 'small',
+          duration: 0
+        });
+      }
     }
     //click
     if (nextProps.clicked || this.props !== nextProps.clicked) {
@@ -123,10 +136,6 @@ class CountryComponent extends Component {
           </p>
         </div>
         <div id="div-country" className="country-linear">
-        </div>
-        <div className="vis-hover js-country-hover">
-          <div className="hover-content js-country-content"/>
-          <div className="arrow-down"/>
         </div>
       </div>
     );

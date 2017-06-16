@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactResizeDetector from 'react-resize-detector';
 import * as d3 from 'd3';
 import _ from 'lodash';
+import Tippy from 'tippy.js';
 
 class RaceComponent extends Component {
 
@@ -11,12 +12,19 @@ class RaceComponent extends Component {
       .attr('x2', x)
       .attr('y1', y - halfL)
       .attr('y2', y + halfL)
+      .attr('id', `${a.id}-${raceId}`)
       .attr('class', `js-race-a-${a.id} race-athlete${isOutside ? '-out' : ''}`)
       .style('stroke-width', strokeW)
       .on('mouseover', () => {
+        if ('ontouchstart' in document) {
+          return false;
+        }
         props.mouseOverFunc(raceId, a.name, a.place, a.id, a.records.length);
       })
       .on('mouseout', () => {
+        if ('ontouchstart' in document) {
+          return false;
+        }
         props.mouseOutFunc();
       })
       .on('click', () => {
@@ -258,13 +266,17 @@ class RaceComponent extends Component {
     }
     //mouse over/out
     if (this.props.hovered !== nextProps.hovered) {
+      d3.select(`line[id="${nextProps.athleteId}-${nextProps.raceId}"]`)
+        .attr('title', nextProps.hoverText);
       d3.selectAll(`.js-race-a-${nextProps.athleteId}`).classed('race-athlete-over', nextProps.hovered);
-      const coor = d3.mouse(d3.select('#svg-race').node());
-      d3.select('.js-race-hover')
-        .style('display', `${nextProps.hovered ? 'inline-block' : 'none'}`)
-        .style('left', `${coor[0] + 45}px`)
-        .style('top', `${coor[1]}px`);
-      d3.select('.js-race-content').html(nextProps.hoverText);
+      if (nextProps.hovered) {
+        Tippy(`line[id="${nextProps.athleteId}-${nextProps.raceId}"]`, {
+          arrow: true,
+          animation: 'fade',
+          size: 'small',
+          duration: 0
+        });
+      }
     }
     //click
     if (nextProps.clicked || this.props !== nextProps.clicked) {
@@ -294,10 +306,6 @@ class RaceComponent extends Component {
         <svg id="svg-race">
           <g id="race-g"></g>
         </svg>
-        <div className="vis-hover js-race-hover">
-          <div className="hover-content js-race-content"/>
-          <div className="arrow-down"/>
-        </div>
       </div>
       <ReactResizeDetector handleWidth onResize={this._onResize.bind(this)} />
     </div>);

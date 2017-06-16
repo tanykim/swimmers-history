@@ -16,8 +16,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => (
   {
-    mouseOverFunc: (raceId, aName, place) => {
-      dispatch({ type: 'HOVER_RACE', value: { raceId, aName, place } });
+    mouseOverFunc: (raceId, aName, aId, place) => {
+      dispatch({ type: 'HOVER_RACE', value: { raceId, aName, aId, place } });
     },
     mouseOutFunc: (value) => {
       dispatch({ type: 'UNHOVER_RACE' });
@@ -37,8 +37,8 @@ const mapDispatchToProps = (dispatch) => (
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return Object.assign({}, {
     ...stateProps,
-    mouseOverFunc: (raceId, aName, place) => {
-      return dispatchProps.mouseOverFunc(raceId, aName, place);
+    mouseOverFunc: (raceId, aName, aId, place) => {
+      return dispatchProps.mouseOverFunc(raceId, aName, aId, place);
     },
     mouseOutFunc: () => {
       return dispatchProps.mouseOutFunc();

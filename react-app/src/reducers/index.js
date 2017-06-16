@@ -52,6 +52,7 @@ const country = (state = {}, action) => {
       });
     case 'HOVER_RACE':
       return Object.assign({}, state, {
+        athleteId: action.value.aId,
         raceId: action.value.raceId,
         hoverText: getRaceHoverText(action.value),
         hovered: true,
@@ -76,6 +77,7 @@ const race = (state = {}, action) => {
     case 'HOVER_RACE_ATHLETE':
       return Object.assign({}, state, {
         athleteId: action.value.aId,
+        raceId: action.value.raceId,
         hoverText: getRaceHoverText(action.value),
         hoverTextCount: `total ${action.value.raceCount} race${action.value.raceCount > 1 ? 's' : ''}`,
         hovered: true,

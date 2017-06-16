@@ -12,6 +12,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "node-sass": "^4.5.2",
+    "npm": "^5.0.3",
     "open-color": "^1.5.1",
     "react": "^15.5.4",
     "react-dev-utils": "^3.0.0",
@@ -26,6 +27,7 @@
     "react-test-renderer": "^15.5.4",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",
+    "tippy.js": "^0.17.0",
     "typicons.font": "^2.0.9"
   },
   "homepage": "http://tany.kim/swimmers-history",

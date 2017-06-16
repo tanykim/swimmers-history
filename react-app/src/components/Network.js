@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactResizeDetector from 'react-resize-detector';
 import * as d3 from 'd3';
 import _ from 'lodash';
+import Tippy from 'tippy.js';
 
 class NetworkComponent extends Component {
 
@@ -95,12 +96,17 @@ class NetworkComponent extends Component {
           return self.dragended(d, d3.select(this).attr('clicked'), simulation);
         }))
       .on('mouseover', (d) => {
-        // if ('ontouchstart' in document) {
-        //   return false;
-        // }
+        if ('ontouchstart' in document) {
+          return false;
+        }
         this.props.mouseOverFunc(d);
       })
-      .on('mouseout', (d) => this.props.mouseOutFunc())
+      .on('mouseout', (d) => {
+        if ('ontouchstart' in document) {
+          return false;
+        }
+        this.props.mouseOutFunc();
+      })
       .on('click', (d) => this.props.clickFunc(d));
     simulation.nodes(graph.nodes).on('tick', () => this.ticked(link, node));
     simulation.force('link').links(graph.links);
@@ -144,16 +150,20 @@ class NetworkComponent extends Component {
     if (this.props.hovered !== nextProps.hovered) {
       _.each(nextProps.connected, (c) => {
         const combination = `${Math.min(+c, +nextProps.hoveredId)}-${Math.max(+c, +nextProps.hoveredId)}`;
-        d3.select(`circle[id="${nextProps.hoveredId}"]`).classed('node-over', nextProps.hovered);
+        d3.select(`circle[id="${nextProps.hoveredId}"]`)
+          .attr('title', nextProps.hoverText)
+          .classed('node-over', nextProps.hovered);
         d3.select(`line[id="${combination}"]`).classed('link-over', nextProps.hovered);
         d3.select(`circle[id="${c}"]`).classed('node-linked', nextProps.hovered);
       });
-      const coor = d3.mouse(d3.select('#network-g').node());
-      d3.select('.js-network-hover')
-        .style('display', `${nextProps.hovered ? 'inline-block' : 'none'}`)
-        .style('left', `${coor[0]}px`)
-        .style('top', `${coor[1]}px`);
-      d3.select('.js-network-content').html(nextProps.hoverText);
+      if (nextProps.hovered) {
+        Tippy(`circle[id="${nextProps.hoveredId}"]`, {
+          arrow: true,
+          animation: 'fade',
+          size: 'small',
+          duration: 0
+        });
+      }
     }
     //click
     if (nextProps.clicked || this.props !== nextProps.clicked) {
@@ -220,10 +230,6 @@ class NetworkComponent extends Component {
         <svg id="svg-network" style={{width: '100%'}}>
           <g id="network-g"></g>
         </svg>
-        <div className="vis-hover js-network-hover">
-          <div className="hover-content js-network-content"/>
-          <div className="arrow-down"/>
-        </div>
         <ReactResizeDetector handleWidth onResize={this._onResize.bind(this)} />
       </div>
     </div>

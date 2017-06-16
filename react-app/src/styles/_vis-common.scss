@@ -8,37 +8,3 @@
     border-bottom-right-radius: $bd-radius;
     background-color: $white;
 }
-.vis-hover {
-    position: absolute;
-    text-align: center;
-    font-size: $xsmall;
-    color: $white;
-    pointer-events: none;
-    margin-top: -38px;
-    display: none;
-    overflow: visible;
-    .hover-content {
-        white-space: pre;
-        position: relative;
-        left: -50%;
-        background: $grey-darker;
-        padding: 4px 8px;
-    }
-    .arrow-down {
-        width: 0;
-        height: 0;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-top: 10px solid $grey-darker;
-        position: relative;
-        left: -8px;
-    }
-}
-.vis-hover-double {
-    @extend .vis-hover;
-    margin-top: -56px;
-    .second-line {
-        padding-top: 0;
-        margin-top: -4px;
-    }
-}
