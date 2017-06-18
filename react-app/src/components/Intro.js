@@ -271,6 +271,12 @@ class IntroComponent extends Component {
               <Logo />
             </div>
             <div className="column is-two-thirds-desktop logo-right is-hidden-mobile">
+              <span className="header-button">
+                <a className={`button ${this.props.isLoading ? 'is-loading' : ''} intro-button`}
+                  onClick={this.props.setDefaultOptions}>
+                  Start with Olympians
+                </a>
+              </span>
               <span className="intro-link" onClick={() => this.scroll('vis')}>Visualization</span>
               <span className="intro-link" onClick={() => this.scroll('datasets')}>Datasets</span>
             </div>
@@ -294,7 +300,7 @@ class IntroComponent extends Component {
       <div className="container intro-vis-content">
         <div className="columns is-multiline">
           <div className="column is-8 is-offset-2 radio-selection" ref="vis">
-            <div>Explore Olympic Games data first</div>
+            <div><strong>Explore the swimmers from the Olympics!</strong></div>
           </div>
           <div className="column is-4 is-offset-2 radio-wrapper">
             <label className="radio" disabled={this.props.isLoading}>

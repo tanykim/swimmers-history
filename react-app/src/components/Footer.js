@@ -17,8 +17,8 @@ class Footer extends Component {
           </div>
           <div className="share-line">
             <span className="icon-title"> Share </span>
-            <a href="https://twitter.com/intent/tweet?text=Check out data %23visualization of elite swimmer's network by @tanykim at http%3A%2F%2Ftany.kim/swimmers-history %23dataviz %23d3js %23swimming %23olympics" target="_blank"><span className="typcn typcn-social-twitter-circular"></span></a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Ftany.kim/swimmers-history" target="_blank"><span className="typcn typcn-social-facebook-circular"></span></a>
+            <a href="https://twitter.com/intent/tweet?text=Check out data %23visualization of elite swimmer's network by @tanykim at http%3A%2F%2Ftany.kim/swimmers-history %23dataviz %23d3js %23swimming %23olympics" target="_blank" rel="noopener noreferrer"><span className="typcn typcn-social-twitter-circular"></span></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Ftany.kim/swimmers-history" target="_blank" rel="noopener noreferrer"><span className="typcn typcn-social-facebook-circular"></span></a>
           </div>
         </div>
       </div>);

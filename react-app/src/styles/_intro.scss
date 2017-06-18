@@ -42,9 +42,14 @@
         }
     }
     .logo-right {
-        align-self: center;
-        text-align: right;
+        justify-content: flex-end;
         z-index: 100;
+        text-align: right;
+        display: flex;
+        align-items: center;
+        .header-button {
+            margin-right: 24px;
+        }
         .intro-link {
             margin-right: 24px;
             cursor: pointer;

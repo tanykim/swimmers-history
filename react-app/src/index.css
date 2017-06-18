@@ -5395,9 +5395,14 @@ body {
   height: 100%; }
 
 .intro .logo-right {
-  align-self: center;
+  justify-content: flex-end;
+  z-index: 100;
   text-align: right;
-  z-index: 100; }
+  display: flex;
+  align-items: center; }
+
+.intro .logo-right .header-button {
+  margin-right: 24px; }
 
 .intro .logo-right .intro-link {
   margin-right: 24px;
