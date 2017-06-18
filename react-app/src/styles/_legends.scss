@@ -115,10 +115,11 @@
     .instruction-title {
         color: $main;
     }
-    ol {
+    ul {
         color: $grey-darker;
         margin-top: $pg-sm;
         li {
+            list-style-type: disc;
             margin-left: $pg-sm;
             margin-bottom: $pg-sm;
             line-height: 120%;

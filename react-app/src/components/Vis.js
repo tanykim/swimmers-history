@@ -45,9 +45,9 @@ class VisComponent extends Component {
             <Legends type={this.props.visType} gender={this.props.gender}/>
             <div className="instruction">
               <div className="instruction-title">
-                Investigate swimmers' competition history in the following ways.
+                Investigate swimmers' competition history in the following options.
               </div>
-              <ol>
+              <ul>
                 <li> Click a swimmer in the visualization </li>
                 { this.props.searchedAthletes.length > 0 && <li>
                   Swimmers used for data filtering
@@ -89,7 +89,7 @@ class VisComponent extends Component {
                     </span>
                   </p>
                 </li>
-              </ol>
+              </ul>
             </div>
           </div>
           { this.props.clickedIds.length > 0 && <div className="column is-12">

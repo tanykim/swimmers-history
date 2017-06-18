@@ -6716,16 +6716,17 @@ body {
 .instruction .instruction-title {
   color: #5B86E5; }
 
-.instruction ol {
+.instruction ul {
   color: #212529;
   margin-top: 15px; }
 
-.instruction ol li {
+.instruction ul li {
+  list-style-type: disc;
   margin-left: 15px;
   margin-bottom: 15px;
   line-height: 120%; }
 
-.instruction ol .control {
+.instruction ul .control {
   margin-top: 6px; }
 
 /* grey scale */
