@@ -104,7 +104,7 @@ class IntroComponent extends Component {
           .classed('intro-meet-dimmed', true);
         pausedYear.classed('intro-year-paused', false);
         animateCircle(elapsed, newIdx);
-      }, 3000);
+      }, 1000);
     };
 
     //base animated path from the wave
@@ -128,7 +128,7 @@ class IntroComponent extends Component {
     const animateCircle = (elapsed, yearIdx) => {
       d3.select('.js-intro-swimmer')
         .transition()
-        .duration(8000)
+        .duration(7000)
         .ease(d3.easeLinear)
         .attrTween('transform', translateAlong(path.node(), elapsed, yearIdx))
         .on('end', () => {
