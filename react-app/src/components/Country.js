@@ -114,26 +114,29 @@ class CountryComponent extends Component {
   render() {
     return (
       <div className="country" id="vis-country-width">
-        <div className="country-sort">
-          <span>Sort countries</span>
-          <p className="control">
-            <span className="select is-small">
-              <select value={this.props.sortCountry} onChange={this.props.sortCountries}>
-                <option value="alphabetical">A to Z</option>
-                <option value="athletes">Number of swimmers</option>
-              </select>
-            </span>
-          </p>
-          <span> then athletes</span>
-          <p className="control">
-            <span className="select is-small">
-              <select value={this.props.sortAthlete} onChange={this.props.sortAthletes}>
-                <option value="races">Number of races</option>
-                <option value="points">Points (high to low)</option>
-                <option value="alphabetical">First name (A to Z)</option>
-              </select>
-            </span>
-          </p>
+        <div className="country-top">
+          <div className="country-total"><strong>{this.props.countryList.length}</strong> Countries</div>
+          <div className="country-sort">
+            <span>Sort countries</span>
+            <p className="control">
+              <span className="select is-small">
+                <select value={this.props.sortCountry} onChange={this.props.sortCountries}>
+                  <option value="alphabetical">A to Z</option>
+                  <option value="athletes">Number of swimmers</option>
+                </select>
+              </span>
+            </p>
+            <span> then athletes</span>
+            <p className="control">
+              <span className="select is-small">
+                <select value={this.props.sortAthlete} onChange={this.props.sortAthletes}>
+                  <option value="races">Number of races</option>
+                  <option value="points">Points (high to low)</option>
+                  <option value="alphabetical">First name (A to Z)</option>
+                </select>
+              </span>
+            </p>
+          </div>
         </div>
         <div id="div-country" className="country-linear">
         </div>

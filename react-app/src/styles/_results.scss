@@ -103,14 +103,13 @@
             margin-left: $pg-xxs;
         }
         .place {
-            text-align: center;
             box-sizing: border-box;
             width: 24px;
             height: 24px;
-            display: block;
-            padding-top: $pg-xxs;
-            letter-spacing: -1px;
             font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .place-border {
             border: 2px solid $oc-gray-8;

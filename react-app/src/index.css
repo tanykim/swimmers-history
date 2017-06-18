@@ -5588,8 +5588,7 @@ body {
 .footer {
   background-color: #495057;
   color: #868e96;
-  font-size: 14px;
-  padding-bottom: 3em; }
+  font-size: 14px; }
 
 .footer a {
   color: #ffffff; }
@@ -5602,7 +5601,18 @@ body {
   margin-right: 15px; }
 
 .footer .second-line {
-  margin-top: 1em; }
+  margin-top: 0.6em; }
+
+.footer .share-line {
+  margin-top: 0.6em;
+  display: flex;
+  align-items: center; }
+
+.footer .icon-title {
+  margin-right: 0.4em; }
+
+.footer .typcn {
+  font-size: 2em; }
 
 /* grey scale */
 /* content colors */
@@ -6047,12 +6057,23 @@ body {
 /* paragraph spacing or padding*/
 /* other sizing */
 /* borders */
+.country .country-top, .legend-country .country-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid #e9ecef; }
+
+.country .country-total, .legend-country .country-total {
+  font-size: 14px; }
+
+.country .country-total strong, .legend-country .country-total strong {
+  color: #6f42c1; }
+
 .country .country-sort, .legend-country .country-sort {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 15px;
-  border-bottom: 1px solid #e9ecef; }
+  justify-content: flex-end; }
 
 .country .country-sort span, .legend-country .country-sort span {
   font-size: 12px;
@@ -6242,8 +6263,8 @@ body {
 .race .race-athlete-clicked {
   stroke: #6f42c1; }
 
-.race .race-athlete-over {
-  stroke: #5B86E5; }
+.race .race-athlete-linked {
+  stroke: #49DBEA; }
 
 .race .fill-place-1 {
   fill: #fbcd15;
@@ -6397,14 +6418,13 @@ body {
   margin-left: 4px; }
 
 .results .record .place {
-  text-align: center;
   box-sizing: border-box;
   width: 24px;
   height: 24px;
-  display: block;
-  padding-top: 4px;
-  letter-spacing: -1px;
-  font-weight: bold; }
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
 
 .results .record .place-border, .results .record .place1, .results .record .place2, .results .record .place3 {
   border: 2px solid #343a40;
@@ -6795,5 +6815,4 @@ body {
     padding-left: 0.75em;
     padding-right: 0.75em; }
   .country-sort {
-    display: inline-block !important;
-    width: 100% !important; } }
+    display: inline-block !important; } }

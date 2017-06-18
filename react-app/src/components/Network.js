@@ -157,11 +157,12 @@ class NetworkComponent extends Component {
         d3.select(`circle[id="${c}"]`).classed('node-linked', nextProps.hovered);
       });
       if (nextProps.hovered) {
+        console.log('-----');
         Tippy(`circle[id="${nextProps.hoveredId}"]`, {
           arrow: true,
           animation: 'fade',
           size: 'small',
-          duration: 0
+          duration: 0,
         });
       }
     }

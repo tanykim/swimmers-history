@@ -2,12 +2,23 @@
 @import './size.scss';
 
 .country, .legend-country {
+    .country-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $pg-sm;
+        border-bottom: 1px solid $grey-lighter;
+    }
+    .country-total {
+        font-size: $small;
+        strong {
+            color: $highlight;
+        }
+    }
     .country-sort {
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        padding: $pg-sm;
-        border-bottom: 1px solid $grey-lighter;
         span {
             font-size: $xsmall;
             margin-right: $pg-xs;

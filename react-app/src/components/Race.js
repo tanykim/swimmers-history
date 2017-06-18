@@ -268,13 +268,15 @@ class RaceComponent extends Component {
     if (this.props.hovered !== nextProps.hovered) {
       d3.select(`line[id="${nextProps.athleteId}-${nextProps.raceId}"]`)
         .attr('title', nextProps.hoverText);
-      d3.selectAll(`.js-race-a-${nextProps.athleteId}`).classed('race-athlete-over', nextProps.hovered);
+      d3.selectAll(`.js-race-a-${nextProps.athleteId}`)
+        .classed('race-athlete-linked', nextProps.hovered);
       if (nextProps.hovered) {
         Tippy(`line[id="${nextProps.athleteId}-${nextProps.raceId}"]`, {
           arrow: true,
           animation: 'fade',
           size: 'small',
-          duration: 0
+          duration: 0,
+          position: 'bottom',
         });
       }
     }

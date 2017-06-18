@@ -68,7 +68,7 @@ class VisComponent extends Component {
                       <select onChange={this.props.selectAthlete}>
                         <option value="0">Select a swimmer</option>
                         {this.props.topAthletes.map((a) => {
-                          return (<option key={a.id} value={a.id}>{a.name} ({a.totalPoint} points)</option>);
+                          return (<option key={a.id} value={a.id}>{a.name} ({a.totalPoint} points / { a.records.length} races)</option>);
                         })}
                       </select>
                     </span>

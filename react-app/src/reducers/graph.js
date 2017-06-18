@@ -11,6 +11,7 @@ import {
 const graph = (state = { clickedIds: [], clickedObjs: [], isLinksShown: false }, action) => {
   //clicked & clickedIds are used for all vis types
   switch(action.type) {
+    case 'SET_VIS_DATA':
     case 'RESET_GRAPH':
       return Object.assign({}, state, {
         clicked: false,
