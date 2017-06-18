@@ -40,7 +40,7 @@ const options = (state = { isOpen: false }, action) => {
           '0IND-m200IM', '0IND-n400IM',
           '1TEAM-o4X100Fr', '1TEAM-p4X200Fr', '1TEAM-q4X100M']
         };
-        defaultIds = ['4038916']; //phelps
+        defaultIds = []; //phelps '4038916'
       } else {
         defaultEvents = {
           meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008'],

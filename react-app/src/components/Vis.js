@@ -50,7 +50,7 @@ class VisComponent extends Component {
               <ol>
                 <li> Click a swimmer in the visualization </li>
                 { this.props.searchedAthletes.length > 0 && <li>
-                  Swimmers used for filtering
+                  Swimmers used for data filtering
                   <p className="control">
                     <span className="select is-small">
                       <select onChange={this.props.selectAthlete}>

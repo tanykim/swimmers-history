@@ -8,7 +8,7 @@ const currentView = (state = { view: 'intro' }, action) => {
       return Object.assign({}, state, { isLoading: true });
     case 'SET_GENDER':
       //set a default view depending on gender
-      return Object.assign({}, state, { vis: action.value === 'men' ? 'network' : 'country' });
+      return Object.assign({}, state, { vis: 'network' });
     case 'SET_VIS_VIEW':
       return Object.assign({}, state, { vis: action.value });
     default:

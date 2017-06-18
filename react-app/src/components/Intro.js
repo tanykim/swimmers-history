@@ -300,7 +300,9 @@ class IntroComponent extends Component {
       <div className="container intro-vis-content">
         <div className="columns is-multiline">
           <div className="column is-8 is-offset-2 radio-selection" ref="vis">
-            <div><strong>Explore the swimmers from the Olympics!</strong></div>
+            <div><strong>Explore the swimmers from the Olympics first!</strong>
+            <br/>
+            Choose an example of a subset of data</div>
           </div>
           <div className="column is-4 is-offset-2 radio-wrapper">
             <label className="radio" disabled={this.props.isLoading}>
@@ -326,7 +328,7 @@ class IntroComponent extends Component {
                 disabled={this.props.isLoading}
                 onChange={this.props.setGender} /> <strong>MEN</strong>
               <div className="radio-desc">
-                All Michael Phelps's races in 2016
+                All individual races in 2016
               </div>
             </label>
           </div>
@@ -343,7 +345,8 @@ class IntroComponent extends Component {
           <div className="columns is-multiline">
             <div className="column is-12">
               <div className="dataset-headline">
-                <strong>{this.props.totalCount.women}</strong> women and <strong>{this.props.totalCount.men}</strong> swimmers' race history <br/>
+                Make your own visualizations with the data of <br/>
+                <strong>{this.props.totalCount.women}</strong> women and <strong>{this.props.totalCount.men}</strong> swimmers' race history
                 from the following meets
               </div>
               { _.cloneDeep(this.props.years).reverse().map((year) => {
