@@ -48,14 +48,22 @@
     align-items: center;
     justify-content: flex-end;
     .button {
-        margin-left: $pg-sm;
         border-radius: 4px;
-        border-color: $main;
-        color: $main;
         .typcn {
-            color: $main;
             font-size: $large;
             margin-left: 0;
+        }
+    }
+    .button.modify {
+        background-color: $highlight;
+        border-color: $highlight;
+        color: $white;
+        &:hover {
+            background-color: $highlight-dark;
+            border-color: $highlight-dark;
+        }
+        .typcn {
+            color: $white;
         }
     }
     .button.update {
@@ -72,7 +80,8 @@
     }
     .button.cancel {
         margin-left: $pg-sm;
-        color: $grey;
+        border-color: $main;
+        color: $main;
         border-color: $grey-lighter;
         &:hover {
             background-color: $grey-lighter;

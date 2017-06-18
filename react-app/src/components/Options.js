@@ -43,7 +43,7 @@ class OptionsComponent extends Component {
       </div>
       <div className="column is-one-third buttons">
         { !this.props.isOpen ?
-          <a className="button is-small" onClick={this.props.toggle}>
+          <a className="button is-small modify" onClick={this.props.toggle}>
             <span className="typcn typcn-edit"/>MODIFY
           </a> :
           <span>

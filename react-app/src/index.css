@@ -5883,15 +5883,23 @@ body {
   justify-content: flex-end; }
 
 .buttons .button {
-  margin-left: 15px;
-  border-radius: 4px;
-  border-color: #5B86E5;
-  color: #5B86E5; }
+  border-radius: 4px; }
 
 .buttons .button .typcn {
-  color: #5B86E5;
   font-size: 18px;
   margin-left: 0; }
+
+.buttons .button.modify {
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+  color: #ffffff; }
+
+.buttons .button.modify:hover {
+  background-color: #643ab0;
+  border-color: #643ab0; }
+
+.buttons .button.modify .typcn {
+  color: #ffffff; }
 
 .buttons .button.update {
   color: #ffffff;
@@ -5907,7 +5915,8 @@ body {
 
 .buttons .button.cancel {
   margin-left: 15px;
-  color: #868e96;
+  border-color: #5B86E5;
+  color: #5B86E5;
   border-color: #e9ecef; }
 
 .buttons .button.cancel:hover {
