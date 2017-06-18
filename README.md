@@ -1,6 +1,7 @@
 # Swimmers' History Data Visualization
 
 This is a data visulaization project of elite swimmers in the world. 
+Read my Medium posts on [dataset generation](https://medium.com/@tanykim/data-visualization-of-elite-swimmers-competition-results-part-1-datasets-bd09b68154c2), [visualization design](https://medium.com/@tanykim/data-visualization-of-elite-swimmers-competition-results-part-2-design-dc86d77946b8), and [insights discovery](https://medium.com/@tanykim/data-visualization-of-elite-swimmers-competition-results-part-3-insights-7ec5862f48a7).
 
 ## Data Resource
 
