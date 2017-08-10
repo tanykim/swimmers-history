@@ -346,7 +346,7 @@ class IntroComponent extends Component {
             <div className="column is-12">
               <div className="dataset-headline">
                 Make your own visualizations with the data of <br/>
-                <strong>{this.props.totalCount.women}</strong> women and <strong>{this.props.totalCount.men}</strong> swimmers' race history
+                <strong>{this.props.totalCount.women}</strong> women and <strong>{this.props.totalCount.men}</strong> men swimmers' race history
                 from the following meets
               </div>
               { _.cloneDeep(this.props.years).reverse().map((year) => {
