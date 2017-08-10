@@ -34,7 +34,7 @@ const options = (state = { isOpen: false }, action) => {
       let defaultIds;
       if (action.value === 'men') {
         defaultEvents = {
-          meets: ['0OG-a2016'],
+          meets: ['0OG-b2016'],
           events: ['0IND-a50Fr', '0IND-b100Fr', '0IND-c200Fr', '0IND-d400Fr', '0IND-f1500Fr',
           '0IND-g100Bk', '0IND-h200Bk', '0IND-i100Br', '0IND-j200Br', '0IND-k100Fly', '0IND-l200Fly',
           '0IND-m200IM', '0IND-n400IM',
@@ -43,7 +43,7 @@ const options = (state = { isOpen: false }, action) => {
         defaultIds = []; //phelps '4038916'
       } else {
         defaultEvents = {
-          meets: ['0OG-a2016', '0OG-e2012', '0OG-i2008'],
+          meets: ['0OG-b2016', '0OG-f2012', '0OG-j2008'],
           events: ['0IND-k100Fly', '0IND-l200Fly', '0IND-m200IM', '0IND-n400IM']
         };
         defaultIds = []; //ledecky '4772552'

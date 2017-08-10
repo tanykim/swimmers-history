@@ -19,7 +19,6 @@ genders = {
 #simple version for testing
 # meets = [
 #     {"type":"1","year":"2012","location":"London (GBR)","name":"XXX Olympic Games","id":"563769"},
-#     {"type":"1","year":"2016","location":"Rio (BRA)","name":"XXXI Olympic Games","id":"596227"},
 #     {"type":"2","year":"2015","location":"Kazan (RUS)","name":"FINA: 16th World Championships","id":"589276"}
 # ]
 # genders = {
@@ -35,16 +34,17 @@ meets_name = {
     '7450054': ['Pan Pacific Championships', '4PPC']
 }
 meet_year_letter = {
-    '2016': 'a',
-    '2015': 'b',
-    '2014': 'c',
-    '2013': 'd',
-    '2012': 'e',
-    '2011': 'f',
-    '2010': 'g',
-    '2009': 'h',
-    '2008': 'i',
-    '2007': 'j'
+    '2017': 'a',
+    '2016': 'b',
+    '2015': 'c',
+    '2014': 'd',
+    '2013': 'e',
+    '2012': 'f',
+    '2011': 'g',
+    '2010': 'h',
+    '2009': 'i',
+    '2008': 'j',
+    '2007': 'k'
 }
 events_name = {
     '1': ['50m Freestyle', 'a50Fr', '0IND'],
@@ -166,10 +166,12 @@ def get_athletes_by_html (race_id, results, gender):
         elif place == '-':
             place = place_no
             point = int(places[1].string)
-            next_swimtime = get_swimtime(next_elem.find('td', class_='swimtime').string.strip())
-            swimtime = get_swimtime(swimtime_str)
-            if swimtime < next_swimtime:
-                place_no += 1
+            is_next_place_valid = True if next_elem.find('td', class_='meetPlace').string.strip() == '-' else False
+            if is_next_place_valid:
+                swimtime = get_swimtime(swimtime_str)
+                next_swimtime = get_swimtime(next_elem.find('td', class_='swimtime').string.strip())
+                if swimtime < next_swimtime:
+                    place_no += 1
         else:
             #strip <img> tag for 1, 2, 3.
             place_w_dot = re.findall('[0-9]+[.]', str(place))[0]
@@ -195,7 +197,7 @@ def get_athletes_by_html (race_id, results, gender):
                     update_athlete_info(gender, id, record)
                 else:
                     # remove &nbsp in the name
-                    nbsp_removed = a.string.strip().encode('ascii','replace')
+                    nbsp_removed = a.string.strip().encode('ascii','replace').decode('utf-8')
                     athlete_name = nbsp_removed.replace('?', ' ')
                     first_name = re.findall('[A-Z]*.$', athlete_name)[0]
                     last_name_array = athlete_name.replace(first_name, '').split(' ')
@@ -262,7 +264,7 @@ def get_competition_info (race):
 for meet in meets:
     for gender in genders:
         for style in genders[gender]['styles']:
-
+            print (meet['id'], gender)
             file_id = meet['id'] + '-' + gender + '-' + str(style)
 
             competition_id = meets_name[meet['type']][1] + '-' + meet_year_letter[meet['year']] + \
@@ -310,7 +312,7 @@ sorted_meets = sorted(meets, key=itemgetter('type'))
 for key, group in itertools.groupby(sorted_meets, key=lambda x:x['type']):
     meets_grouped[key] = list(group)
 
-for k, v in meets_grouped.iteritems():
+for k, v in meets_grouped.items():
     children = map(lambda x: [(meet_year_letter[x['year']] + str(x['year'])), x['year'] + ' - ' + x['location']], v)
     children = sorted(children, key=itemgetter(0))
     meets_grouped[k] = {
@@ -321,34 +323,34 @@ for k, v in meets_grouped.iteritems():
 
 # events
 # add key (i.e. asec sortable style_id) to the value
-for k, v in events_name.iteritems(): v.append(k)
+for k, v in events_name.items(): v.append(k)
 # group by event type (e.g., team or individual)
 events_list = defaultdict(list)
-for key, value in events_name.iteritems():
+for key, value in events_name.items():
     events_list[value[2]].append(value)
 
-for k, v in events_list.iteritems():
+for k, v in events_list.items():
     # x[3] is the style_id
     children = map(lambda x: [x[1], x[0], x[3]], v)
     children = sorted(children, key=itemgetter(2))
     children = map(lambda x: [x[0], x[1]], children)
     events_list[k] = {
         'name': 'Individual' if k == '0IND' else 'Team',
-        'children': children
+        'children': list(children)
     }
 
 # athletes
 athletes_list = {}
-for gender, athletes_by_id in all_athletes.iteritems():
+for gender, athletes_by_id in all_athletes.items():
     info = []
-    for id, val in athletes_by_id.iteritems():
+    for id, val in athletes_by_id.items():
         val['id'] = id
         info.append(val)
     athletes_list[gender] = info
 
 # save files
 simplejson = json
-print events_list
+print (events_list)
 jsondata = simplejson.dumps({
         'graph': node_edges,
         'meets': meets_list,

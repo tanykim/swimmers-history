@@ -45,6 +45,7 @@ for (mt in meetTypes) {
     year <- str_extract(meet, "(1|2)[0-9]{3}")
     print (as.integer(year))
     
+    # set the year to extract data
     if ((as.integer(year) >= 2007) == TRUE) {
       # Append meet id to all meet ids
       meetIdsAll <- c(meetIdsAll, meetIds[i])
