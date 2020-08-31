@@ -34,17 +34,19 @@ meets_name = {
     '7450054': ['Pan Pacific Championships', '4PPC']
 }
 meet_year_letter = {
-    '2017': 'a',
-    '2016': 'b',
-    '2015': 'c',
-    '2014': 'd',
-    '2013': 'e',
-    '2012': 'f',
-    '2011': 'g',
-    '2010': 'h',
-    '2009': 'i',
-    '2008': 'j',
-    '2007': 'k'
+    '2019': 'a',
+    '2018': 'b',
+    '2017': 'c',
+    '2016': 'd',
+    '2015': 'e',
+    '2014': 'f',
+    '2013': 'g',
+    '2012': 'h',
+    '2011': 'i',
+    '2010': 'j',
+    # '2009': 'i',
+    # '2008': 'j',
+    # '2007': 'k'
 }
 events_name = {
     '1': ['50m Freestyle', 'a50Fr', '0IND'],
@@ -359,13 +361,7 @@ jsondata = simplejson.dumps({
         'competitions': competition_list,
         'race': race
     }, separators=(',',':'), sort_keys=True)
-# fd = open('../webapp/public/data/data.json', 'w')
-# fd2 = open('../ng-app/src/app/services/data.json', 'w')
-fd3 = open('../react-app/src/data/data.json', 'w')
-# fd.write(jsondata)
-# fd.close()
-# fd2.write(jsondata)
-# fd2.close()
-fd3.write(jsondata)
-fd3.close()
+fd = open('../react-app/src/data/data.json', 'w')
+fd.write(jsondata)
+fd.close()
 

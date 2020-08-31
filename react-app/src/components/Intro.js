@@ -314,7 +314,7 @@ class IntroComponent extends Component {
                 disabled={this.props.isLoading}
                 onChange={this.props.setGender} /> <strong>WOMEN</strong>
               <div className="radio-desc">
-                All butterfly and individual medley races <br/>in 2008, 2012, and 2016
+                All butterfly and individual medley races <br/>in 2012, and 2016
               </div>
             </label>
           </div>

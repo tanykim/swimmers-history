@@ -7,8 +7,8 @@ library(jsonlite)
 # Olympics (Every 4-th years: from 2000, meetType 1)
 # World Championships (Every odd years: meetType 2)
 # European Championships (Every even years: meetType 3)
-# Commonwealth Games (Every non-olympic 4-th years: 2006, 2010, 2014: meetType 5)
-# Pan Pacific Championships (Every non-olympic 4-th years: 2006, 2010, 2014: meetType 7450054)
+# Commonwealth Games (Every non-olympic 4-th years: 2006, 2010, 2014, 2018: meetType 5)
+# Pan Pacific Championships (Every non-olympic 4-th years: 2006, 2010, 2014, 2018: meetType 7450054)
 
 # get meet info for data generation with python and visualization of webapp 
 meetTypes <- c('1', '2', '3', '5', '7450054')
@@ -46,7 +46,7 @@ for (mt in meetTypes) {
     print (as.integer(year))
     
     # set the year to extract data
-    if ((as.integer(year) >= 2007) == TRUE) {
+    if ((as.integer(year) >= 2017) == TRUE) {
       # Append meet id to all meet ids
       meetIdsAll <- c(meetIdsAll, meetIds[i])
       
